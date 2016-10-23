@@ -1,57 +1,61 @@
-use chen;
-DROP table C_Song;
+DROP SCHEMA IF EXISTS `ktv_db`;
+CREATE SCHEMA IF NOT EXISTS `ktv_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `ktv_db`;
+
+drop table C_Song;
 drop table Client;
 drop table Comment;
 drop table Song;
 drop table Star;
+
 create table Star(
-StarID Varchar(20),
-StarName Varchar(50),
-StarStyle varChar(10),
-StarRegion Varchar(50),
-StarNameAbridge Varchar(10),
-RouteStartID Varchar(50),
-primary key(StarID)
+	StarID Varchar(20),
+	StarName Varchar(50),
+	StarStyle varChar(10),
+	StarRegion Varchar(50),
+	StarNameAbridge Varchar(10),
+	RouteStartID Varchar(50),
+	primary key(StarID)
 );
 
 create table Song(
-SongID Varchar(20),
-SongName Varchar(50),
-SongType Varchar(20),
-SongLanguage Varchar(10),
-SongNameAbridge Varchar(10),
-StarID Varchar(20),
-SongWeek Long,
-SongMonth Long,
-SongYear Long,
-SongRoute Varchar(100),
-primary key(SongID),
-foreign key(StarID) references Star(StarID)
+	SongID Varchar(20),
+	SongName Varchar(50),
+	SongType Varchar(20),
+	SongLanguage Varchar(10),
+	SongNameAbridge Varchar(10),
+	StarID Varchar(20),
+	SongWeek Long,
+	SongMonth Long,
+	SongYear Long,
+	SongRoute Varchar(100),
+	primary key(SongID),
+	foreign key(StarID) references Star(StarID)
 );
 
 create table Comment(
-C_ID Varchar(20),
-C_content Varchar(80),
-SongID Char(20),
-primary key(C_ID),
-foreign key(SongID) references Song(SongID)
+	C_ID Varchar(20),
+	C_content Varchar(80),
+	SongID Char(20),
+	primary key(C_ID),
+	foreign key(SongID) references Song(SongID)
 );
 
 create table Client(
-ClientID Varchar(20),
-ClientArea Varchar(20),
-ClientType Varchar(20),
-ClientBrand Varchar(20),
-primary key(ClientID)
+	ClientID Varchar(20),
+	ClientArea Varchar(20),
+	ClientType Varchar(20),
+	ClientBrand Varchar(20),
+	primary key(ClientID)
 );
 
 create table C_Song(
-SongID Varchar(20),
-ClientID Varchar(20),
-C_Order int,
-primary key(SongID,ClientID),
-foreign key(SongID) references Song(SongID),
-foreign key(ClientID) references Client(ClientID)
+	SongID Varchar(20),
+	ClientID Varchar(20),
+	C_Order int,
+	primary key(SongID,ClientID),
+	foreign key(SongID) references Song(SongID),
+	foreign key(ClientID) references Client(ClientID)
 );
 
 insert into Star values('1','2NE1','组合','韩国','2','2NE1.jpg');
@@ -375,6 +379,3 @@ insert into C_Song values('21','3','1');
 insert into C_Song values('22','3','2');
 insert into C_Song values('23','3','3');
 insert into C_Song values('24','3','4');
-
-
-

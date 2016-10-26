@@ -2,11 +2,11 @@ DROP SCHEMA IF EXISTS `ktv_db`;
 CREATE SCHEMA IF NOT EXISTS `ktv_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `ktv_db`;
 
-drop table C_Song;
-drop table Client;
-drop table Comment;
-drop table Song;
-drop table Star;
+-- drop table C_Song;
+-- drop table Client;
+-- drop table Comment;
+-- drop table Song;
+-- drop table Star;
 
 create table Star(
 	StarID Varchar(20),
@@ -25,9 +25,9 @@ create table Song(
 	SongLanguage Varchar(10),
 	SongNameAbridge Varchar(10),
 	StarID Varchar(20),
-	SongWeek Long,
-	SongMonth Long,
-	SongYear Long,
+	SongWeek BigInt,
+	SongMonth BigInt,
+	SongYear BigInt,
 	SongRoute Varchar(100),
 	primary key(SongID),
 	foreign key(StarID) references Star(StarID)

@@ -7,6 +7,7 @@ import lib.recommend
 import lib.mysql
 
 ktv = Flask(__name__)
+svr = server(user='root', password='root', database='ktv_db')
 
 @ktv.route('/hot100', methods=['GET'])
 def hot100():

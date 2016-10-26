@@ -200,7 +200,7 @@ insert into Song values('22','大约在冬季','流行','中文','DYZDJ','70','4
 insert into Song values('23','Expection','摇滚','英文','E','37','9','32','311','Expection_标清.flv');
 insert into Song values('24','Espiritu del Aire','流行','西班牙语','EDA','28','15','79','144','E Nomine - Espiritu del Aire_标清.flv');
 insert into Song values('25','Endless Love','流行','英文','EL','59','8','15','122','Endless Love_标清.flv');
-insert into Song values('26	','E lucevan le stelle','蓝调','意大利语','ELLS','43','5','10','100','E lucevan le stelle  (Jonas Kaufmann) 2010_标清.flv');
+insert into Song values('26','E lucevan le stelle','蓝调','意大利语','ELLS','43','5','10','100','E lucevan le stelle  (Jonas Kaufmann) 2010_标清.flv');
 insert into Song values('27','E TU COME STAI ','流行','意大利语','ETCS','29','6','101','244','E TU COME STAI_标清.flv');
 insert into Song values('28','风含情水含笑','流行','中文','FHQSHX','102','11','51','516','风含情水含笑_标清.flv');
 insert into Song values('29','翻篇','流行','中文','FP','9','33','98','521','翻篇_标清.flv');

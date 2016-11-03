@@ -24,6 +24,17 @@
   #+END_SRC
 
   #+BEGIN_SRC C
+/* 请求URL: http://127.0.0.1/search/{way}/{type}/{content} */
+/* 功能描述: 通过搜索方法way按搜索类型type搜索内容content.例如按拼音缩写搜索歌星林俊杰:http://127.0.0.1/search/abbreviation/singer/ljj */
+
+/* 输入: 无 */
+/* 输出: 无 */
+/* 返回值: 返回搜索结果JSON文件. */
+/* 调用关系: 略 */
+/* 其他: 无 */
+  #+END_SRC
+
+  #+BEGIN_SRC C
 /* 请求URL: http://127.0.0.1/download/{id} */
 /* 功能描述: 获取指定ID的歌曲MV媒体文件 */
 

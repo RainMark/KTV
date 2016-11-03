@@ -3,36 +3,48 @@
 * 项目目录结构
 #+BEGIN_SRC txt
 .
-|-- Documents
-|   |-- DB
-|   |   |-- KTV_DATABASE_ER.docx
-|   |   |-- KTV_DATABASE_TABLE.docx
-|   |   |-- SingerPic
-|   |   |   |-- 2NE1.jpg
-|   |   |   |-- 音频怪物.jpg
-.   .   .   .
-.   .   .   .
-.   .   .   .
-|   |   |   |-- 魏晨.jpg
-|   |   |   `-- 齐秦.jpg
-|   |   |-- 客户端_歌曲表.xlsx
-|   |   |-- 歌手数据收集表.xlsx
-|   |   |-- 歌曲数据收集表.xlsx
-|   |   `-- 评论信息表.xlsx
-|   |-- PIC
-|   |   `-- KTV_base.png
-|   |-- Reports
-|   |   |-- CPlusPlus
-|   |   |   `-- 《面向对象程序设计》选题报告.doc
-|   |   `-- SoftwareProject
-|   |       `-- KTV文档需求分析.docx
-|   `-- 需求分析.org
-|-- README.org
-`-- SRC
-    `-- DB
-        `-- KTV_DATABASE_SQL.sql
+├── Documents
+│   ├── DB
+│   │   ├── KTV_DATABASE_ER.docx
+│   │   ├── KTV_DATABASE_TABLE.docx
+│   │   ├── SingerPic
+│   │   │   ├── 2NE1.jpg
+│   │   │   ├── Adele.jpg
+.............
+.............
+.............
+│   │   │   ├── 魏晨.jpg
+│   │   │   └── 齐秦.jpg
+│   │   ├── 客户端_歌曲表.xlsx
+│   │   ├── 歌手数据收集表.xlsx
+│   │   ├── 歌曲数据收集表.xlsx
+│   │   └── 评论信息表.xlsx
+│   ├── PIC
+│   │   └── KTV_base.png
+│   ├── Reports
+│   │   ├── CPlusPlus
+│   │   │   └── 《面向对象程序设计》选题报告.doc
+│   │   └── SoftwareProject
+│   │       ├── KTV文档需求分析.docx
+│   │       └── SoftwareInterface.org
+│   └── 项目安排信息.org
+├── README.org
+└── SRC
+    ├── DB
+    │   └── KTV_DATABASE_SQL.sql
+    └── SVR
+        ├── __init__.py
+        ├── ktv.py
+        └── lib
+            ├── database.py
+            ├── __init__.py
+            ├── __pycache__
+            │   ├── __init__.cpython-35.pyc
+            │   ├── mysql.cpython-35.pyc
+            │   ├── recommend.cpython-35.pyc
+            │   └── server.cpython-35.pyc
+            ├── recommend.py
+            └── server.py
 
-9 directories, 125 files
+12 directories, 136 files
 #+END_SRC
-
-Look: https://github.com/RainMark/KTV/blob/master/Documents/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90.org

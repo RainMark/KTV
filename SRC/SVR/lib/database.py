@@ -14,32 +14,31 @@ class mdb(object):
         'Return the most hot MVs as click rate.'
         query = 'Select * From Song Order By songmonth DESC'
         self.cursor.execute(query)
-        data = self.cursor.fetchmany(10)
-        # for item in data:
-        #     print(item)
-        return data
+        data = self.cursor.fetchall()
+        for item in data[0:10]:
+            print(item)
+        return data[0:10]
 
     def hot_zh(self):
         'Return the most hot Chinese MVs as click rate.'
         query = 'Select * From Song Where songlanguage=\'中文\' Order By songmonth DESC'
         self.cursor.execute(query)
-        data = self.cursor.fetchmany(10)
-        for item in data:
+        data = self.cursor.fetchall()
+        for item in data[0:10]:
             print(item)
-        return data
+        return data[0:10]
 
     def hot_not_zh(self):
         'Return the most hot MVs as click rate.'
         query = 'Select * From Song Where songlanguage!=\'中文\' Order By songmonth DESC'
         self.cursor.execute(query)
-        data = self.cursor.fetchmany(10)
-        for item in data:
+        data = self.cursor.fetchall()
+        for item in data[0:10]:
             print(item)
-        return data
+        return data[0:10]
 
 
 if __name__ == '__main__':
     run = mdb('root', 'root', 'ktv_db')
-    run.hot_not_zh()
+    run.hot_all()
     run.close()
-

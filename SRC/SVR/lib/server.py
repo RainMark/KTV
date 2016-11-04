@@ -14,3 +14,7 @@ class ktv_server(object):
         top_list = self.svr_db.hot_all()
         return json.dumps(top_list)
 
+    def svr_playing_list_fetch(self, client_id):
+        playing_list = self.svr_db.playing_list_fetch(client_id)
+        return json.dumps(playing_list)
+

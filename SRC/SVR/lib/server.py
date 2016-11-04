@@ -16,5 +16,14 @@ class ktv_server(object):
 
     def svr_playing_list_fetch(self, client_id):
         playing_list = self.svr_db.playing_list_fetch(client_id)
+        print(playing_list)
         return json.dumps(playing_list)
+
+    def svr_playing_list_add(self, client_id, song_id):
+        print(client_id, " ", song_id)
+        return json.dumps("OK")
+
+    def svr_playing_list_delete(self, client_id, song_id):
+        print(client_id, " ", song_id)
+        return json.dumps("OK")
 

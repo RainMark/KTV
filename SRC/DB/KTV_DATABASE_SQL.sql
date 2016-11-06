@@ -36,7 +36,7 @@ create table Song(
 create table Comment(
 	C_ID Varchar(20),
 	C_content Varchar(80),
-	SongID Char(20),
+	SongID Varchar(20),
 	primary key(C_ID),
 	foreign key(SongID) references Song(SongID)
 );
@@ -57,6 +57,14 @@ create table C_Song(
 	foreign key(SongID) references Song(SongID),
 	foreign key(ClientID) references Client(ClientID)
 );
+
+-- delimiter //
+-- CREATE TRIGGER ktv_csong_delete Before Delete ON C_Song FOR EACH ROW Begin Update C_Song Set C_Order = C_Order - 1 Where C_Order > old.C_Order; End//
+-- delimiter ;
+
+-- delimiter //
+-- CREATE TRIGGER ktv_csong_insert Before Insert ON C_Song FOR EACH ROW Update C_Song Set C_Order = C_Order + 1 Where C_Song.C_Order >= old.C_Order;//
+-- delimiter ;
 
 insert into Star values('1','2NE1','组合','韩国','2','2NE1.jpg');
 insert into Star values('2','Adele','女','欧美','A','Adele.jpg');

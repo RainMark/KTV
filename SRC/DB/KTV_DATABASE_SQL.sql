@@ -14,7 +14,7 @@ create table Star(
 	StarStyle varChar(10),
 	StarRegion Varchar(50),
 	StarNameAbridge Varchar(10),
-	RouteStartID Varchar(50),
+	StarAlbumPath Varchar(50),
 	primary key(StarID)
 );
 
@@ -28,7 +28,7 @@ create table Song(
 	SongWeek BigInt,
 	SongMonth BigInt,
 	SongYear BigInt,
-	SongRoute Varchar(100),
+	SongPath Varchar(100),
 	primary key(SongID),
 	foreign key(StarID) references Star(StarID)
 );

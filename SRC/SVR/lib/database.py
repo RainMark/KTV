@@ -45,8 +45,8 @@ class stv_mariadb(object):
         query = 'Select * From Song Order By songmonth DESC'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
-        for item in data[0:10]:
-            print(item)
+        # for item in data[0:10]:
+        #     print(item)
         return data[0:10]
 
     def hot_zh(self):
@@ -54,8 +54,8 @@ class stv_mariadb(object):
         query = 'Select * From Song Where songlanguage=\'中文\' Order By songmonth DESC'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
-        for item in data[0:10]:
-            print(item)
+        # for item in data[0:10]:
+        #     print(item)
         return data[0:10]
 
     def hot_not_zh(self):
@@ -63,8 +63,8 @@ class stv_mariadb(object):
         query = 'Select * From Song Where songlanguage!=\'中文\' Order By songmonth DESC'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
-        for item in data[0:10]:
-            print(item)
+        # for item in data[0:10]:
+        #     print(item)
         return data[0:10]
 
     def playing_list_fetch(self, client_id):
@@ -137,6 +137,23 @@ class stv_mariadb(object):
             print('Execute SQL Except: ', sql)
             return False
 
+    def search_singer_by_abridge(self, key):
+        sql = "Select StarID, StarName, StarRegion, StarStyle From Star Where StarNameAbridge Like \'%s\'"
+        print(key)
+        try:
+            self.cursor.execute(sql, (key + r'%'))
+            # return self.cursor.fetchall()
+            data = self.cursor.fetchall()
+            for v in data:
+                print(v)
+            return data
+
+        except:
+            self.database.rollback()
+            print('Execute SQL Except: ', sql)
+            return (())
+
+
 if __name__ == '__main__':
     run = stv_mariadb('root', 'root', 'ktv_db')
     # run.hot_all()
@@ -147,5 +164,6 @@ if __name__ == '__main__':
     # run.playing_list_add(3, 54)
     # run.playing_list_add(3, 55)
     # run.playing_list_delete(3, 54)
-    run.playing_list_resort(3, 53, 4)
+    # run.playing_list_resort(3, 53, 4)
+    run.search_singer_by_abridge('L')
     run.close()

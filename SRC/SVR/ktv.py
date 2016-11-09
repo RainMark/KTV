@@ -7,7 +7,7 @@ import json
 from lib.server import stv_server
 
 stv = Flask(__name__)
-svr = stv_server(user='root', password='root', database='ktv_db')
+svr = stv_server(user='root', password='root', database='stv_db')
 
 @stv.route('/top/<top_type>', methods=['GET'])
 def top_handler(top_type):

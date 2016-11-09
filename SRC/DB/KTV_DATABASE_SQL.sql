@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS `ktv_db`;
-CREATE SCHEMA IF NOT EXISTS `ktv_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `ktv_db`;
+DROP SCHEMA IF EXISTS `stv_db`;
+CREATE SCHEMA IF NOT EXISTS `stv_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `stv_db`;
 
 -- drop table C_Song;
 -- drop table Client;
@@ -35,7 +35,7 @@ create table Song(
 
 create table Comment(
 	C_ID Varchar(20),
-	C_content Varchar(80),
+	C_Content Varchar(80),
 	SongID Varchar(20),
 	primary key(C_ID),
 	foreign key(SongID) references Song(SongID)
@@ -52,7 +52,7 @@ create table Client(
 create table C_Song(
 	SongID Varchar(20),
 	ClientID Varchar(20),
-	C_Order int,
+	S_Order int,
 	primary key(SongID,ClientID),
 	foreign key(SongID) references Song(SongID),
 	foreign key(ClientID) references Client(ClientID)

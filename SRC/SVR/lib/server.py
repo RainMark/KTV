@@ -50,5 +50,10 @@ class stv_server(object):
         if use_abridge:
             return json.dumps(self.db.search_singer_by_abridge(key))
         else:
-            return json.dumps((()))
+            return json.dumps(self.db.search_singer_by_fullname(key))
 
+    def search_song(self, key, use_abridge):
+        if use_abridge:
+            return json.dumps(self.db.search_song_by_abridge(key))
+        else:
+            return json.dumps(self.db.search_song_by_fullname(key))

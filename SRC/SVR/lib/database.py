@@ -199,12 +199,26 @@ class stv_mariadb(object):
             print('Execute SQL Except: ', sql)
             return (())
 
+    def user_get_all(self):
+        sql = 'Select ClientID, SongID From History'
+        try:
+            self.cursor.execute(sql)
+            # return self.cursor.fetchall()
+            data = self.cursor.fetchall()
+            # for v in data:
+            #     print(v)
+            return data
+
+        except:
+            self.database.rollback()
+            print('Execute SQL Except: ', sql)
+            return (())
 
 if __name__ == '__main__':
     run = stv_mariadb('root', 'root', 'stv_db')
     # run.hot_all()
     # print('')
-    run.playing_list_fetch(3)
+    # run.playing_list_fetch(3)
     # print('')
     # run.playing_list_add(3, 51)
     # print('')
@@ -223,4 +237,5 @@ if __name__ == '__main__':
     # run.search_song_by_abridge('X')
     # print('')
     # run.search_song_by_fullname('爱')
+    run.user_get_all()
     run.close()

@@ -3,12 +3,16 @@
 import sys
 import os
 import json
-from lib.database import stv_mariadb
+# from lib.database import stv_mariadb
+# from lib.recommendation import recommend as stv_rd
+from database import stv_mariadb
+from recommendation import recommend as stv_rd
 
 
 class stv_server(object):
     def __init__(self, user, password, database):
         self.db = stv_mariadb(user, password, database)
+        self.rd = stv_rd(self.db)
 
     def top_fetch(self, top_type='all'):
         top_list = self.db.hot_all()
@@ -57,3 +61,9 @@ class stv_server(object):
             return json.dumps(self.db.search_song_by_abridge(key))
         else:
             return json.dumps(self.db.search_song_by_fullname(key))
+
+
+if __name__ == '__main__':
+    s = stv_server('root', 'root', 'stv_db')
+    s.rd.update_train_set()
+    s.rd.update_item_similarity()

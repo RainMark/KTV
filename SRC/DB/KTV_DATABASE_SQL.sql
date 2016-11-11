@@ -53,9 +53,18 @@ create table C_Song(
 	SongID Varchar(20),
 	ClientID Varchar(20),
 	S_Order int,
+	S_Upvalue int,
 	primary key(SongID,ClientID),
 	foreign key(SongID) references Song(SongID),
 	foreign key(ClientID) references Client(ClientID)
+);
+
+create table History(
+       ClientID Varchar(20),
+       SongID Varchar(20),
+       primary key(SongID, ClientID),
+       foreign key(SongID) references Song(SongID),
+       foreign key(ClientID) references Client(ClientID)
 );
 
 -- delimiter //
@@ -363,27 +372,46 @@ insert into Client values('1','北京','a','联想');
 insert into Client values('2','上海','b','戴尔');
 insert into Client values('3','上海','c','惠普');
 
-insert into C_Song values('1','1','1');
-insert into C_Song values('2','1','2');
-insert into C_Song values('3','1','3');
-insert into C_Song values('4','1','4');
-insert into C_Song values('5','1','5');
-insert into C_Song values('6','1','6');
-insert into C_Song values('7','1','7');
-insert into C_Song values('8','1','8');
-insert into C_Song values('9','1','9');
-insert into C_Song values('10','2','10');
-insert into C_Song values('11','2','1');
-insert into C_Song values('12','2','2');
-insert into C_Song values('13','2','3');
-insert into C_Song values('14','2','4');
-insert into C_Song values('15','2','5');
-insert into C_Song values('16','2','6');
-insert into C_Song values('17','2','7');
-insert into C_Song values('18','2','8');
-insert into C_Song values('19','2','9');
-insert into C_Song values('20','2','10');
-insert into C_Song values('21','3','1');
-insert into C_Song values('22','3','2');
-insert into C_Song values('23','3','3');
-insert into C_Song values('24','3','4');
+insert into C_Song values('1','1',1, 0);
+insert into C_Song values('2','1',2, 0);
+insert into C_Song values('3','1',3, 0);
+insert into C_Song values('4','1',4, 0);
+insert into C_Song values('5','1',5, 0);
+insert into C_Song values('6','1',6, 0);
+insert into C_Song values('7','1',7, 0);
+insert into C_Song values('8','1',8, 0);
+insert into C_Song values('9','1',9, 0);
+insert into C_Song values('10','2',10, 0);
+insert into C_Song values('11','2',1, 0);
+insert into C_Song values('12','2',2, 0);
+insert into C_Song values('13','2',3, 0);
+insert into C_Song values('14','2',4, 0);
+insert into C_Song values('15','2',5, 0);
+insert into C_Song values('16','2',6, 0);
+insert into C_Song values('17','2',7, 0);
+insert into C_Song values('18','2',8, 0);
+insert into C_Song values('19','2',9, 0);
+insert into C_Song values('20','2',10, 0);
+insert into C_Song values('21','3',1, 0);
+insert into C_Song values('22','3',2, 0);
+insert into C_Song values('23','3',3, 0);
+insert into C_Song values('24','3',4, 0);
+
+insert into History values('3', '1');
+insert into History values('3', '2');
+insert into History values('3', '3');
+insert into History values('3', '4');
+insert into History values('3', '5');
+insert into History values('1', '3');
+insert into History values('1', '4');
+insert into History values('1', '5');
+insert into History values('1', '6');
+insert into History values('1', '7');
+insert into History values('1', '8');
+insert into History values('2', '1');
+insert into History values('2', '2');
+insert into History values('2', '3');
+insert into History values('2', '4');
+insert into History values('2', '5');
+insert into History values('2', '6');
+insert into History values('2', '7');

@@ -1,25 +1,25 @@
 #!/usr/python3
 
-
-# import numpy as np
+import math
+import operator
 
 class recommend(object):
     def __init__(self, database):
         self.db = database
 
-    def update_train_set(self):
+    def train_set(self):
         user_item = self.db.user_get_all()
         self.train = dict()
         for user, item in user_item:
+            # print(user, type(user), item, type(item))
             if None == self.train.get(user):
                 self.train[user] = list()
-
-            self.train[user] += item
+            self.train[user].append(item)
 
         for user, items in self.train.items():
             print(user, ':', items)
 
-    def update_item_similarity(self):
+    def item_similarity(self):
         C = dict()
         N = dict()
 
@@ -36,10 +36,38 @@ class recommend(object):
                     if None == C[i].get(j):
                         C[i][j] = 0
                     C[i][j] += 1
-        print(C)
+        W = dict()
+        for item, related_items in C.items():
+            # print(related_items)
+            for related_item, Cij in related_items.items():
+                # print(Cij)
+                if None == W.get(item):
+                    W[item] = dict()
+                W[item][related_item] = Cij / math.sqrt(N[item] * N[related_item])
 
-    def recommendation(self, user_id, K):
-        pass
+        # for i, j in W.items():
+        #     print(i, ' ', j)
+        self.sim = W
+
+    def do_recommend(self, user_id, K):
+        # print(self.sim)
+        rank = dict()
+        playing = self.db.playing_list_fetch(user_id)
+        CI = [item[0] for item in playing]
+        for i in CI:
+            if None == self.sim.get(i):
+                continue
+
+            for j, Wij in sorted(self.sim[i].items(), key = operator.itemgetter(1), reverse = True)[:K]:
+                # print(j)
+                if j in CI:
+                    continue
+                print(i, j, Wij)
+
+            print('')
+            # print(self.sim[i].items())
+
+            # print(sorted(self.sim[i].items(), key = operator.itemgetter(1), reverse = True)[:K])
 
 
 if __name__ == '__main__':

@@ -1,10 +1,15 @@
 #!/usr/python3
 
+import json
+import sys
+import os
 from flask import Flask
 from flask import request
 from flask import Response
-import json
-from lib.server import stv_server
+# sys.path.append(os.path.abspath(os.path.curdir) + "/lib")
+sys.path.append(os.path.join(os.getcwd(), 'lib'))
+from server import stv_server
+
 
 stv = Flask(__name__)
 svr = stv_server(user='root', password='root', database='stv_db')

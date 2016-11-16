@@ -397,8 +397,8 @@ insert into C_Song values('22','3',2, 0);
 insert into C_Song values('23','3',3, 0);
 insert into C_Song values('24','3',4, 0);
 
-insert into History values('3', '1');
-insert into History values('3', '2');
+insert into History values('3', '21');
+insert into History values('3', '22');
 insert into History values('3', '3');
 insert into History values('3', '4');
 insert into History values('3', '5');

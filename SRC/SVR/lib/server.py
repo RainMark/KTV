@@ -1,10 +1,6 @@
 #!/usr/python3
 
-import sys
-import os
 import json
-# from lib.database import stv_mariadb
-# from lib.recommendation import recommend as stv_rd
 from database import stv_mariadb
 from recommendation import recommend as stv_rd
 
@@ -65,5 +61,6 @@ class stv_server(object):
 
 if __name__ == '__main__':
     s = stv_server('root', 'root', 'stv_db')
-    s.rd.update_train_set()
-    s.rd.update_item_similarity()
+    s.rd.train_set()
+    s.rd.item_similarity()
+    s.rd.do_recommend(1, 10)

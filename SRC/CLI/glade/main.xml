@@ -4,8 +4,23 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="window">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">Show Time KTV</property>
+    <!-- <property name="title" translatable="yes">Show Time KTV</property> -->
     <property name="window_position">center</property>
     <signal name="destroy" handler="stv_exit"/>
+    <child>
+      <object class="GtkBox">
+	<property name="visible">True</property>
+	<property name="orientation">vertical</property>
+	<child>
+	  <object class="GtkHeaderBar" id="headerbar">
+	    <property name="visible">True</property>
+	    <property name="title">Show Time KTV</property>
+	    <property name="show-close-button">True</property>
+	    <property name="spacing">5</property>
+	    <!-- <property name="decoration_layout">gtk-decoration_layout</property> -->
+	  </object>
+	</child>
+      </object>
+    </child>
   </object>
 </interface>

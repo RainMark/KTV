@@ -1,0 +1,39 @@
+window.ssd headerbar.titlebar {
+    border: none;
+    background-image: linear-gradient(to bottom,
+				      shade(@theme_bg_color, 1.05),
+				      shade(@theme_bg_color, 0.99));
+    box-shadow: inset 0 1px shade(@theme_bg_color, 1.4);
+}
+
+window.ssd headerbar.titlebar button.titlebutton {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    min-height: 0;
+}
+
+headerbar {
+    min-height: 38px;
+    padding-left: 2px; /* same as childrens vertical margins for nicer proportions */
+    padding-right: 2px;
+}
+
+headerbar entry,
+headerbar spinbutton,
+headerbar button,
+headerbar separator {
+    margin-top: 2px; /* same as headerbar side padding for nicer proportions */
+    margin-bottom: 2px;
+}
+
+/* shrink ssd titlebars */
+.default-decoration {
+    min-height: 0; /* let the entry and button drive the titlebar size */ 
+    padding: 2px
+}
+
+.default-decoration .titlebutton {
+    min-height: 26px; /* tweak these two props to reduce button size */
+    min-width: 26px;
+}
+

@@ -6,6 +6,9 @@
     <property name="visible">True</property>
     <!-- <property name="title" translatable="yes">Show Time KTV</property> -->
     <property name="window_position">center</property>
+    <property name="default-height">670</property>
+    <property name="default-width">1022</property>
+    <property name="decorated">False</property>
     <signal name="destroy" handler="stv_exit"/>
     <child>
       <object class="GtkBox">
@@ -14,10 +17,104 @@
 	<child>
 	  <object class="GtkHeaderBar" id="headerbar">
 	    <property name="visible">True</property>
-	    <property name="title">Show Time KTV</property>
-	    <property name="show-close-button">True</property>
 	    <property name="spacing">5</property>
-	    <!-- <property name="decoration_layout">gtk-decoration_layout</property> -->
+	    <property name="decoration_layout-set">True</property>
+	    <property name="decoration_layout">gtk-decoration_layout</property>
+	    <property name="show-close-button">False</property>
+	    <child>
+	      <object class="GtkBox">
+		<property name="visible">True</property>
+		<property name="orientation">horizontal</property>
+		<property name="homogeneous">1</property>
+		<child>
+		  <object class="GtkBox">
+		    <property name="visible">True</property>
+		    <child>
+		      <object class="GtkLabel">
+			<property name="label">Show Time KTV</property>
+		      </object>
+		    </child>
+		  </object>
+		  <packing>
+		    <property name="pack-type">start</property>
+		    <property name="position">0</property>
+		    <property name="expand">True</property>
+		    <property name="padding">3</property>
+		  </packing>
+		</child>
+		<child>
+		  <object class="GtkBox">
+		    <property name="visible">True</property>
+		    <child>
+		      <object class="GtkSearchEntry" id="searchentry">
+			<property name="visible">True</property>
+			<property name="editable">True</property>
+			<property name="placeholder-text">歌曲、歌星搜索</property>
+			<property name="max_length">512</property>
+			<property name="width_chars">2</property>
+			<property name="max_width_chars">512</property>
+			<property name="shadow_type">etched-out</property>
+			<property name="primary_icon_name">edit-find-symbolic</property>
+			<property name="primary_icon_activatable">False</property>
+			<property name="primary_icon_sensitive">False</property>
+			<!-- <property name="input_purpose">name</property> -->
+		      </object>
+		    </child>
+		  </object>
+		  <packing>
+		    <property name="pack-type">start</property>
+		    <property name="position">1</property>
+		    <property name="expand">True</property>
+		    <property name="padding">3</property>
+		  </packing>
+		</child>
+		<child>
+		  <object class="GtkButtonBox">
+		    <property name="visible">True</property>
+		    <child>
+		      <object class="GtkButton" id="bt_machine">
+			<property name="visible">True</property>
+			<child>
+			  <object class="GtkLabel">
+			    <property name="label">Android</property>
+			  </object>
+			</child>
+		      </object>
+		    </child>
+		  </object>
+		  <packing>
+		    <property name="pack-type">start</property>
+		    <property name="position">2</property>
+		    <property name="expand">True</property>
+		    <property name="padding">3</property>
+		  </packing>
+		</child>
+	      </object>
+	      <packing>
+		<property name="pack-type">end</property>
+		<property name="position">1</property>
+	      </packing>
+	    </child>
+	    <child>
+	      <object class="GtkButtonBox">
+		    <property name="visible">True</property>
+		    <child>
+		      <object class="GtkButton" id="bt_exit">
+			<property name="visible">True</property>
+			<signal name="clicked" handler="stv_exit"/>
+			<child>
+			  <object class="GtkLabel">
+			    <property name="label">X</property>
+			  </object>
+			</child>
+		      </object>
+		    </child>
+	      </object>
+	      <packing>
+		<property name="pack-type">end</property>
+		<property name="position">0</property>
+	      </packing>
+	    </child>
 	  </object>
 	</child>
       </object>

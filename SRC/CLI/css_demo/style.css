@@ -4,6 +4,11 @@
     font-family: Source Code Pro;
 }
 
+.ssd .titlebar {
+    border-width: 0;
+    box-shadow: none;
+}
+
 .background {
     background-color: #4870bc;
     background-image: linear-gradient(to left, transparent, rgba(255,255,255,.07) 50%, transparent 50%),

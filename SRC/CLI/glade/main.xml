@@ -1,177 +1,224 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-	<requires lib="gtk+" version="3.20"/>
-	<object class="GtkWindow" id="window">
-		<property name="visible">True</property>
-		<!-- <property name="title" translatable="yes">Show Time KTV</property> -->
-		<property name="window_position">center</property>
-		<property name="default-height">670</property>
-		<property name="default-width">1022</property>
-		<property name="decorated">False</property>
-		<signal name="destroy" handler="stv_exit"/>
-		<child>
-			<object class="GtkBox">
-				<property name="visible">True</property>
-				<property name="orientation">vertical</property>
-				<property name="margin-top">0</property>
-				<property name="margin-bottom">3</property>
-				<property name="valign">start</property>
-				<child>
-					<object class="GtkHeaderBar" id="headerbar">
-						<property name="visible">True</property>
-						<property name="spacing">5</property>
-						<property name="decoration_layout-set">True</property>
-						<property name="decoration_layout">gtk-decoration_layout</property>
-						<property name="show-close-button">False</property>
-						<property name="halign">end</property>
-						<child>
-							<object class="GtkBox">
-								<property name="visible">True</property>
-								<property name="orientation">horizontal</property>
-								<property name="homogeneous">1</property>
-								<property name="halign">start</property>
-								<child>
-									<object class="GtkBox">
-										<property name="visible">True</property>
-										<child>
-											<object class="GtkLabel">
-												<property name="label">Show Time KTV</property>
-											</object>
-										</child>
-									</object>
-									<packing>
-										<property name="position">0</property>
-										<property name="expand">True</property>
-										<property name="padding">3</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkGrid">
-										<property name="visible">True</property>
-										<child>
-											<object class="GtkSearchEntry" id="searchentry">
-												<property name="visible">True</property>
-												<property name="editable">True</property>
-												<property name="placeholder-text">歌曲、歌星搜索</property>
-												<property name="max_length">512</property>
-												<property name="width_chars">2</property>
-												<property name="max_width_chars">512</property>
-												<!-- <property name="shadow_type">etched-out</property> -->
-												<property name="primary_icon_name">edit-find-symbolic</property>
-												<property name="primary_icon_activatable">False</property>
-												<property name="primary_icon_sensitive">False</property>
-												<!-- <property name="height-request">20</property> -->
-												<!-- <property name="input_purpose">name</property> -->
-											</object>
-											<packing>
-												<!-- <property name="end-attach">0</property> -->
-												<property name="width">100</property>
-												<property name="height">16</property>
-											</packing>
-										</child>
-									</object>
-									<packing>
-										<property name="position">1</property>
-										<property name="expand">True</property>
-										<property name="padding">3</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkGrid">
-										<property name="visible">True</property>
-										<property name="halign">end</property>
-										<child>
-											<object class="GtkButton" id="bt_machine">
-												<property name="visible">True</property>
-												<property name="image">bt_menu_img</property>
-												<property name="always_show_image">True</property>
-												<property name="use_action_appearance">0</property>
-												<!-- <property name="margin-top">10</property> -->
-												<!-- <property name="margin-bottom">10</property> -->
-												<!-- <property name="icon_name">list-add-symbolic</property> -->
-											</object>
-											<packing>
-												<property name="left-attach">0</property>
-												<property name="width">10</property>
-												<property name="height">20</property>
-												<!-- <property name="filll">True</property> -->
-											</packing>
-										</child>
-									</object>
-									<packing>
-										<!-- <property name="pack-type">start</property> -->
-										<property name="position">2</property>
-										<property name="expand">True</property>
-										<property name="padding">3</property>
-									</packing>
-								</child>
-							</object>
-							<packing>
-								<property name="pack-type">end</property>
-								<property name="position">2</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkGrid">
-								<property name="visible">True</property>
-								<child>
-									<object class="GtkButton" id="bt_exit">
-										<property name="visible">True</property>
-										<property name="image">bt_exit_img</property>
-										<property name="always_show_image">True</property>
-										<signal name="clicked" handler="stv_exit"/>
-									</object>
-									<packing>
-										<!-- <property name="end-attach">0</property> -->
-										<property name="width">10</property>
-										<property name="height">20</property>
-									</packing>
-								</child>
-							</object>
-							<packing>
-								<property name="pack-type">end</property>
-								<property name="position">0</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkSeparator">
-								<property name="orientation">vertical</property>
-							</object>
-							<packing>
-								<property name="pack-type">end</property>
-								<property name="position">1</property>
-							</packing>
-						</child>
-					</object>
-					<packing>
-						<property name="pack-type">start</property>
-						<property name="position">0</property>
-					</packing>
-				</child>
-				<child>
-					<object class="GtkBox">
-						<property name="visible">True</property>
-						<child>
-							<object class="GtkLabel">
-								<property name="visible">True</property>
-								<property name="label">OK</property>
-							</object>
-						</child>
-					</object>
-					<packing>
-						<property name="pack-type">start</property>
-						<property name="position">1</property>
-					</packing>
-				</child>
-			</object>
-		</child>
-	</object>
-	<object class="GtkImage" id="bt_exit_img">
-		<property name="visible">True</property>
-		<property name="file">glade/icons/bt_exit.png</property>
-	</object>
-	<object class="GtkImage" id="bt_menu_img">
-		<property name="visible">True</property>
-		<property name="file">glade/icons/bt_menu.png</property>
-	</object>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="bt_exit_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-close</property>
+  </object>
+  <object class="GtkImage" id="bt_menu_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkWindow" id="window">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="window_position">center</property>
+    <property name="default_width">1022</property>
+    <property name="default_height">670</property>
+    <property name="decorated">False</property>
+    <signal name="destroy" handler="stv_exit" swapped="no"/>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <property name="margin_bottom">3</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar" id="headerbar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="spacing">5</property>
+            <property name="decoration_layout">gtk-decoration_layout</property>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkButton" id="bt_exit">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="image">bt_exit_img</property>
+                    <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="stv_exit" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">10</property>
+                    <property name="height">20</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="can_focus">False</property>
+                        <property name="label">Show Time KTV</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="padding">3</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkSearchEntry" id="searchentry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="max_length">512</property>
+                        <property name="width_chars">2</property>
+                        <property name="max_width_chars">512</property>
+                        <property name="primary_icon_name">edit-find-symbolic</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">False</property>
+                        <property name="placeholder_text">歌曲、歌星搜索</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">100</property>
+                        <property name="height">16</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="padding">3</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <child>
+                      <object class="GtkButton" id="bt_machine">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="receives_default">False</property>
+                        <property name="image">bt_menu_img</property>
+                        <property name="always_show_image">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">10</property>
+                        <property name="height">20</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="padding">3</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">end</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="height">20</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label">Control Bar</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="height">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
 </interface>

@@ -6,6 +6,13 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-close</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="bt_menu_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkWindow" id="window">
     <property name="visible">True</property>
@@ -27,96 +34,74 @@
           <object class="GtkHeaderBar" id="headerbar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">end</property>
             <property name="spacing">5</property>
             <property name="decoration_layout">gtk-decoration_layout</property>
             <child>
               <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkButton" id="bt_exit">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">False</property>
-                    <property name="image">bt_exit_img</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="clicked" handler="stv_exit" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                    <property name="width">10</property>
-                    <property name="height">20</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkGrid">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <child>
-                  <object class="GtkButton" id="bt_machine">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="image">bt_menu_img</property>
-                    <property name="always_show_image">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                    <property name="width">10</property>
-                    <property name="height">20</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
+                <property name="border_width">2</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_right">300</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label">Show Time KTV</property>
+                        <property name="margin_right">70</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="can_focus">False</property>
+                            <property name="label">Show Time KTV</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkSearchEntry" id="searchentry">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="max_length">512</property>
+                            <property name="width_chars">2</property>
+                            <property name="max_width_chars">512</property>
+                            <property name="primary_icon_stock">gtk-find</property>
+                            <property name="secondary_icon_stock">gtk-go-down</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_sensitive">False</property>
+                            <property name="placeholder_text">搜索</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="padding">3</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -124,42 +109,73 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkSearchEntry" id="searchentry">
+                      <object class="GtkButton" id="bt_machine">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">512</property>
-                        <property name="width_chars">2</property>
-                        <property name="max_width_chars">512</property>
-                        <property name="primary_icon_name">edit-find-symbolic</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">False</property>
-                        <property name="placeholder_text">歌曲、歌星搜索</property>
+                        <property name="receives_default">False</property>
+                        <property name="image">bt_menu_img</property>
+                        <property name="always_show_image">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">0</property>
-                        <property name="width">100</property>
-                        <property name="height">16</property>
+                        <property name="width">10</property>
+                        <property name="height">20</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">3</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="orientation">vertical</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="bt_exit">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="image">bt_exit_img</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="clicked" handler="stv_exit" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">10</property>
+                        <property name="height">20</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="pack_type">end</property>
-                <property name="position">3</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -214,10 +230,5 @@
     <child>
       <placeholder/>
     </child>
-  </object>
-  <object class="GtkImage" id="bt_menu_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-add</property>
   </object>
 </interface>

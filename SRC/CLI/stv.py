@@ -25,7 +25,7 @@ class stv_class(object):
         self.builder.add_from_file("glade/main.xml")
         self.window = self.builder.get_object("window")
         self.builder.connect_signals(stv_signal_handler())
-        self.UI_apply_css()
+        #self.UI_apply_css()
         self.window.show_all()
 
     def UI_apply_css(self):

@@ -1,6 +1,5 @@
 #!/usr/python3
 
-
 import os
 import sys
 import gi
@@ -10,9 +9,40 @@ from gi.repository import Gtk, Gdk
 sys.path.append(os.path.join(os.getcwd(), 'util'))
 from stv_request import stv_request_class as stv_req
 
+global app
+
 class stv_signal_handler(object):
     def stv_exit(self, *args):
         Gtk.main_quit(*args)
+
+    def stv_hotall(self, widget):
+        self.stv_back()
+        box = app.builder.get_object("box_rank")
+        child = box.get_children()
+        box.remove(child[0])
+        box.add(app.builder.get_object("show_list"))
+        app.stack_box = box
+        app.stack_box_child = child[0]
+        app.restored = False
+
+    def stv_guess(self, widget):
+        self.stv_back()
+        box = app.builder.get_object("box_recommend")
+        child = box.get_children()
+        box.remove(child[0])
+        box.add(app.builder.get_object("show_list"))
+        app.stack_box = box
+        app.stack_box_child = child[0]
+        app.restored = False
+
+    def stv_back(self, *args):
+        if app.restored:
+            return None
+
+        app.stack_box.remove(app.stack_box.get_children()[0])
+        app.stack_box.add(app.stack_box_child)
+        app.restored = True
+
 
 
 class stv_popmenu(object):
@@ -42,6 +72,7 @@ class stv_class(object):
     def __init__(self):
         self.UI_build()
         self.SVR_init()
+        self.restored = True
 
     def UI_build(self):
         self.builder = Gtk.Builder()
@@ -50,6 +81,8 @@ class stv_class(object):
 
         self.rightclick = stv_popmenu(self.builder.get_object("rightclick"))
         self.rightclick.connect_signal(self.builder.get_object("tv_playing"), "button-press-event")
+
+        self.show_list = self.builder.get_object("lt_result")
 
         self.builder.connect_signals(stv_signal_handler())
         self.UI_apply_css()

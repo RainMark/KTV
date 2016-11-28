@@ -20,15 +20,14 @@ class stv_popmenu(object):
         self.menu = menu
 
     def show_all(self, widget, event):
-        # if event.type == Gtk.BUTTON_PRESS and event.button == 3:
-        if event.button == 3:
-            print("show")
-            # print(dir(self.menu))
-            # pos = self.menu.get_position()
-            # print(pos.LEFT, pos.RIGHT)
-            # self.menu.show_all()
+        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.menu.set_relative_to(widget)
-            # self.menu.popup(None, None, None, None, 0, Gtk.get_current_event_time())
+            pos = Gdk.Rectangle()
+            pos.x = event.x + 25
+            pos.y = event.y + 25
+            pos.width = 0
+            pos.height = 0
+            self.menu.set_pointing_to(pos)
             self.menu.popup()
 
     def hide(self):
@@ -53,7 +52,7 @@ class stv_class(object):
         self.rightclick.connect_signal(self.builder.get_object("tv_playing"), "button-press-event")
 
         self.builder.connect_signals(stv_signal_handler())
-        # self.UI_apply_css()
+        self.UI_apply_css()
         self.window.show_all()
 
     def UI_apply_css(self):

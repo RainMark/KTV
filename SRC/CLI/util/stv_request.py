@@ -3,15 +3,14 @@
 from urllib import request
 import json
 
-MACHINE_ID = 2
-# global MACHINE_ID
-
 class stv_request_class(object):
-    def __init__(self):
+    def __init__(self, uri, machine):
+        self.uri = uri
+        self.machine = machine
         pass
 
-    def list_fetch(self, client_id = MACHINE_ID):
-        url = 'http://127.0.0.1:5000/playing/fetch/%d' % (client_id)
+    def play_list_fetch(self):
+        url = self.uri + '/playing/fetch/' + self.machine
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
             # data = f.read()
@@ -21,16 +20,16 @@ class stv_request_class(object):
             # print('Data:', data.decode('utf-8'))
             # print('List:', json.loads(data.decode('utf-8')))
 
-    def list_add(self, song_id, client_id = MACHINE_ID):
+    def play_list_add(self, song_id):
         pass
 
-    def list_delete(self, song_id, client_id = MACHINE_ID):
+    def play_list_delete(self, song_id):
         pass
 
     def top_fetch(self, top_type = 'all'):
         pass
 
 if __name__ == '__main__':
-    req = stv_request_class()
-    for song in req.list_fetch():
+    req = stv_request_class('http://localhost:5000', '2')
+    for song in req.play_list_fetch():
         print(song)

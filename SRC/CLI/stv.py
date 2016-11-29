@@ -43,6 +43,17 @@ class stv_signal_handler(object):
         app.stack_box.add(app.stack_box_child)
         app.restored = True
 
+    def stv_refresh(self, *args):
+        app.clk_menu.hide()
+        app.play_list_update()
+
+    def stv_remove(self, *args):
+        app.clk_menu.hide()
+        app.play_list_remove()
+
+    def stv_move(self, *args):
+        app.clk_menu.hide()
+        app.play_list_move()
 
 
 class stv_popmenu(object):
@@ -57,6 +68,8 @@ class stv_popmenu(object):
             pos.y = event.y + 25
             pos.width = 0
             pos.height = 0
+            self.x = event.x
+            self.y = event.y
             self.menu.set_pointing_to(pos)
             self.menu.popup()
 
@@ -69,22 +82,24 @@ class stv_popmenu(object):
 
 
 class stv_class(object):
-    def __init__(self):
+    def __init__(self, server, machine):
         self.UI_build()
-        self.SVR_init()
+        self.SVR_init(server, machine)
         self.restored = True
 
     def UI_build(self):
-        self.builder = Gtk.Builder()
+        self.builder                = Gtk.Builder()
         self.builder.add_from_file("glade/main.xml")
-        self.window = self.builder.get_object("window")
 
-        self.rightclick = stv_popmenu(self.builder.get_object("rightclick"))
-        self.rightclick.connect_signal(self.builder.get_object("tv_playing"), "button-press-event")
+        self.window                 = self.builder.get_object("window")
+        self.show_list_store        = self.builder.get_object("lt_result")
+        self.play_list_store        = self.builder.get_object("lt_playing")
+        self.play_view              = self.builder.get_object("tv_playing")
+        self.clk_menu               = stv_popmenu(self.builder.get_object("rightclick"))
 
-        self.show_list = self.builder.get_object("lt_result")
-
+        self.clk_menu.connect_signal(self.play_view, "button-press-event")
         self.builder.connect_signals(stv_signal_handler())
+
         self.UI_apply_css()
         self.window.show_all()
 
@@ -93,30 +108,31 @@ class stv_class(object):
         self.style_provider.load_from_path('glade/main.css')
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), self.style_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-    def SVR_init(self):
-        self.req = stv_req()
+    def SVR_init(self, svr, mach):
+        self.req = stv_req(svr, mach)
+
+    def play_list_update(self):
+        data = self.req.play_list_fetch()
+        store = self.play_list_store
+        if None != data:
+            store.clear()
+        for idx, meta in enumerate(data):
+            store.append([idx, meta[1], meta[0]])
+
+    def play_list_move(self):
+        # path, column, cx, cy = self.play_view.get_path_at_pos(app.clk_menu.x, app.clk_menu.y)
+        path, column = self.play_view.get_cursor()
+        if None == path:
+            return None
+
+        print(path)
+        print(column)
+
+    def play_list_remove(self):
+        pass
+
 
 
 if __name__ == '__main__':
-
-    def UI_build(self):
-        self.builder = Gtk.Builder()
-        self.builder.add_from_file("glade/main.xml")
-        self.window = self.builder.get_object("window")
-        self.rightclick = self.builder.get_object("rightclick")
-        self.builder.connect_signals(stv_signal_handler())
-        #self.UI_apply_css()
-        self.window.show_all()
-
-    def UI_apply_css(self):
-        self.style_provider = Gtk.CssProvider()
-        self.style_provider.load_from_path('glade/main.css')
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), self.style_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
-    def SVR_init(self):
-        self.req = stv_req()
-
-
-if __name__ == '__main__':
-    app = stv_class()
+    app = stv_class('http://localhost:5000', '2')
     Gtk.main()

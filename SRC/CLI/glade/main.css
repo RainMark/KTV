@@ -1,8 +1,8 @@
-* {
-    all: unset;
-}
+/* * { */
+/*     all: unset; */
+/* } */
 
-@import url("gtk.css");
+/* @import url("gtk.css"); */
 
 /* window { */
 /*     window-dragging: true; */

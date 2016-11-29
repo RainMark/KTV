@@ -2551,7 +2551,8 @@ popover.background radiobutton:selected,
       color: rgba(255, 255, 255, 0.4); }
 
 .monospace {
-  font: Monospace; }
+    /* font: Monospace; */
+}
 
 /**********************
  * Touch Copy & Paste *

@@ -362,7 +362,6 @@
                                     <property name="min_width">40</property>
                                     <property name="max_width">80</property>
                                     <property name="title" translatable="yes">Order</property>
-                                    <property name="clickable">True</property>
                                     <property name="alignment">0.5</property>
                                     <child>
                                       <object class="GtkCellRendererText" id="order"/>
@@ -376,7 +375,6 @@
                                   <object class="GtkTreeViewColumn">
                                     <property name="sizing">autosize</property>
                                     <property name="title" translatable="yes">Name</property>
-                                    <property name="clickable">True</property>
                                     <property name="alignment">0.5</property>
                                     <child>
                                       <object class="GtkCellRendererText" id="name"/>

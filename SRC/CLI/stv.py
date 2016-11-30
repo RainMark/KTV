@@ -1,6 +1,6 @@
 #!/usr/python3
 
-import os
+import os, signal
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
@@ -24,6 +24,7 @@ class stv_signal_handler(object):
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
+        app.result_list_refresh()
 
     def stv_guess(self, widget):
         self.stv_back()
@@ -43,17 +44,25 @@ class stv_signal_handler(object):
         app.stack_box.add(app.stack_box_child)
         app.restored = True
 
-    def stv_refresh(self, *args):
-        app.clk_menu.hide()
+    def stv_play_refresh(self, *args):
+        app.play_menu.hide()
         app.play_list_update()
 
-    def stv_remove(self, *args):
-        app.clk_menu.hide()
+    def stv_play_remove(self, *args):
+        app.play_menu.hide()
         app.play_list_remove()
 
-    def stv_move(self, *args):
-        app.clk_menu.hide()
+    def stv_play_move(self, *args):
+        app.play_menu.hide()
         app.play_list_move()
+
+    def stv_result_refresh(self, *args):
+        app.res_menu.hide()
+        app.result_list_refresh()
+
+    def stv_result_add(self, *args):
+        app.res_menu.hide()
+        app.result_list_add()
 
 
 class stv_popmenu(object):
@@ -83,21 +92,30 @@ class stv_popmenu(object):
 
 class stv_class(object):
     def __init__(self, server, machine):
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
         self.UI_build()
-        self.SVR_init(server, machine)
+        self.check_network(server, machine)
+        self.play_list_update()
         self.restored = True
+        self.rk_type = 'topall'
+
+    def check_network(self, svr, mach):
+        self.SVR_init(svr, mach)
 
     def UI_build(self):
         self.builder                = Gtk.Builder()
         self.builder.add_from_file("glade/main.xml")
 
         self.window                 = self.builder.get_object("window")
-        self.show_list_store        = self.builder.get_object("lt_result")
         self.play_list_store        = self.builder.get_object("lt_playing")
         self.play_view              = self.builder.get_object("tv_playing")
-        self.clk_menu               = stv_popmenu(self.builder.get_object("rightclick"))
+        self.res_list_store         = self.builder.get_object("lt_result")
+        self.res_view               = self.builder.get_object("tv_result")
+        self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
+        self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
 
-        self.clk_menu.connect_signal(self.play_view, "button-press-event")
+        self.play_menu.connect_signal(self.play_view, "button-press-event")
+        self.res_menu.connect_signal(self.res_view, "button-press-event")
         self.builder.connect_signals(stv_signal_handler())
 
         self.UI_apply_css()
@@ -120,7 +138,7 @@ class stv_class(object):
             store.append([idx, meta[1], meta[0]])
 
     def play_list_move(self):
-        # path, column, cx, cy = self.play_view.get_path_at_pos(app.clk_menu.x, app.clk_menu.y)
+        # path, column, cx, cy = self.play_view.get_path_at_pos(app.play_menu.x, app.play_menu.y)
         path, column = self.play_view.get_cursor()
         if None == path:
             return None
@@ -133,6 +151,8 @@ class stv_class(object):
         # print("SID :", sid)
         retval = self.req.play_list_move(sid)
         print(retval)
+        if 'Resort OK' == retval:
+            self.play_list_update()
 
     def play_list_remove(self):
         path, column = self.play_view.get_cursor()
@@ -146,6 +166,33 @@ class stv_class(object):
         sid = store[it][2]
         retval = self.req.play_list_remove(sid)
         print(retval)
+        if 'Delete OK' == retval:
+            self.play_list_update()
+
+    def result_list_refresh(self):
+        if 'topall' == self.rk_type:
+            data = self.req.top_fetch()
+            st = self.res_list_store
+            st.clear()
+            for idx, meta in enumerate(data):
+                st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+
+    def result_list_add(self):
+        path, column = self.res_view.get_cursor()
+        if None == path:
+            return None
+
+        store = self.res_list_store
+        it = store.get_iter(path)
+        retval = self.req.play_list_add(store[it][5])
+        print(retval)
+        if 'Insert OK' == retval:
+            self.play_list_update()
+        # data = [self.play_list_store.iter_n_children(), store[it][1], store[it][5]]
+        # print(data)
+        # self.play_list_store.append(data)
+
+
 
 
 

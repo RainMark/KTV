@@ -52,7 +52,7 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-goto-top</property>
   </object>
-  <object class="GtkPopover" id="rightclick">
+  <object class="GtkPopover" id="play_menu">
     <property name="can_focus">False</property>
     <property name="position">bottom</property>
     <child>
@@ -69,7 +69,7 @@
             <property name="receives_default">True</property>
             <property name="image">bt_refresh_img</property>
             <property name="always_show_image">True</property>
-            <signal name="clicked" handler="stv_refresh" swapped="no"/>
+            <signal name="clicked" handler="stv_play_refresh" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -96,7 +96,7 @@
             <property name="receives_default">True</property>
             <property name="image">bt_totop_img</property>
             <property name="always_show_image">True</property>
-            <signal name="clicked" handler="stv_move" swapped="no"/>
+            <signal name="clicked" handler="stv_play_move" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -123,7 +123,7 @@
             <property name="receives_default">True</property>
             <property name="image">bt_delete_img</property>
             <property name="always_show_image">True</property>
-            <signal name="clicked" handler="stv_remove" swapped="no"/>
+            <signal name="clicked" handler="stv_play_remove" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -916,39 +916,25 @@
         </child>
       </object>
     </child>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
   </object>
   <object class="GtkListStore" id="lt_result">
     <columns>
-      <!-- column-name Order -->
+      <!-- column-name 序号 -->
       <column type="gint"/>
-      <!-- column-name Name -->
+      <!-- column-name 名称 -->
+      <column type="gchararray"/>
+      <!-- column-name 演唱者 -->
+      <column type="gchararray"/>
+      <!-- column-name 风格 -->
+      <column type="gchararray"/>
+      <!-- column-name 语言 -->
+      <column type="gchararray"/>
+      <!-- column-name ID -->
       <column type="gchararray"/>
     </columns>
-    <data>
-      <row>
-        <col id="0">1</col>
-        <col id="1" translatable="yes">We Don't Talk Anymore</col>
-      </row>
-      <row>
-        <col id="0">2</col>
-        <col id="1" translatable="yes">As Long As You Love Me</col>
-      </row>
-      <row>
-        <col id="0">3</col>
-        <col id="1" translatable="yes">Company</col>
-      </row>
-      <row>
-        <col id="0">4</col>
-        <col id="1" translatable="yes">22</col>
-      </row>
-      <row>
-        <col id="0">5</col>
-        <col id="1" translatable="yes">Shake it Off</col>
-      </row>
-    </data>
   </object>
   <object class="GtkBox" id="show_list">
     <property name="visible">True</property>
@@ -993,18 +979,20 @@
         <property name="min_content_width">300</property>
         <property name="min_content_height">300</property>
         <child>
-          <object class="GtkTreeView">
+          <object class="GtkTreeView" id="tv_result">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="model">lt_result</property>
+            <property name="headers_clickable">False</property>
             <property name="enable_grid_lines">horizontal</property>
             <child internal-child="selection">
               <object class="GtkTreeSelection"/>
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="fixed_width">100</property>
-                <property name="title" translatable="yes">Order</property>
+                <property name="sizing">autosize</property>
+                <property name="fixed_width">60</property>
+                <property name="title" translatable="yes">序号</property>
                 <child>
                   <object class="GtkCellRendererText" id="Order"/>
                   <attributes>
@@ -1015,11 +1003,52 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="title" translatable="yes">Name</property>
+                <property name="sizing">autosize</property>
+                <property name="fixed_width">200</property>
+                <property name="title" translatable="yes">名称</property>
                 <child>
-                  <object class="GtkCellRendererText" id="Name"/>
+                  <object class="GtkCellRendererText" id="Song"/>
                   <attributes>
                     <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="sizing">autosize</property>
+                <property name="fixed_width">200</property>
+                <property name="title" translatable="yes">演唱者</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Star"/>
+                  <attributes>
+                    <attribute name="text">2</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="sizing">autosize</property>
+                <property name="fixed_width">100</property>
+                <property name="title" translatable="yes">风格</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Style"/>
+                  <attributes>
+                    <attribute name="text">3</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="sizing">autosize</property>
+                <property name="fixed_width">60</property>
+                <property name="title" translatable="yes">语言</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Language"/>
+                  <attributes>
+                    <attribute name="text">4</attribute>
                   </attributes>
                 </child>
               </object>
@@ -1032,6 +1061,81 @@
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkPopover" id="res_menu">
+    <property name="can_focus">False</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="baseline_position">top</property>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">刷新列表</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="stv_result_refresh" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">添加歌曲</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="stv_result_add" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">。。。。</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
     </child>
   </object>
 </interface>

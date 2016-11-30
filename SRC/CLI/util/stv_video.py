@@ -11,20 +11,21 @@ from gi.repository import GObject, Gst, Gtk
 from gi.repository import GdkX11, GstVideo
 
 
-GObject.threads_init()
-Gst.init(None)
-filename = path.join(path.dirname(path.abspath(__file__)), r'Beauty And A Beat - Justin Bieber (Alex Goot, Kurt Schneider, and Chrissy Costanza Cover).mp4')
-uri = 'file://' + filename
 
 
-class Player(object):
-    def __init__(self):
-        self.window = Gtk.Window()
-        self.window.connect('destroy', self.quit)
-        self.window.set_default_size(800, 450)
+class stv_video_player_class(object):
+    def __init__(self, area):
+        GObject.threads_init()
+        Gst.init(None)
+        self.filename = path.join(path.dirname(path.abspath(__file__)), r'Beauty And A Beat.mp4')
+        self.uri = 'file://' + filename
+        # self.window = Gtk.Window()
+        # self.window.connect('destroy', self.quit)
+        # self.window.set_default_size(800, 450)
 
-        self.drawingarea = Gtk.DrawingArea()
-        self.window.add(self.drawingarea)
+        # self.drawingarea = Gtk.DrawingArea()
+        self.disp_area = area
+        # self.window.add(self.drawingarea)
 
         # Create GStreamer pipeline
         self.pipeline = Gst.Pipeline()
@@ -49,17 +50,17 @@ class Player(object):
         self.playbin.set_property('uri', uri)
 
     def run(self):
-        self.window.show_all()
+        # self.window.show_all()
         # You need to get the XID after window.show_all().  You shouldn't get it
         # in the on_sync_message() handler because threading issues will cause
         # segfaults there.
-        self.xid = self.drawingarea.get_property('window').get_xid()
+        self.xid = self.disp_area.get_property('window').get_xid()
         self.pipeline.set_state(Gst.State.PLAYING)
-        Gtk.main()
+        # Gtk.main()
 
     def quit(self, window):
         self.pipeline.set_state(Gst.State.NULL)
-        Gtk.main_quit()
+        # Gtk.main_quit()
 
     def on_sync_message(self, bus, msg):
         if msg.get_structure().get_name() == 'prepare-window-handle':
@@ -69,7 +70,7 @@ class Player(object):
     def on_eos(self, bus, msg):
         print('on_eos(): seeking to start of video')
         self.pipeline.seek_simple(
-            Gst.Format.TIME,        
+            Gst.Format.TIME,
             Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT,
             0
         )
@@ -78,5 +79,5 @@ class Player(object):
         print('on_error():', msg.parse_error())
 
 
-p = Player()
-p.run()
+if __name__ == '__main__':
+    pass

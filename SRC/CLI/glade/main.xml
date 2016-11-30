@@ -5,7 +5,178 @@
   <object class="GtkImage" id="bt_back_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_right">10</property>
     <property name="stock">gtk-go-back</property>
+  </object>
+  <object class="GtkBox" id="video">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">Red - Against The Current</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">start</property>
+                <property name="image">bt_back_img</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkDrawingArea" id="disp_area">
+                <property name="width_request">720</property>
+                <property name="height_request">400</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
+                <property name="min_content_width">100</property>
+                <property name="min_content_height">300</property>
+                <child>
+                  <object class="GtkTreeView">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">False</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection"/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">50</property>
+            <property name="margin_right">100</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">当前人气值</property>
+                <attributes>
+                  <attribute name="foreground" value="#000000000000"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLevelBar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="value">57</property>
+                <property name="max_value">100</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">57</property>
+                <attributes>
+                  <attribute name="foreground" value="#72729f9fcfcf"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="pack_type">end</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkImage" id="bt_delete_img">
     <property name="visible">True</property>
@@ -35,6 +206,12 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="bt_mv_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">20</property>
+    <property name="icon_name">video-display</property>
   </object>
   <object class="GtkImage" id="bt_random_img">
     <property name="visible">True</property>
@@ -173,14 +350,12 @@
   </object>
   <object class="GtkWindow" id="window">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can_focus">True</property>
     <property name="can_default">True</property>
-    <property name="window_position">center-always</property>
+    <property name="window_position">center</property>
     <property name="default_width">1022</property>
     <property name="default_height">500</property>
-    <property name="destroy_with_parent">True</property>
     <property name="icon_name">applications-multimedia</property>
-    <property name="skip_taskbar_hint">True</property>
     <property name="gravity">center</property>
     <signal name="destroy" handler="stv_exit" swapped="no"/>
     <child>
@@ -345,7 +520,7 @@
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="box_main">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="baseline_position">top</property>
@@ -357,7 +532,6 @@
                     <property name="margin_right">10</property>
                     <property name="margin_top">10</property>
                     <property name="margin_bottom">10</property>
-                    <property name="column_homogeneous">True</property>
                     <child>
                       <object class="GtkStackSwitcher">
                         <property name="visible">True</property>
@@ -864,10 +1038,12 @@
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton">
-                        <property name="label" translatable="yes">...</property>
+                        <property name="label" translatable="yes"> </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="image">bt_mv_img</property>
+                        <property name="always_show_image">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -951,7 +1127,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="image">bt_back_img</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="stv_back" swapped="no"/>
           </object>

@@ -45,18 +45,18 @@ class stv_mariadb(object):
         query = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = Star.StarID Order By songmonth DESC'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
-        # for item in data[0:10]:
-        #     print(item)
+        for item in data[0:50]:
+            print(item)
         return data[0:50]
 
     def hot_zh(self):
         'Return the most hot Chinese MVs as click rate.'
-        query = 'Select SongID, SongName, SongType, SongLanguage, StarID From Song Where songlanguage=\'中文\' Order By songmonth DESC'
+        query = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = Star.StarID And SongLanguage=\'中文\' Order By songmonth DESC'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
-        # for item in data[0:10]:
-        #     print(item)
-        return data[0:10]
+        for item in data[0:50]:
+            print(item)
+        return data[0:50]
 
     def hot_not_zh(self):
         'Return the most hot MVs as click rate.'
@@ -216,6 +216,7 @@ class stv_mariadb(object):
 
 if __name__ == '__main__':
     run = stv_mariadb('root', 'root', 'stv_db')
+    # run.hot_zh()
     run.hot_all()
     # print('')
     # run.playing_list_fetch(3)

@@ -44,6 +44,7 @@ class stv_request_class(object):
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
+
 if __name__ == '__main__':
     req = stv_request_class('http://localhost:5000', '2')
     for song in req.play_list_fetch():

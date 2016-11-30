@@ -11,7 +11,11 @@ class stv_server(object):
         self.rd = stv_rd(self.db)
 
     def top_fetch(self, top_type='all'):
-        top_list = self.db.hot_all()
+        if top_type == 'zh':
+            top_list = self.db.hot_zh()
+        else:
+            top_list = self.db.hot_all()
+
         return json.dumps(top_list)
 
     def playing_list_fetch(self, client_id):

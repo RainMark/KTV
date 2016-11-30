@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk
 
 sys.path.append(os.path.join(os.getcwd(), 'util'))
 from stv_request import stv_request_class as stv_req
+from stv_video import stv_video_player_class as stv_vp
 
 global app
 
@@ -24,6 +25,7 @@ class stv_signal_handler(object):
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
+        app.req_type = 'topall'
         app.result_list_refresh()
 
     def stv_guess(self, widget):
@@ -35,6 +37,8 @@ class stv_signal_handler(object):
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
+        app.req_type = 'guess'
+        app.result_list_refresh()
 
     def stv_back(self, *args):
         if app.restored:
@@ -63,6 +67,9 @@ class stv_signal_handler(object):
     def stv_result_add(self, *args):
         app.res_menu.hide()
         app.result_list_add()
+
+    def stv_mv_show(self, *args):
+
 
 
 class stv_popmenu(object):
@@ -96,8 +103,10 @@ class stv_class(object):
         self.UI_build()
         self.check_network(server, machine)
         self.play_list_update()
+
         self.restored = True
-        self.rk_type = 'topall'
+        self.req_type = 'topall'
+        self.last_operation = None
 
     def check_network(self, svr, mach):
         self.SVR_init(svr, mach)
@@ -113,6 +122,8 @@ class stv_class(object):
         self.res_view               = self.builder.get_object("tv_result")
         self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
         self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
+        self.disp_area              = self.builder.get_object('disp_area')
+        self.player                 = stv_vp(self.disp_area)
 
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")
@@ -170,12 +181,20 @@ class stv_class(object):
             self.play_list_update()
 
     def result_list_refresh(self):
-        if 'topall' == self.rk_type:
-            data = self.req.top_fetch()
-            st = self.res_list_store
-            st.clear()
-            for idx, meta in enumerate(data):
-                st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+        if 'topall' == self.req_type:
+            data = self.req.top_fetch('all')
+        elif 'topzh' == self.req_type:
+            data = self.req.top_fetch('zh')
+        else:
+            data = None
+
+        st = self.res_list_store
+        st.clear()
+
+        if None == data:
+            return None
+        for idx, meta in enumerate(data):
+            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
     def result_list_add(self):
         path, column = self.res_view.get_cursor()

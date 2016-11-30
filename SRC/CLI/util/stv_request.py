@@ -20,8 +20,8 @@ class stv_request_class(object):
             # print('Data:', data.decode('utf-8'))
             # print('List:', json.loads(data.decode('utf-8')))
 
-    def play_list_move(self, sid):
-        url = self.uri + '/playing/resort/%s/%s/1' % (self.machine, sid)
+    def play_list_move(self, song_id):
+        url = self.uri + '/playing/resort/%s/%s/1' % (self.machine, song_id)
         print(url)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
@@ -30,7 +30,10 @@ class stv_request_class(object):
         pass
 
     def play_list_remove(self, song_id):
-        pass
+        url = self.uri + '/playing/delete/%s/%s' % (self.machine, song_id)
+        print(url)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
 
     def top_fetch(self, top_type = 'all'):
         pass

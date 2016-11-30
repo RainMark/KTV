@@ -135,7 +135,18 @@ class stv_class(object):
         print(retval)
 
     def play_list_remove(self):
-        pass
+        path, column = self.play_view.get_cursor()
+        if None == path:
+            return None
+
+        # print(path)
+        store = self.play_list_store
+        it = store.get_iter(path)
+        print("Selected row: ", store[it][0:])
+        sid = store[it][2]
+        retval = self.req.play_list_remove(sid)
+        print(retval)
+
 
 
 

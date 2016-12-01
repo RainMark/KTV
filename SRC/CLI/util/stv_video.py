@@ -49,10 +49,10 @@ class stv_video_player_class(object):
 
     def change_area(self, area):
         self.pipeline.set_state(Gst.State.PAUSED)
-        self.bus.remove_watch()
+        # self.bus.remove_watch()
         self.bus.disable_sync_message_emission()
         self.xid = area.get_window().get_xid()
-        # self.bus.enable_sync_message_emission()
+        self.bus.enable_sync_message_emission()
         self.cur_pos = self.pipeline.query_position(Gst.Format.TIME)[1]
         # self.pipeline.set_state(Gst.State.NULL)
         print('Pause: ', self.cur_pos)
@@ -74,6 +74,12 @@ class stv_video_player_class(object):
         # self.cur_pos = self.pipeline.query_position(Gst.Format.TIME)[1]
         # print(self.cur_pos)
         # print(self.xid)
+
+    def pause(self):
+        self.pipeline.set_state(Gst.State.PAUSED)
+
+    def play(self):
+        self.pipeline.set_state(Gst.State.PLAYING)
 
     def ready(self, filename):
         self.file= path.join(path.dirname(path.abspath(__file__)), filename)

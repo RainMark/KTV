@@ -83,12 +83,21 @@ class stv_signal_handler(object):
         app.in_mv = True
 
     def stv_mv_hide(self, *args):
+        app.player.pause()
         for child in app.box_main.get_children():
             app.box_main.remove(child)
 
         app.box_main.add(app.box_main_children[0])
         app.box_main.add(app.box_main_children[1])
-        app.player.change_area(app.small_disp_area)
+
+        for child in app.box_disp_small .get_children():
+            app.box_disp_small.remove(child)
+        for child in app.box_disp_full .get_children():
+            app.box_disp_full.remove(child)
+
+        app.box_disp_small.add(app.disp_area)
+        # app.player.change_area(app.small_disp_area)
+        app.player.play()
         app.in_mv = False
 
 
@@ -146,7 +155,8 @@ class stv_class(object):
         self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
         self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
         self.disp_area              = self.builder.get_object('disp_area')
-        self.small_disp_area        = self.builder.get_object('small_disp_area')
+        self.box_disp_full          = self.builder.get_object('box_disp_full')
+        self.box_disp_small         = self.builder.get_object('box_disp_small')
 
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")

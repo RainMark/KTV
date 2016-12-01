@@ -6,6 +6,10 @@ import os
 from flask import Flask
 from flask import request
 from flask import Response
+from flask import send_file
+
+LIBS = '/var/stv/libs'
+
 # sys.path.append(os.path.abspath(os.path.curdir) + "/lib")
 sys.path.append(os.path.join(os.getcwd(), 'lib'))
 from server import stv_server
@@ -61,6 +65,15 @@ def search_handler(srh_method, srh_type, srh_key):
 
     resp = Response(response=result, status=200, mimetype="application/json")
     return resp
+
+@stv.route('/download/<int:sid>', methods=['GET'])
+def download_handler(sid):
+    file  = os.path.join(LIBS, str(sid))
+    print(file)
+    try:
+        return send_file(file)
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     stv.run(host = '0.0.0.0')

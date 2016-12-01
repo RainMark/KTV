@@ -14,6 +14,7 @@ global app
 
 class stv_signal_handler(object):
     def stv_exit(self, *args):
+        app.player.quit()
         Gtk.main_quit(*args)
 
     def stv_hotall(self, widget):
@@ -69,7 +70,26 @@ class stv_signal_handler(object):
         app.result_list_add()
 
     def stv_mv_show(self, *args):
+        if app.in_mv:
+            return None
 
+        for child in app.box_main_children:
+            app.box_main.remove(child)
+
+        video = app.builder.get_object('video')
+        app.box_main.add(video)
+        app.player.ready('Beauty-And-A-Beat.mp4')
+        app.player.run()
+        app.in_mv = True
+
+    def stv_mv_hide(self, *args):
+        for child in app.box_main.get_children():
+            app.box_main.remove(child)
+
+        app.box_main.add(app.box_main_children[0])
+        app.box_main.add(app.box_main_children[1])
+        app.player.change_area(app.small_disp_area)
+        app.in_mv = False
 
 
 class stv_popmenu(object):
@@ -107,6 +127,7 @@ class stv_class(object):
         self.restored = True
         self.req_type = 'topall'
         self.last_operation = None
+        self.in_mv = False
 
     def check_network(self, svr, mach):
         self.SVR_init(svr, mach)
@@ -116,6 +137,8 @@ class stv_class(object):
         self.builder.add_from_file("glade/main.xml")
 
         self.window                 = self.builder.get_object("window")
+        self.box_main               = self.builder.get_object('box_main')
+        self.box_main_children      = self.box_main.get_children()
         self.play_list_store        = self.builder.get_object("lt_playing")
         self.play_view              = self.builder.get_object("tv_playing")
         self.res_list_store         = self.builder.get_object("lt_result")
@@ -123,7 +146,7 @@ class stv_class(object):
         self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
         self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
         self.disp_area              = self.builder.get_object('disp_area')
-        self.player                 = stv_vp(self.disp_area)
+        self.small_disp_area        = self.builder.get_object('small_disp_area')
 
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")
@@ -131,6 +154,7 @@ class stv_class(object):
 
         self.UI_apply_css()
         self.window.show_all()
+        self.player                 = stv_vp(self.disp_area)
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()

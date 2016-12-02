@@ -8,14 +8,14 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 
 sys.path.append(os.path.join(os.getcwd(), 'util'))
-from stv_request import stv_request_class as stv_req
-from stv_video import stv_video_player_class as stv_vp
+from stv_request import stv_request_class
+from stv_video import stv_video_player_class
 
 global app
 
 class stv_signal_handler(object):
     def stv_exit(self, *args):
-        app.player.quit()
+        app.player.stop()
         Gtk.main_quit(*args)
 
     def stv_hotall(self, widget):
@@ -74,10 +74,6 @@ class stv_signal_handler(object):
         if app.in_mv:
             return None
 
-        app.player.run()
-        # time.sleep(3)
-        app.box_main.remove(app.box_menu)
-
         app.box_disp.set_vexpand(True)
         app.box_disp.set_hexpand(True)
         app.box_disp.set_valign(Gtk.Align.FILL)
@@ -86,23 +82,21 @@ class stv_signal_handler(object):
         app.box_disp.set_margin_bottom(10)
         app.box_disp.set_margin_left(10)
         app.box_disp.set_margin_right(10)
+
+        app.box_main.remove(app.box_menu)
         gd = app.grid_mv
         gd.remove_column(1)
         gd.insert_row(0)
         gd.attach(app.bt_mv_back, 0, 0, 1, 1)
         gd.attach(app.box_phrase, 0, 2, 1, 1)
-        gd.attach(app.box_ctrl, 0, 3, 1, 1)
+        gd.attach(app.box_ctrl,   0, 3, 1, 1)
         gd.attach(app.sc_comment, 1, 0, 1, 3)
 
         # app.window.set_size_request(1022, 500)
+        app.player.play()
         app.in_mv = True
 
     def stv_mv_hide(self, *args):
-
-        # for child in app.grid_mv.get_children():
-        #     if app.box_disp != child:
-        #         # child.hide()
-        #         app.grid_mv.remove(child)
         app.box_disp.set_vexpand(False)
         app.box_disp.set_hexpand(False)
         app.box_disp.set_valign(Gtk.Align.CENTER)
@@ -119,14 +113,12 @@ class stv_signal_handler(object):
         gd.remove_row(0)
         gd.attach(app.box_ctrl, 1, 0, 1, 1)
 
-
         app.box_main.add(app.box_menu)
         # app.window.set_size_request(1022, 500)
-        # app.window.set_default_size(1022, 500)
         app.in_mv = False
 
 
-class stv_popmenu(object):
+class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
 
@@ -150,7 +142,6 @@ class stv_popmenu(object):
         obj.connect(signal, self.show_all)
 
 
-
 class stv_class(object):
     def __init__(self, server, machine):
         signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -167,43 +158,42 @@ class stv_class(object):
         self.SVR_init(svr, mach)
 
     def UI_build(self):
-        self.builder                = Gtk.Builder()
+        self.builder           = Gtk.Builder()
         self.builder.add_from_file("glade/main.xml")
 
-        self.window                 = self.builder.get_object("window")
-        self.box_main               = self.builder.get_object('box_main')
-        self.box_menu               = self.builder.get_object('box_menu')
-        self.play_list_store        = self.builder.get_object("lt_playing")
-        self.play_view              = self.builder.get_object("tv_playing")
-        self.res_list_store         = self.builder.get_object("lt_result")
-        self.res_view               = self.builder.get_object("tv_result")
-        self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
-        self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
-        self.disp_area              = self.builder.get_object('disp_area')
-        self.box_disp               = self.builder.get_object('box_disp')
-        self.grid_mv                = self.builder.get_object('grid_mv')
-        self.box_phrase             = self.builder.get_object('phrase')
-        self.bt_mv_back             = self.builder.get_object('bt_mv_back')
-        self.sc_comment             = self.builder.get_object('comment')
-        self.box_ctrl               = self.builder.get_object('box_ctrl')
+        self.play_menu         = stv_popover(self.builder.get_object("play_menu"))
+        self.res_menu          = stv_popover(self.builder.get_object("res_menu"))
+        self.window            = self.builder.get_object("window")
+        self.box_main          = self.builder.get_object('box_main')
+        self.box_menu          = self.builder.get_object('box_menu')
+        self.play_list_store   = self.builder.get_object("lt_playing")
+        self.play_view         = self.builder.get_object("tv_playing")
+        self.res_list_store    = self.builder.get_object("lt_result")
+        self.res_view          = self.builder.get_object("tv_result")
+        self.disp_area         = self.builder.get_object('disp_area')
+        self.box_disp          = self.builder.get_object('box_disp')
+        self.grid_mv           = self.builder.get_object('grid_mv')
+        self.box_phrase        = self.builder.get_object('phrase')
+        self.bt_mv_back        = self.builder.get_object('bt_mv_back')
+        self.sc_comment        = self.builder.get_object('comment')
+        self.box_ctrl          = self.builder.get_object('box_ctrl')
+        self.player            = stv_video_player_class()
 
+        # Setup control buttons
         self.box_disp.set_valign(Gtk.Align.END)
         self.box_disp.set_halign(Gtk.Align.START)
-        gd = self.grid_mv
-        # gd.remove_column(1)
-        # gd.remove_row(2)
-        # gd.remove_row(0)
-        gd.attach(self.box_ctrl, 1, 0, 1, 1)
+        self.grid_mv.attach(self.box_ctrl, 1, 0, 1, 1)
 
-
+        # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")
         self.builder.connect_signals(stv_signal_handler())
 
         self.UI_apply_css()
-        self.window.set_size_request(1022, 500)
         self.window.show_all()
-        self.player                 = stv_vp(self.disp_area)
+
+        # In self.player, get_xid() can be called after window.show_all()
+        self.player.set_xid(self.disp_area)
         self.player.ready('Red.mp4')
 
     def UI_apply_css(self):
@@ -212,7 +202,7 @@ class stv_class(object):
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), self.style_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def SVR_init(self, svr, mach):
-        self.req = stv_req(svr, mach)
+        self.req = stv_request_class(svr, mach)
 
     def play_list_update(self):
         data = self.req.play_list_fetch()
@@ -223,17 +213,14 @@ class stv_class(object):
             store.append([idx, meta[1], meta[0]])
 
     def play_list_move(self):
-        # path, column, cx, cy = self.play_view.get_path_at_pos(app.play_menu.x, app.play_menu.y)
         path, column = self.play_view.get_cursor()
         if None == path:
             return None
 
-        # print(path)
         store = self.play_list_store
         it = store.get_iter(path)
         print("Selected row: ", store[it][0:])
         sid = store[it][2]
-        # print("SID :", sid)
         retval = self.req.play_list_move(sid)
         print(retval)
         if 'Resort OK' == retval:
@@ -244,7 +231,6 @@ class stv_class(object):
         if None == path:
             return None
 
-        # print(path)
         store = self.play_list_store
         it = store.get_iter(path)
         print("Selected row: ", store[it][0:])
@@ -281,13 +267,6 @@ class stv_class(object):
         print(retval)
         if 'Insert OK' == retval:
             self.play_list_update()
-        # data = [self.play_list_store.iter_n_children(), store[it][1], store[it][5]]
-        # print(data)
-        # self.play_list_store.append(data)
-
-
-
-
 
 
 if __name__ == '__main__':

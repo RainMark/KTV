@@ -390,7 +390,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkSearchEntry" id="searchentry">
+                          <object class="GtkSearchEntry" id="search_entry">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">512</property>
@@ -425,7 +425,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkButton" id="bt_machine">
+                      <object class="GtkButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -448,7 +448,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkButton" id="bt_exit">
+                      <object class="GtkButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

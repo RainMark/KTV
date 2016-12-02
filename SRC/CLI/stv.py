@@ -91,8 +91,8 @@ class stv_signal_handler(object):
         gd.insert_row(0)
         gd.attach(app.bt_mv_back, 0, 0, 1, 1)
         gd.attach(app.box_phrase, 0, 2, 1, 1)
-        gd.attach(app.sc_comment, 1, 0, 1, 3)
         gd.attach(app.box_ctrl, 0, 3, 1, 1)
+        gd.attach(app.sc_comment, 1, 0, 1, 3)
 
         # app.window.set_size_request(1022, 500)
         app.in_mv = True
@@ -103,10 +103,10 @@ class stv_signal_handler(object):
         #     if app.box_disp != child:
         #         # child.hide()
         #         app.grid_mv.remove(child)
-        # app.box_disp.set_vexpand(False)
+        app.box_disp.set_vexpand(False)
         app.box_disp.set_hexpand(False)
-        app.box_disp.set_valign(Gtk.Align.END)
-        app.box_disp.set_halign(Gtk.Align.START)
+        app.box_disp.set_valign(Gtk.Align.CENTER)
+        app.box_disp.set_halign(Gtk.Align.CENTER)
         app.box_disp.set_margin_top(0)
         app.box_disp.set_margin_bottom(0)
         app.box_disp.set_margin_left(0)
@@ -187,6 +187,8 @@ class stv_class(object):
         self.sc_comment             = self.builder.get_object('comment')
         self.box_ctrl               = self.builder.get_object('box_ctrl')
 
+        self.box_disp.set_valign(Gtk.Align.END)
+        self.box_disp.set_halign(Gtk.Align.START)
         gd = self.grid_mv
         # gd.remove_column(1)
         # gd.remove_row(2)

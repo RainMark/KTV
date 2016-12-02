@@ -220,6 +220,30 @@
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="lt_comment">
+    <columns>
+      <!-- column-name comment -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">风清扬、心情正好。。。</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">女主简直美腻了。。</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">O(∩_∩)O哈哈~</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">我就测试下
+原来可以多行？</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">这么长的一行还是可以的，居然还可以继续写更长。简直太棒了。。。。</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkScrolledWindow" id="comment">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -233,9 +257,22 @@
       <object class="GtkTreeView">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="model">lt_comment</property>
         <property name="headers_clickable">False</property>
         <child internal-child="selection">
           <object class="GtkTreeSelection"/>
+        </child>
+        <child>
+          <object class="GtkTreeViewColumn">
+            <property name="sizing">autosize</property>
+            <property name="title" translatable="yes">精彩评论</property>
+            <child>
+              <object class="GtkCellRendererText" id="commemt"/>
+              <attributes>
+                <attribute name="text">0</attribute>
+              </attributes>
+            </child>
+          </object>
         </child>
       </object>
     </child>

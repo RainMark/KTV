@@ -1,6 +1,7 @@
 #!/usr/python3
 
 import os, signal
+import time
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
@@ -73,31 +74,55 @@ class stv_signal_handler(object):
         if app.in_mv:
             return None
 
-        for child in app.box_main_children:
-            app.box_main.remove(child)
-
-        video = app.builder.get_object('video')
-        app.box_main.add(video)
-        app.player.ready('Beauty-And-A-Beat.mp4')
         app.player.run()
+        # time.sleep(3)
+        app.box_main.remove(app.box_menu)
+
+        app.box_disp.set_vexpand(True)
+        app.box_disp.set_hexpand(True)
+        app.box_disp.set_valign(Gtk.Align.FILL)
+        app.box_disp.set_halign(Gtk.Align.FILL)
+        app.box_disp.set_margin_top(5)
+        app.box_disp.set_margin_bottom(10)
+        app.box_disp.set_margin_left(10)
+        app.box_disp.set_margin_right(10)
+        gd = app.grid_mv
+        gd.remove_column(1)
+        gd.insert_row(0)
+        gd.attach(app.bt_mv_back, 0, 0, 1, 1)
+        gd.attach(app.box_phrase, 0, 2, 1, 1)
+        gd.attach(app.sc_comment, 1, 0, 1, 3)
+        gd.attach(app.box_ctrl, 0, 3, 1, 1)
+
+        # app.window.set_size_request(1022, 500)
         app.in_mv = True
 
     def stv_mv_hide(self, *args):
-        app.player.pause()
-        for child in app.box_main.get_children():
-            app.box_main.remove(child)
 
-        app.box_main.add(app.box_main_children[0])
-        app.box_main.add(app.box_main_children[1])
+        # for child in app.grid_mv.get_children():
+        #     if app.box_disp != child:
+        #         # child.hide()
+        #         app.grid_mv.remove(child)
+        # app.box_disp.set_vexpand(False)
+        app.box_disp.set_hexpand(False)
+        app.box_disp.set_valign(Gtk.Align.END)
+        app.box_disp.set_halign(Gtk.Align.START)
+        app.box_disp.set_margin_top(0)
+        app.box_disp.set_margin_bottom(0)
+        app.box_disp.set_margin_left(0)
+        app.box_disp.set_margin_right(0)
 
-        for child in app.box_disp_small .get_children():
-            app.box_disp_small.remove(child)
-        for child in app.box_disp_full .get_children():
-            app.box_disp_full.remove(child)
+        gd = app.grid_mv
+        gd.remove_column(1)
+        gd.remove_row(3)
+        gd.remove_row(2)
+        gd.remove_row(0)
+        gd.attach(app.box_ctrl, 1, 0, 1, 1)
 
-        app.box_disp_small.add(app.disp_area)
-        # app.player.change_area(app.small_disp_area)
-        app.player.play()
+
+        app.box_main.add(app.box_menu)
+        # app.window.set_size_request(1022, 500)
+        # app.window.set_default_size(1022, 500)
         app.in_mv = False
 
 
@@ -147,7 +172,7 @@ class stv_class(object):
 
         self.window                 = self.builder.get_object("window")
         self.box_main               = self.builder.get_object('box_main')
-        self.box_main_children      = self.box_main.get_children()
+        self.box_menu               = self.builder.get_object('box_menu')
         self.play_list_store        = self.builder.get_object("lt_playing")
         self.play_view              = self.builder.get_object("tv_playing")
         self.res_list_store         = self.builder.get_object("lt_result")
@@ -155,16 +180,29 @@ class stv_class(object):
         self.play_menu              = stv_popmenu(self.builder.get_object("play_menu"))
         self.res_menu               = stv_popmenu(self.builder.get_object("res_menu"))
         self.disp_area              = self.builder.get_object('disp_area')
-        self.box_disp_full          = self.builder.get_object('box_disp_full')
-        self.box_disp_small         = self.builder.get_object('box_disp_small')
+        self.box_disp               = self.builder.get_object('box_disp')
+        self.grid_mv                = self.builder.get_object('grid_mv')
+        self.box_phrase             = self.builder.get_object('phrase')
+        self.bt_mv_back             = self.builder.get_object('bt_mv_back')
+        self.sc_comment             = self.builder.get_object('comment')
+        self.box_ctrl               = self.builder.get_object('box_ctrl')
+
+        gd = self.grid_mv
+        # gd.remove_column(1)
+        # gd.remove_row(2)
+        # gd.remove_row(0)
+        gd.attach(self.box_ctrl, 1, 0, 1, 1)
+
 
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")
         self.builder.connect_signals(stv_signal_handler())
 
         self.UI_apply_css()
+        self.window.set_size_request(1022, 500)
         self.window.show_all()
         self.player                 = stv_vp(self.disp_area)
+        self.player.ready('Red.mp4')
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()

@@ -61,10 +61,10 @@
     <property name="can_focus">False</property>
     <property name="icon_name">media-skip-forward</property>
   </object>
-  <object class="GtkImage" id="bt_play_img">
+  <object class="GtkImage" id="bt_pause_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">media-playback-start</property>
+    <property name="icon_name">media-playback-pause</property>
   </object>
   <object class="GtkBox" id="box_ctrl">
     <property name="visible">True</property>
@@ -95,12 +95,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="bt_play">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="halign">start</property>
-            <property name="image">bt_play_img</property>
+            <property name="image">bt_pause_img</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="stv_mv_play" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -116,6 +118,7 @@
             <property name="receives_default">True</property>
             <property name="halign">start</property>
             <property name="image">bt_next_img</property>
+            <property name="always_show_image">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -135,6 +138,11 @@
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkImage" id="bt_play_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">media-playback-start</property>
   </object>
   <object class="GtkImage" id="bt_random_img">
     <property name="visible">True</property>
@@ -1153,8 +1161,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="sizing">autosize</property>
-                <property name="fixed_width">60</property>
+                <property name="min_width">60</property>
                 <property name="title" translatable="yes">序号</property>
                 <child>
                   <object class="GtkCellRendererText" id="Order"/>
@@ -1166,8 +1173,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="sizing">autosize</property>
-                <property name="fixed_width">200</property>
+                <property name="min_width">200</property>
                 <property name="title" translatable="yes">名称</property>
                 <child>
                   <object class="GtkCellRendererText" id="Song"/>
@@ -1179,8 +1185,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="sizing">autosize</property>
-                <property name="fixed_width">200</property>
+                <property name="min_width">200</property>
                 <property name="title" translatable="yes">演唱者</property>
                 <child>
                   <object class="GtkCellRendererText" id="Star"/>
@@ -1192,8 +1197,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="sizing">autosize</property>
-                <property name="fixed_width">100</property>
+                <property name="min_width">100</property>
                 <property name="title" translatable="yes">风格</property>
                 <child>
                   <object class="GtkCellRendererText" id="Style"/>
@@ -1205,7 +1209,6 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn">
-                <property name="sizing">autosize</property>
                 <property name="fixed_width">60</property>
                 <property name="title" translatable="yes">语言</property>
                 <child>

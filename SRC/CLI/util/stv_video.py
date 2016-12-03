@@ -34,6 +34,8 @@ class stv_video_player_class(object):
         self.playbin = Gst.ElementFactory.make('playbin', None)
         self.pipeline.add(self.playbin)
 
+        self.state = Gst.State.NULL
+
     # def change_area(self, area):
     #     self.pipeline.set_state(Gst.State.PAUSED)
     #     # self.bus.remove_watch()
@@ -66,6 +68,7 @@ class stv_video_player_class(object):
         srt, st, stp = self.pipeline.get_state(Gst.CLOCK_TIME_NONE)
         if Gst.State.PLAYING == st:
             self.pipeline.set_state(Gst.State.PAUSED)
+            self.state = Gst.State.PAUSED
         else:
             return None
 
@@ -75,12 +78,15 @@ class stv_video_player_class(object):
             return None
         else:
             self.pipeline.set_state(Gst.State.PLAYING)
+            self.state = Gst.State.PLAYING
 
     def ready(self, filename):
+        self.pipeline.set_state(Gst.State.NULL)
         self.file= path.join(path.dirname(path.abspath(__file__)), filename)
         self.uri = 'file://' + self.file
         self.playbin.set_property('uri', self.uri)
-        self.pipeline.set_state(Gst.State.NULL)
+        self.pipeline.set_state(Gst.State.READY)
+        self.state = Gst.State.PAUSED
 
     def set_xid(self, area):
         '''

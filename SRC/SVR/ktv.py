@@ -8,9 +8,8 @@ from flask import request
 from flask import Response
 from flask import send_file
 
-LIBS = '/var/stv/libs'
+LIBS = '/var/lib/stv'
 
-# sys.path.append(os.path.abspath(os.path.curdir) + "/lib")
 sys.path.append(os.path.join(os.getcwd(), 'lib'))
 from server import stv_server
 
@@ -68,12 +67,12 @@ def search_handler(srh_method, srh_type, srh_key):
 
 @stv.route('/download/<int:sid>', methods=['GET'])
 def download_handler(sid):
-    file  = os.path.join(LIBS, str(sid))
-    print(file)
+    mvfile  = os.path.join(LIBS, str(sid))
     try:
-        return send_file(file)
+        return send_file(mvfile)
     except Exception as e:
-        return str(e)
+        print(e)
+        return str('NULL')
 
 if __name__ == '__main__':
     stv.run(host = '0.0.0.0')

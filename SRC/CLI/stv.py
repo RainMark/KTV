@@ -5,7 +5,8 @@ import time
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk
+gi.require_version('Gst', '1.0')
+from gi.repository import Gtk, Gdk, GObject, Gst
 
 sys.path.append(os.path.join(os.getcwd(), 'util'))
 from stv_request import stv_request_class
@@ -93,7 +94,6 @@ class stv_signal_handler(object):
         gd.attach(app.sc_comment, 1, 0, 1, 3)
 
         # app.window.set_size_request(1022, 500)
-        app.player.play()
         app.in_mv = True
 
     def stv_mv_hide(self, *args):
@@ -116,6 +116,17 @@ class stv_signal_handler(object):
         app.box_main.add(app.box_menu)
         # app.window.set_size_request(1022, 500)
         app.in_mv = False
+
+    def stv_mv_play(self, *args):
+        if Gst.State.PLAYING == app.player.state:
+            app.player.pause()
+            app.bt_play.set_image(app.pause_img)
+        else:
+            app.player.play()
+            app.bt_play.set_image(app.play_img)
+
+    def stv_mv_next(self, *args):
+        pass
 
 
 class stv_popover(object):
@@ -175,8 +186,11 @@ class stv_class(object):
         self.grid_mv           = self.builder.get_object('grid_mv')
         self.box_phrase        = self.builder.get_object('phrase')
         self.bt_mv_back        = self.builder.get_object('bt_mv_back')
+        self.bt_play           = self.builder.get_object('bt_play')
         self.sc_comment        = self.builder.get_object('comment')
         self.box_ctrl          = self.builder.get_object('box_ctrl')
+        self.play_img          = self.builder.get_object('bt_play_img')
+        self.pause_img         = self.builder.get_object('bt_pause_img')
         self.player            = stv_video_player_class()
 
         # Setup control buttons
@@ -267,6 +281,13 @@ class stv_class(object):
         print(retval)
         if 'Insert OK' == retval:
             self.play_list_update()
+
+    def mv_download(self, sid):
+        path = self.req.download(sid)
+        if None != path:
+            print(path)
+
+
 
 
 if __name__ == '__main__':

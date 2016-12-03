@@ -189,13 +189,16 @@ insert into Star values('111','张韶涵','女','中国台湾','ZSH','张韶涵.
 insert into Star values('112','张信哲','男','中国台湾','ZXZ','张信哲.jpg');
 insert into Star values('113','卓依婷','女','中国台湾','ZYT','卓依婷.jpg');
 insert into Star values('114','朱主爱','女','马来西亚','ZZA','朱主爱.jpg');
+insert into Star values('115','Chrissy Costanza','女','欧美','CC','Chrissy Costanza.jpg');
+insert into Star values('116','Christina Grimmiea','女','欧美','CG','Christina Grimmie.jpg');
 
 
 
-insert into Song values('1','爱你','流行','中文','AN','92','21','67','751','爱你_标清.flv');
-insert into Song values('2','爱你却要说分手','流行','中文','ANQYSFS','53','35','112','921','爱你却要说分手_标清.flv');
-insert into Song values('3','爱是你我','流行','中文','ANSW','19','33','151','982','爱是你我_标清.flv');
-insert into Song values('4','倍儿爽','摇滚','中文','BES','24','15','116','1211','倍儿爽_标清.flv');
+
+insert into Song values('1','Heart Attack - feat Sam Tsui','流行','英文','HA','115','21','67','751','Heart Attack - feat Sam Tsui.flv');
+insert into Song values('2','Just A Dream - feat Sam Tsui','流行','英文','JAD','116','35','112','921','Just A Dream - feat Sam Tsui.flv');
+insert into Song values('3','Beauty And A Beat - feat Alex Goot','流行','英文','BAAB','115','33','151','982','Beauty And A Beat - feat Alex Goot.flv');
+insert into Song values('4','Red - Against the Current Cover','摇滚','英文','RED','115','15','116','1211','Red - Against the Current Cover.flv');
 insert into Song values('5','斑马斑马','民谣','中文','BMBM','78','44','182','1332','斑马斑马_标清.flv');
 insert into Song values('6','别那么骄傲','流行','中文','BNMJA','56','22','157','891','别那么骄傲_标清.flv');
 insert into Song values('7','不息之河','流行','中文','BXZH','85','25','200','1053','不息之河_标清.flv');

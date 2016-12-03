@@ -1,9 +1,6 @@
 #!/usr/python3
 
-import os, signal
-import time
-import sys
-import gi
+import os, signal, time, sys, gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 from gi.repository import Gtk, Gdk, GObject, Gst
@@ -127,8 +124,9 @@ class stv_signal_handler(object):
             app.bt_play.set_image(app.play_img)
 
         elif Gst.State.NULL == app.player.state:
-            app.play_list_play()
-            app.bt_play.set_image(app.play_img)
+            ok = app.play_list_play()
+            if ok:
+                app.bt_play.set_image(app.play_img)
 
     def stv_mv_next(self, *args):
         app.play_list_next()
@@ -211,14 +209,15 @@ class stv_class(object):
 
         self.UI_apply_css()
         self.window.show_all()
-
         # In self.player, get_xid() can be called after window.show_all()
         self.player.set_xid(self.disp_area)
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()
         self.style_provider.load_from_path('glade/main.css')
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), self.style_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 self.style_provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def SVR_init(self, svr, mach):
         self.req = stv_request_class(svr, mach)
@@ -290,14 +289,26 @@ class stv_class(object):
     def play_list_play(self):
         store = self.play_list_store
         it = store.get_iter_first()
+        if None == it:
+            return False
+
         path = self.req.download(store[it][2])
         print(path)
         if None != path:
             self.player.ready(path)
             self.player.play()
+            self.bt_play.set_image(self.play_img)
+            return True
+        return False
+
+    def play_list_stop(self):
+        if Gst.State.NULL != self.player.state:
+            self.player.stop()
+            self.bt_play.set_image(self.pause_img)
 
     def play_list_next(self):
-        self.player.stop()
+        self.play_list_stop()
+
         store = self.play_list_store
         it = store.get_iter_first()
         if None != it:
@@ -306,7 +317,9 @@ class stv_class(object):
             if 'Delete OK' == retval:
                 self.play_list_update()
                 self.play_list_play()
+                return True
 
+        return False
 
 
 if __name__ == '__main__':

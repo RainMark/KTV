@@ -119,6 +119,7 @@
             <property name="halign">start</property>
             <property name="image">bt_next_img</property>
             <property name="always_show_image">True</property>
+            <signal name="clicked" handler="stv_mv_next" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>

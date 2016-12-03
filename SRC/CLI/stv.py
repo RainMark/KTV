@@ -121,12 +121,17 @@ class stv_signal_handler(object):
         if Gst.State.PLAYING == app.player.state:
             app.player.pause()
             app.bt_play.set_image(app.pause_img)
-        else:
+
+        elif Gst.State.PAUSED == app.player.state:
             app.player.play()
             app.bt_play.set_image(app.play_img)
 
+        elif Gst.State.NULL == app.player.state:
+            app.play_list_play()
+            app.bt_play.set_image(app.play_img)
+
     def stv_mv_next(self, *args):
-        pass
+        app.play_list_next()
 
 
 class stv_popover(object):
@@ -156,6 +161,7 @@ class stv_popover(object):
 class stv_class(object):
     def __init__(self, server, machine):
         signal.signal(signal.SIGINT, signal.SIG_DFL)
+        self.handler = stv_signal_handler()
         self.UI_build()
         self.check_network(server, machine)
         self.play_list_update()
@@ -191,7 +197,7 @@ class stv_class(object):
         self.box_ctrl          = self.builder.get_object('box_ctrl')
         self.play_img          = self.builder.get_object('bt_play_img')
         self.pause_img         = self.builder.get_object('bt_pause_img')
-        self.player            = stv_video_player_class()
+        self.player            = stv_video_player_class(self.handler, self.handler.stv_mv_next)
 
         # Setup control buttons
         self.box_disp.set_valign(Gtk.Align.END)
@@ -201,14 +207,13 @@ class stv_class(object):
         # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.res_menu.connect_signal(self.res_view, "button-press-event")
-        self.builder.connect_signals(stv_signal_handler())
+        self.builder.connect_signals(self.handler)
 
         self.UI_apply_css()
         self.window.show_all()
 
         # In self.player, get_xid() can be called after window.show_all()
         self.player.set_xid(self.disp_area)
-        self.player.ready('Red.mp4')
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()
@@ -282,11 +287,25 @@ class stv_class(object):
         if 'Insert OK' == retval:
             self.play_list_update()
 
-    def mv_download(self, sid):
-        path = self.req.download(sid)
+    def play_list_play(self):
+        store = self.play_list_store
+        it = store.get_iter_first()
+        path = self.req.download(store[it][2])
+        print(path)
         if None != path:
-            print(path)
+            self.player.ready(path)
+            self.player.play()
 
+    def play_list_next(self):
+        self.player.stop()
+        store = self.play_list_store
+        it = store.get_iter_first()
+        if None != it:
+            retval = self.req.play_list_remove(store[it][2])
+            print(retval)
+            if 'Delete OK' == retval:
+                self.play_list_update()
+                self.play_list_play()
 
 
 

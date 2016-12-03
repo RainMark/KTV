@@ -15,7 +15,7 @@ from gi.repository import GdkX11, GstVideo
 
 
 class stv_video_player_class(object):
-    def __init__(self):
+    def __init__(self, obj, obj_hook):
         GObject.threads_init()
         Gst.init(None)
 
@@ -35,6 +35,9 @@ class stv_video_player_class(object):
         self.pipeline.add(self.playbin)
 
         self.state = Gst.State.NULL
+
+        self.obj = obj
+        self.obj_hook = obj_hook
 
     # def change_area(self, area):
     #     self.pipeline.set_state(Gst.State.PAUSED)
@@ -80,12 +83,11 @@ class stv_video_player_class(object):
             self.pipeline.set_state(Gst.State.PLAYING)
             self.state = Gst.State.PLAYING
 
-    def ready(self, filename):
+    def ready(self, filepath):
         self.pipeline.set_state(Gst.State.NULL)
-        self.file= path.join(path.dirname(path.abspath(__file__)), filename)
-        self.uri = 'file://' + self.file
+        self.xid = self.area.get_window().get_xid()
+        self.uri = 'file://' + filepath
         self.playbin.set_property('uri', self.uri)
-        self.pipeline.set_state(Gst.State.READY)
         self.state = Gst.State.PAUSED
 
     def set_xid(self, area):
@@ -96,6 +98,7 @@ class stv_video_player_class(object):
         # segfaults there.
         # self.xid = self.disp_area.get_property('window').get_xid()
         '''
+        self.area = area
         self.xid = area.get_window().get_xid()
 
     def stop(self):
@@ -107,7 +110,8 @@ class stv_video_player_class(object):
             msg.src.set_window_handle(self.xid)
 
     def on_eos(self, bus, msg):
-        self.stop()
+        self.obj_hook(self.obj)
+        # self.stop()
         # print('on_eos(): seeking to start of video')
         # self.pipeline.seek_simple(
         #     Gst.Format.TIME,

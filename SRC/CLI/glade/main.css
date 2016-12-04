@@ -8,14 +8,14 @@
 /*     window-dragging: true; */
 /* } */
 
-/* .background { */
-/*     /\* background-color: #4870bc; *\/ */
-/*     background-image: linear-gradient(to left, transparent, rgba(255,255,255,.07) 50%, transparent 50%), */
-/*     linear-gradient(to left, transparent, rgba(255,255,255,.13) 50%, transparent 50%), */
-/*     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.17) 50%), */
-/*     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.19) 50%); */
-/*     background-size: 29px, 59px, 73px, 109px; */
-/* } */
+.background {
+    background-color: #F5F5F5;
+    background-image: linear-gradient(to left, transparent, rgba(255,255,255,.07) 50%, transparent 50%),
+    linear-gradient(to left, transparent, rgba(255,255,255,.13) 50%, transparent 50%),
+    linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.17) 50%),
+    linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.19) 50%);
+    background-size: 20px, 59px, 73px, 109px;
+}
 
 /* headerbar { */
 /*     min-height: 32px; */
@@ -27,7 +27,6 @@
 /*     background-color: #3cbc71; */
 /*     background-clip: border-box; */
 /* } */
-
 
 button {
     color: gray;

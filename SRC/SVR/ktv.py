@@ -31,6 +31,13 @@ def playing_list_fetch_handler(cid):
     resp = Response(response=playing_list_dumps, status=200, mimetype="application/json")
     return resp
 
+@stv.route('/history/fetch/<int:cid>', methods=['GET'])
+def history_list_fetch_handler(cid):
+    print('Fetching History list..')
+    history_list_dumps = svr.history_list_fetch(cid)
+    resp = Response(response=history_list_dumps, status=200, mimetype="application/json")
+    return resp
+
 @stv.route('/playing/<ope>/<int:cid>/<int:sid>', methods=['GET'])
 def playing_list_operations_handler(ope, cid, sid):
     if 'add' == ope:

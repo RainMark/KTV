@@ -23,6 +23,11 @@ class stv_server(object):
         # print(playing_list)
         return json.dumps(playing_list)
 
+    def history_list_fetch(self, client_id):
+        playing_list = self.db.history_list_fetch(client_id)
+        # print(playing_list)
+        return json.dumps(playing_list)
+
     def playing_list_add(self, client_id, song_id):
         # print(client_id, " ", song_id)
         if True == self.db.playing_list_add(client_id, song_id):

@@ -111,7 +111,12 @@ class stv_mariadb(object):
         try:
             self.cursor.execute(sql, [client_id, song_id])
             # self.database.commit()
-            return self.trigger.csong_update_after_delete(self.database, client_id, order)
+            ret = self.trigger.csong_update_after_delete(self.database, client_id, order)
+            if ret:
+                self.history_list_insert(client_id, song_id)
+                return True
+            else:
+                return False
 
         except:
             self.database.rollback()
@@ -129,6 +134,29 @@ class stv_mariadb(object):
         sql = 'Insert into C_Song(SongID, ClientID, S_Order) Value(%s, %s, %s)'
         try:
             self.cursor.execute(sql, [song_id, client_id, order])
+            self.database.commit()
+            return True
+
+        except:
+            self.database.rollback()
+            print('Execute SQL Except: ', sql)
+            return False
+
+    def history_list_fetch(self, client_id):
+        sql = 'Select Song.SongID, Song.SongName From Song, History Where Song.SongID = History.SongID && ClientID = %s'
+        try:
+            self.cursor.execute(sql, [client_id])
+            data = self.cursor.fetchall()
+            for item in data:
+                print(item)
+            return data
+        except:
+            return [()]
+
+    def history_list_insert(self, client_id, song_id):
+        sql = 'Insert into History(SongID, ClientID) Value(%s, %s)'
+        try:
+            self.cursor.execute(sql, [song_id, client_id])
             self.database.commit()
             return True
 
@@ -217,7 +245,7 @@ class stv_mariadb(object):
 if __name__ == '__main__':
     run = stv_mariadb('root', 'root', 'stv_db')
     # run.hot_zh()
-    run.hot_all()
+    # run.hot_all()
     # print('')
     # run.playing_list_fetch(3)
     # print('')
@@ -239,4 +267,7 @@ if __name__ == '__main__':
     # print('')
     # run.search_song_by_fullname('爱')
     # run.user_get_all()
+    run.history_list_fetch('1')
+    run.history_list_insert('1', '22')
+    run.history_list_fetch('1')
     run.close()

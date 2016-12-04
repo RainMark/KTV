@@ -182,6 +182,7 @@ class stv_class(object):
         self.box_main          = self.builder.get_object('box_main')
         self.box_menu          = self.builder.get_object('box_menu')
         self.play_list_store   = self.builder.get_object("lt_playing")
+        self.his_list_store    = self.builder.get_object("lt_history")
         self.play_view         = self.builder.get_object("tv_playing")
         self.res_list_store    = self.builder.get_object("lt_result")
         self.res_view          = self.builder.get_object("tv_result")
@@ -225,6 +226,15 @@ class stv_class(object):
     def play_list_update(self):
         data = self.req.play_list_fetch()
         store = self.play_list_store
+        if None != data:
+            store.clear()
+        for idx, meta in enumerate(data):
+            store.append([idx, meta[1], meta[0]])
+        self.his_list_update()
+
+    def his_list_update(self):
+        data = self.req.his_list_fetch()
+        store = self.his_list_store
         if None != data:
             store.clear()
         for idx, meta in enumerate(data):

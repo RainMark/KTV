@@ -13,8 +13,13 @@ class stv_request_class(object):
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
+    def his_list_fetch(self):
+        url = self.uri + '/history/fetch/' + self.machine
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
     def play_list_move(self, song_id):
-        url = self.uri + '/playing/resort/%s/%s/1' % (self.machine, song_id)
+        url = self.uri + '/playing/resort/%s/%s/2' % (self.machine, song_id)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 

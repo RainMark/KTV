@@ -179,6 +179,7 @@ class stv_class(object):
         self.play_menu         = stv_popover(self.builder.get_object("play_menu"))
         self.res_menu          = stv_popover(self.builder.get_object("res_menu"))
         self.window            = self.builder.get_object("window")
+        self.titlebar          = self.builder.get_object("headerbar")
         self.box_main          = self.builder.get_object('box_main')
         self.box_menu          = self.builder.get_object('box_menu')
         self.play_list_store   = self.builder.get_object("lt_playing")
@@ -202,6 +203,11 @@ class stv_class(object):
         self.box_disp.set_valign(Gtk.Align.END)
         self.box_disp.set_halign(Gtk.Align.START)
         self.grid_mv.attach(self.box_ctrl, 1, 0, 1, 1)
+        self.window.set_titlebar(self.titlebar)
+        # ti = self.window.get_titlebar()
+        # print(ti)
+        # for ch in ti.get_children():
+        #     print(ch)
 
         # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")

@@ -1221,7 +1221,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">etched-in</property>
-            <property name="min_content_width">200</property>
+            <property name="min_content_width">150</property>
             <property name="min_content_height">150</property>
             <property name="max_content_width">200</property>
             <property name="max_content_height">150</property>

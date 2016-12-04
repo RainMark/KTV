@@ -131,6 +131,10 @@ class stv_signal_handler(object):
     def stv_mv_next(self, *args):
         app.play_list_next()
 
+    def stv_find(self, *args):
+        app.find_menu.menu.popup()
+
+
 
 class stv_popover(object):
     def __init__(self, menu):
@@ -178,6 +182,7 @@ class stv_class(object):
 
         self.play_menu         = stv_popover(self.builder.get_object("play_menu"))
         self.res_menu          = stv_popover(self.builder.get_object("res_menu"))
+        self.find_menu         = stv_popover(self.builder.get_object("find_menu"))
         self.window            = self.builder.get_object("window")
         self.titlebar          = self.builder.get_object("headerbar")
         self.box_main          = self.builder.get_object('box_main')
@@ -204,10 +209,6 @@ class stv_class(object):
         self.box_disp.set_halign(Gtk.Align.START)
         self.grid_mv.attach(self.box_ctrl, 1, 0, 1, 1)
         self.window.set_titlebar(self.titlebar)
-        # ti = self.window.get_titlebar()
-        # print(ti)
-        # for ch in ti.get_children():
-        #     print(ch)
 
         # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")
@@ -215,6 +216,7 @@ class stv_class(object):
         self.builder.connect_signals(self.handler)
 
         self.UI_apply_css()
+        self.window.set_size_request(1110, 760)
         self.window.show_all()
         # In self.player, get_xid() can be called after window.show_all()
         self.player.set_xid(self.disp_area)

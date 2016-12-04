@@ -2,24 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
-  <object class="GtkPopover">
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkSearchEntry" id="search_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="max_length">128</property>
-        <property name="width_chars">2</property>
-        <property name="max_width_chars">128</property>
-        <property name="shadow_type">etched-out</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_sensitive">False</property>
-        <property name="placeholder_text">搜索</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkImage" id="bt_back_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -49,10 +31,29 @@
     <property name="can_focus">False</property>
     <property name="icon_name">edit-find</property>
   </object>
+  <object class="GtkImage" id="bt_guess_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">accessories-text-editor</property>
+  </object>
+  <object class="GtkImage" id="bt_hotall_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">accessories-dictionary</property>
+  </object>
+  <object class="GtkImage" id="bt_menu_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkHeaderBar" id="headerbar">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="opacity">0.80000000000000004</property>
+    <property name="title">Show Time KTV</property>
     <property name="has_subtitle">False</property>
     <property name="spacing">0</property>
     <property name="show_close_button">True</property>
@@ -79,29 +80,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="valign">center</property>
-            <property name="margin_right">250</property>
-            <property name="vexpand">True</property>
-            <property name="label" translatable="yes">Show Time KTV</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="bt_find">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="halign">end</property>
             <property name="valign">end</property>
             <property name="image">bt_find_img</property>
+            <signal name="clicked" handler="stv_find" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -115,24 +101,6 @@
         <property name="pack_type">end</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkImage" id="bt_guess_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixel_size">100</property>
-    <property name="icon_name">accessories-text-editor</property>
-  </object>
-  <object class="GtkImage" id="bt_hotall_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixel_size">100</property>
-    <property name="icon_name">accessories-dictionary</property>
-  </object>
-  <object class="GtkImage" id="bt_menu_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-add</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="bt_mv_img">
     <property name="visible">True</property>
@@ -435,9 +403,12 @@
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="can_default">True</property>
+    <property name="window_position">center</property>
     <property name="default_width">1110</property>
     <property name="default_height">760</property>
     <property name="icon_name">applications-multimedia</property>
+    <property name="type_hint">dialog</property>
+    <property name="gravity">static</property>
     <signal name="destroy" handler="stv_exit" swapped="no"/>
     <child>
       <object class="GtkBox" id="box_main">
@@ -1065,7 +1036,7 @@
         </child>
       </object>
     </child>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
   </object>
@@ -1209,6 +1180,98 @@
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="lt_star">
+    <columns>
+      <!-- column-name Star -->
+      <column type="gchararray"/>
+      <!-- column-name ID -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">林俊杰</col>
+        <col id="1" translatable="yes">1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">邓紫棋</col>
+        <col id="1" translatable="yes">2</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">张靓颖</col>
+        <col id="1" translatable="yes">3</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkPopover" id="find_menu">
+    <property name="can_focus">False</property>
+    <property name="relative_to">bt_find</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkGrid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_left">5</property>
+        <property name="margin_right">5</property>
+        <property name="margin_top">5</property>
+        <property name="margin_bottom">5</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">etched-in</property>
+            <property name="min_content_width">200</property>
+            <property name="min_content_height">150</property>
+            <property name="max_content_width">200</property>
+            <property name="max_content_height">150</property>
+            <child>
+              <object class="GtkTreeView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">lt_star</property>
+                <property name="headers_clickable">False</property>
+                <property name="enable_grid_lines">horizontal</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title" translatable="yes">演唱者</property>
+                    <property name="clickable">True</property>
+                    <property name="alignment">0.5</property>
+                    <child>
+                      <object class="GtkCellRendererText"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSearchEntry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="margin_bottom">5</property>
+            <property name="primary_icon_name">edit-find-symbolic</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+      </object>
     </child>
   </object>
   <object class="GtkBox" id="phrase">

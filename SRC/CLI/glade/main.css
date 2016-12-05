@@ -14,19 +14,18 @@
     linear-gradient(to left, transparent, rgba(255,255,255,.13) 50%, transparent 50%),
     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.17) 50%),
     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.19) 50%);
-    background-size: 20px, 59px, 73px, 109px;
+    background-size: 29px, 59px, 73px, 109px;
 }
 
-/* headerbar { */
-/*     min-height: 32px; */
-/*     padding: 0 6px; */
-/*     border-width: 0 0 1px; */
-/*     border-style: solid; */
-/*     border-color: rgba(0, 0, 0, 0.1); */
-/*     box-shadow: inset 0 1px rgba(255, 200, 255, 0.4); */
-/*     background-color: #3cbc71; */
-/*     background-clip: border-box; */
-/* } */
+headerbar {
+    padding: 0 6px;
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px rgba(255, 200, 255, 0.4);
+    /* background-color: gray; */
+    background-clip: border-box;
+}
 
 button {
     color: gray;

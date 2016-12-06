@@ -9,6 +9,19 @@ class stv_server(object):
     def __init__(self, user, password, database):
         self.db = stv_mariadb(user, password, database)
         self.rd = stv_rd(self.db)
+        self.sequences = dict()
+
+    def check_seq(self, cid, seq):
+        if None == self.sequences.get(cid):
+            return False
+
+        if seq == self.sequences[cid]:
+            return True
+        else:
+            return False
+
+    def insert_seq(self, cid, seq):
+        self.sequences[cid] = seq
 
     def top_fetch(self, top_type='all'):
         if top_type == 'zh':

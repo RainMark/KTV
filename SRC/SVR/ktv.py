@@ -45,7 +45,7 @@ def playing_list_operations_handler(ope, cid, sid):
     elif 'delete' == ope:
         result = svr.playing_list_delete(cid, sid)
     else:
-        result = json.dump((('Invalid Request.')))
+        result = json.dumps((('Invalid Request.')))
 
     resp = Response(response=result, status=200, mimetype="application/json")
     return resp
@@ -67,7 +67,7 @@ def search_handler(srh_method, srh_type, srh_key):
         result = svr.search_song(srh_key, use_abridge)
 
     else:
-        result = json.dump((()))
+        result = json.dumps((()))
 
     resp = Response(response=result, status=200, mimetype="application/json")
     return resp
@@ -80,6 +80,38 @@ def download_handler(sid):
     except Exception as e:
         print(e)
         return str('NULL')
+
+@stv.route('/desktop/insert/<int:cid>/<int:seq>', methods=['GET'])
+def desktop_insert_seq_handler(cid, seq):
+    svr.insert_seq(cid, seq)
+    return Response(response=json.dumps('OK'), status=200, mimetype="application/json")
+
+@stv.route('/app/check/<int:cid>/<int:seq>', methods=['GET'])
+def app_check_handler(cid, seq):
+    retval = svr.check_seq(cid, seq)
+    print(retval)
+    if retval:
+        result = json.dumps('Online')
+    else:
+        result = json.dumps('Offline')
+
+    return Response(response=result, status=200, mimetype="application/json")
+
+@stv.route('/app/playing/<ope>/<int:seq>/<int:cid>/<int:sid>', methods=['GET'])
+def app_playing_ope_handler(ope, seq, cid, sid):
+    resp = json.dumps((('Offline')))
+    retval = svr.check_seq(cid, seq)
+    if not retval:
+        result = json.dumps((('Offline')))
+    elif 'add' == ope:
+        result = svr.playing_list_add(cid, sid)
+    elif 'delete' == ope:
+        result = svr.playing_list_delete(cid, sid)
+    else:
+        result = json.dumps((('Invalid Request.')))
+
+    return Response(response=result, status=200, mimetype="application/json")
+
 
 if __name__ == '__main__':
     stv.run(host = '0.0.0.0')

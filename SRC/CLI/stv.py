@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk, GObject, Gst
 sys.path.append(os.path.join(os.getcwd(), 'util'))
 from stv_request import stv_request_class
 from stv_video import stv_video_player_class
+from stv_qr import stv_qr_class
 
 global app
 
@@ -166,7 +167,7 @@ class stv_class(object):
         self.handler = stv_signal_handler()
         self.UI_build()
         self.check_network(server, machine)
-        self.play_list_update()
+        # self.play_list_update()
 
         self.restored = True
         self.req_type = 'topall'
@@ -175,6 +176,13 @@ class stv_class(object):
 
     def check_network(self, svr, mach):
         self.SVR_init(svr, mach)
+        self.QR = stv_qr_class(machine=mach,
+                               seq_length=10,
+                               save_path='/tmp/stv_qr.png')
+        self.QR.prepare_data()
+        self.QR.save_image()
+        self.req.sequence_init(self.QR.seq)
+        print(self.req.online)
 
     def UI_build(self):
         self.builder           = Gtk.Builder()
@@ -236,8 +244,8 @@ class stv_class(object):
         store = self.play_list_store
         if None != data:
             store.clear()
-        for idx, meta in enumerate(data):
-            store.append([idx, meta[1], meta[0]])
+            for idx, meta in enumerate(data):
+                store.append([idx, meta[1], meta[0]])
         self.his_list_update()
 
     def his_list_update(self):
@@ -245,8 +253,8 @@ class stv_class(object):
         store = self.his_list_store
         if None != data:
             store.clear()
-        for idx, meta in enumerate(data):
-            store.append([idx, meta[1], meta[0]])
+            for idx, meta in enumerate(data):
+                store.append([idx, meta[1], meta[0]])
 
     def play_list_move(self):
         path, column = self.play_view.get_cursor()

@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
-
 import qrcode
 from random import randint
-
 
 class stv_qr_class(qrcode.QRCode):
     def __init__(self, **kw):
@@ -13,7 +11,8 @@ class stv_qr_class(qrcode.QRCode):
         self.save_path = kw['save_path']
 
     def prepare_data(self):
-        self.add_data(str(self.machine) + '@' + self.random_sequence())
+        self.random_sequence()
+        self.add_data(str(self.machine) + '@' + self.seq)
 
     def save_image(self):
         self.make(fit=True)
@@ -23,8 +22,7 @@ class stv_qr_class(qrcode.QRCode):
         seq = str()
         for i in range(10):
             seq += str(randint(0, self.seq_length - 1))
-
-        return seq
+        self.seq = seq
 
 if __name__ == '__main__':
     qr = stv_qr_class(machine=2,

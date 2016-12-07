@@ -91,7 +91,6 @@ class stv_signal_handler(object):
         gd.attach(app.box_ctrl,   0, 3, 1, 1)
         gd.attach(app.sc_comment, 1, 0, 1, 3)
 
-        app.comment_fetch()
         # app.window.set_size_request(1022, 500)
         app.in_mv = True
 
@@ -342,6 +341,7 @@ class stv_class(object):
             self.player.ready(path)
             self.player.play()
             self.bt_play.set_image(self.play_img)
+            self.comment_fetch()
             return True
         return False
 
@@ -371,8 +371,14 @@ class stv_class(object):
             return False
 
         data = self.req.comment_fetch(sid)
-        st = self.comment_store
+        if None == data:
+            return False
 
+        print(data)
+        st = self.comment_store
+        st.clear()
+        for meta in data:
+            st.append([meta])
 
 if __name__ == '__main__':
     app = stv_class('http://localhost:5000', '2')

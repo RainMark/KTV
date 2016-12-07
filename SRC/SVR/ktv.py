@@ -114,7 +114,7 @@ def app_playing_list_operations_handler(ope, seq, cid, sid):
     return Response(response=result, status=200, mimetype="application/json")
 
 @stv.route('/app/playing/fetch/<int:seq>/<int:cid>', methods=['GET'])
-def app_playing_list_fetch_handler(ope, seq, cid, sid):
+def app_playing_list_fetch_handler(seq, cid):
     retval = svr.check_seq(cid, seq)
     if not retval:
         result = json.dumps((('Offline')))

@@ -135,7 +135,9 @@ class stv_signal_handler(object):
     def stv_find(self, *args):
         app.find_menu.menu.popup()
 
-
+    def stv_qr_show(self, *args):
+        app.qr_img.set_from_file('/tmp/stv_qr.png')
+        app.qr_menu.menu.popup()
 
 class stv_popover(object):
     def __init__(self, menu):
@@ -191,6 +193,7 @@ class stv_class(object):
         self.play_menu         = stv_popover(self.builder.get_object('play_menu'))
         self.top_menu          = stv_popover(self.builder.get_object('top_menu'))
         self.find_menu         = stv_popover(self.builder.get_object('find_menu'))
+        self.qr_menu           = stv_popover(self.builder.get_object('qr_menu'))
 
         self.titlebar          = self.builder.get_object('headerbar')
         self.window            = self.builder.get_object('window')
@@ -217,8 +220,11 @@ class stv_class(object):
         self.disp_area         = self.builder.get_object('disp_area')
         self.bt_mv_back        = self.builder.get_object('bt_mv_back')
         self.bt_play           = self.builder.get_object('bt_play')
+        self.bt_qr             = self.builder.get_object('bt_qr')
+
         self.play_img          = self.builder.get_object('bt_play_img')
         self.pause_img         = self.builder.get_object('bt_pause_img')
+        self.qr_img            = self.builder.get_object('qr_img')
 
         self.player            = stv_video_player_class(self.handler, self.handler.stv_mv_next)
 

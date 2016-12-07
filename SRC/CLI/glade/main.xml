@@ -96,65 +96,6 @@
     <property name="pixel_size">100</property>
     <property name="icon_name">accessories-dictionary</property>
   </object>
-  <object class="GtkImage" id="bt_menu_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-add</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkHeaderBar" id="headerbar">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="opacity">0.80000000000000004</property>
-    <property name="title">Show Time KTV</property>
-    <property name="has_subtitle">False</property>
-    <property name="spacing">0</property>
-    <property name="show_close_button">True</property>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="hexpand">True</property>
-        <child>
-          <object class="GtkButton">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="halign">end</property>
-            <property name="valign">end</property>
-            <property name="image">bt_menu_img</property>
-            <property name="always_show_image">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="bt_find">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="halign">end</property>
-            <property name="valign">end</property>
-            <property name="image">bt_find_img</property>
-            <signal name="clicked" handler="stv_find" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="pack_type">end</property>
-      </packing>
-    </child>
-  </object>
   <object class="GtkImage" id="bt_mv_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -169,7 +110,7 @@
   <object class="GtkImage" id="bt_pause_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">media-playback-pause</property>
+    <property name="icon_name">media-playback-start</property>
   </object>
   <object class="GtkBox" id="box_ctrl">
     <property name="visible">True</property>
@@ -248,7 +189,107 @@
   <object class="GtkImage" id="bt_play_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">media-playback-start</property>
+    <property name="icon_name">media-playback-pause</property>
+  </object>
+  <object class="GtkImage" id="bt_qr_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-justify-fill</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkHeaderBar" id="headerbar">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="opacity">0.80000000000000004</property>
+    <property name="title">Show Time KTV</property>
+    <property name="has_subtitle">False</property>
+    <property name="spacing">0</property>
+    <property name="show_close_button">True</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <child>
+          <object class="GtkButton" id="bt_qr">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="halign">end</property>
+            <property name="valign">end</property>
+            <property name="image">bt_qr_img</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="stv_qr_show" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="bt_find">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="halign">end</property>
+            <property name="valign">end</property>
+            <property name="image">bt_find_img</property>
+            <signal name="clicked" handler="stv_find" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="pack_type">end</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkPopover" id="qr_menu">
+    <property name="can_focus">False</property>
+    <property name="relative_to">bt_qr</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">轻松扫一扫！
+即刻体验手机点歌的乐趣。</property>
+            <property name="justify">center</property>
+            <property name="angle">20</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="qr_img">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_bottom">50</property>
+            <property name="pixel_size">100</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
   <object class="GtkImage" id="bt_random_img">
     <property name="visible">True</property>
@@ -890,7 +931,7 @@
                                 <property name="image">bt_hotall_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="stv_hotall" object="show_list" swapped="no"/>
+                                <signal name="clicked" handler="stv_hotall" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>

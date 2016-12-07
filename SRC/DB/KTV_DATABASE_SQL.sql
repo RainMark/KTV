@@ -34,7 +34,7 @@ create table Song(
 );
 
 create table Comment(
-	C_ID Varchar(20),
+	C_ID BigInt
 	C_Content Varchar(80),
 	SongID Varchar(20),
 	primary key(C_ID),
@@ -346,30 +346,30 @@ insert into Song values('146','最重要的决定','流行','中文','ZZYDJD','3
 
 
 
-insert into Comment values('1','好听','1');
-insert into Comment values('2','我爱你','2');
-insert into Comment values('3','歌曲的开头令人有听下去的感觉','3');
-insert into Comment values('4','每个人都有自己喜欢的风格','4');
-insert into Comment values('5','我想你啦','5');
-insert into Comment values('6','么么哒','6');
-insert into Comment values('7','爱你是我的荣幸','7');
-insert into Comment values('8','他在灯火阑珊处','8');
-insert into Comment values('9','有一个人在等我','9');
-insert into Comment values('10','喜欢你','10');
-insert into Comment values('11','歌曲是我的灵魂','11');
-insert into Comment values('12','.我想在五十年之后我一定还是像现在一样爱你','12');
-insert into Comment values('13','我不要短暂的温存，只要你一世的陪伴','13');
-insert into Comment values('14','只因你太美好令我无法坦白说出我爱你','14');
-insert into Comment values('15','好听','15');
-insert into Comment values('16','我爱你','16');
-insert into Comment values('17','歌曲的开头令人有听下去的感觉','17');
-insert into Comment values('18','每个人都有自己喜欢的风格','18');
-insert into Comment values('19','我想你啦','19');
-insert into Comment values('20','么么哒','20');
-insert into Comment values('21','爱你是我的荣幸','21');
-insert into Comment values('22','他在灯火阑珊处','22');
-insert into Comment values('23','有一个人在等我','23');
-insert into Comment values('24','喜欢你','24');
+insert into Comment values(1,'好听','1');
+insert into Comment values(2,'我爱你','2');
+insert into Comment values(3,'歌曲的开头令人有听下去的感觉','3');
+insert into Comment values(4,'每个人都有自己喜欢的风格','4');
+insert into Comment values(5,'我想你啦','5');
+insert into Comment values(6,'么么哒','6');
+insert into Comment values(7,'爱你是我的荣幸','7');
+insert into Comment values(8,'他在灯火阑珊处','8');
+insert into Comment values(9,'有一个人在等我','9');
+insert into Comment values(10,'喜欢你','10');
+insert into Comment values(11,'歌曲是我的灵魂','11');
+insert into Comment values(12,'.我想在五十年之后我一定还是像现在一样爱你','12');
+insert into Comment values(13,'我不要短暂的温存，只要你一世的陪伴','13');
+insert into Comment values(14,'只因你太美好令我无法坦白说出我爱你','14');
+insert into Comment values(15,'好听','15');
+insert into Comment values(16,'我爱你','16');
+insert into Comment values(17,'歌曲的开头令人有听下去的感觉','17');
+insert into Comment values(18,'每个人都有自己喜欢的风格','18');
+insert into Comment values(19,'我想你啦','19');
+insert into Comment values(20,'么么哒','20');
+insert into Comment values(21,'爱你是我的荣幸','21');
+insert into Comment values(22,'他在灯火阑珊处','22');
+insert into Comment values(23,'有一个人在等我','23');
+insert into Comment values(24,'喜欢你','24');
 
 insert into Client values('1','北京','a','联想');
 insert into Client values('2','上海','b','戴尔');

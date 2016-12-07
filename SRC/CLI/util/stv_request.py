@@ -27,6 +27,7 @@ class stv_request_class(object):
     @network_check
     def sequence_init(self, seq):
         url = self.uri + '/desktop/insert/%s/%s' % (self.machine, seq)
+        print(url)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
@@ -63,6 +64,12 @@ class stv_request_class(object):
     @network_check
     def top_fetch(self, top_type = 'all'):
         url = self.uri + '/top/%s' % (top_type)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
+    def comment_fetch(self, song_id):
+        url = self.uri + '/comment/fetch/%s' % (song_id)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 

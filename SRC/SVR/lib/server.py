@@ -31,6 +31,9 @@ class stv_server(object):
 
         return json.dumps(top_list)
 
+    def comment_fetch(self, sid):
+        return json.dumps(self.db.comment_fetch(sid))
+
     def playing_list_fetch(self, client_id):
         playing_list = self.db.playing_list_fetch(client_id)
         # print(playing_list)

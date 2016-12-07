@@ -19,10 +19,10 @@ class stv_signal_handler(object):
 
     def stv_hotall(self, widget):
         self.stv_back()
-        box = app.builder.get_object("box_rank")
+        box = app.box_rank
         child = box.get_children()
         box.remove(child[0])
-        box.add(app.builder.get_object("show_list"))
+        box.add(app.box_top)
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
@@ -31,10 +31,10 @@ class stv_signal_handler(object):
 
     def stv_guess(self, widget):
         self.stv_back()
-        box = app.builder.get_object("box_recommend")
+        box = app.box_recommend
         child = box.get_children()
         box.remove(child[0])
-        box.add(app.builder.get_object("show_list"))
+        box.add(app.box_top)
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
@@ -62,11 +62,11 @@ class stv_signal_handler(object):
         app.play_list_move()
 
     def stv_result_refresh(self, *args):
-        app.res_menu.hide()
+        app.top_menu.hide()
         app.result_list_refresh()
 
     def stv_result_add(self, *args):
-        app.res_menu.hide()
+        app.top_menu.hide()
         app.result_list_add()
 
     def stv_mv_show(self, *args):
@@ -91,6 +91,7 @@ class stv_signal_handler(object):
         gd.attach(app.box_ctrl,   0, 3, 1, 1)
         gd.attach(app.sc_comment, 1, 0, 1, 3)
 
+        app.comment_fetch()
         # app.window.set_size_request(1022, 500)
         app.in_mv = True
 
@@ -167,7 +168,8 @@ class stv_class(object):
         self.handler = stv_signal_handler()
         self.UI_build()
         self.check_network(server, machine)
-        # self.play_list_update()
+        if self.req.online:
+            self.play_list_update()
 
         self.restored = True
         self.req_type = 'topall'
@@ -182,34 +184,43 @@ class stv_class(object):
         self.QR.prepare_data()
         self.QR.save_image()
         self.req.sequence_init(self.QR.seq)
-        print(self.req.online)
 
     def UI_build(self):
         self.builder           = Gtk.Builder()
         self.builder.add_from_file("glade/main.xml")
 
-        self.play_menu         = stv_popover(self.builder.get_object("play_menu"))
-        self.res_menu          = stv_popover(self.builder.get_object("res_menu"))
-        self.find_menu         = stv_popover(self.builder.get_object("find_menu"))
-        self.window            = self.builder.get_object("window")
-        self.titlebar          = self.builder.get_object("headerbar")
+        self.play_menu         = stv_popover(self.builder.get_object('play_menu'))
+        self.top_menu          = stv_popover(self.builder.get_object('top_menu'))
+        self.find_menu         = stv_popover(self.builder.get_object('find_menu'))
+
+        self.titlebar          = self.builder.get_object('headerbar')
+        self.window            = self.builder.get_object('window')
+
         self.box_main          = self.builder.get_object('box_main')
         self.box_menu          = self.builder.get_object('box_menu')
-        self.play_list_store   = self.builder.get_object("lt_playing")
-        self.his_list_store    = self.builder.get_object("lt_history")
-        self.play_view         = self.builder.get_object("tv_playing")
-        self.res_list_store    = self.builder.get_object("lt_result")
-        self.res_view          = self.builder.get_object("tv_result")
-        self.disp_area         = self.builder.get_object('disp_area')
+        self.box_phrase        = self.builder.get_object('box_phrase')
         self.box_disp          = self.builder.get_object('box_disp')
+        self.box_ctrl          = self.builder.get_object('box_ctrl')
+        self.box_top           = self.builder.get_object('box_top')
+        self.box_rank          = self.builder.get_object('box_rank')
+        self.box_recommend     = self.builder.get_object('box_recommend')
+
+        self.play_store        = self.builder.get_object('lt_play')
+        self.history_store     = self.builder.get_object('lt_history')
+        self.comment_store     = self.builder.get_object('lt_comment')
+        self.top_store         = self.builder.get_object('lt_result')
+
+        self.play_view         = self.builder.get_object('tv_play')
+        self.top_view          = self.builder.get_object('tv_top')
+
         self.grid_mv           = self.builder.get_object('grid_mv')
-        self.box_phrase        = self.builder.get_object('phrase')
+        self.sc_comment        = self.builder.get_object('sc_comment')
+        self.disp_area         = self.builder.get_object('disp_area')
         self.bt_mv_back        = self.builder.get_object('bt_mv_back')
         self.bt_play           = self.builder.get_object('bt_play')
-        self.sc_comment        = self.builder.get_object('comment')
-        self.box_ctrl          = self.builder.get_object('box_ctrl')
         self.play_img          = self.builder.get_object('bt_play_img')
         self.pause_img         = self.builder.get_object('bt_pause_img')
+
         self.player            = stv_video_player_class(self.handler, self.handler.stv_mv_next)
 
         # Setup control buttons
@@ -220,7 +231,7 @@ class stv_class(object):
 
         # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")
-        self.res_menu.connect_signal(self.res_view, "button-press-event")
+        self.top_menu.connect_signal(self.top_view, "button-press-event")
         self.builder.connect_signals(self.handler)
 
         self.UI_apply_css()
@@ -239,9 +250,17 @@ class stv_class(object):
     def SVR_init(self, svr, mach):
         self.req = stv_request_class(svr, mach)
 
+    def play_list_first_row_id(self):
+        store = self.play_store
+        it = store.get_iter_first()
+        if None == it:
+            return None
+
+        return store[it][2]
+
     def play_list_update(self):
         data = self.req.play_list_fetch()
-        store = self.play_list_store
+        store = self.play_store
         if None != data:
             store.clear()
             for idx, meta in enumerate(data):
@@ -250,7 +269,7 @@ class stv_class(object):
 
     def his_list_update(self):
         data = self.req.his_list_fetch()
-        store = self.his_list_store
+        store = self.history_store
         if None != data:
             store.clear()
             for idx, meta in enumerate(data):
@@ -261,7 +280,7 @@ class stv_class(object):
         if None == path:
             return None
 
-        store = self.play_list_store
+        store = self.play_store
         it = store.get_iter(path)
         print("Selected row: ", store[it][0:])
         sid = store[it][2]
@@ -275,7 +294,7 @@ class stv_class(object):
         if None == path:
             return None
 
-        store = self.play_list_store
+        store = self.play_store
         it = store.get_iter(path)
         print("Selected row: ", store[it][0:])
         sid = store[it][2]
@@ -292,7 +311,7 @@ class stv_class(object):
         else:
             data = None
 
-        st = self.res_list_store
+        st = self.top_store
         st.clear()
 
         if None == data:
@@ -301,11 +320,11 @@ class stv_class(object):
             st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
     def result_list_add(self):
-        path, column = self.res_view.get_cursor()
+        path, column = self.top_view.get_cursor()
         if None == path:
             return None
 
-        store = self.res_list_store
+        store = self.top_store
         it = store.get_iter(path)
         retval = self.req.play_list_add(store[it][5])
         print(retval)
@@ -313,12 +332,11 @@ class stv_class(object):
             self.play_list_update()
 
     def play_list_play(self):
-        store = self.play_list_store
-        it = store.get_iter_first()
-        if None == it:
+        sid = self.play_list_first_row_id()
+        if None == sid:
             return False
 
-        path = self.req.download(store[it][2])
+        path = self.req.download(sid)
         print(path)
         if None != path:
             self.player.ready(path)
@@ -335,17 +353,25 @@ class stv_class(object):
     def play_list_next(self):
         self.play_list_stop()
 
-        store = self.play_list_store
-        it = store.get_iter_first()
-        if None != it:
-            retval = self.req.play_list_remove(store[it][2])
-            print(retval)
-            if 'Delete OK' == retval:
-                self.play_list_update()
-                self.play_list_play()
-                return True
+        sid = self.play_list_first_row_id()
+        if None == sid:
+            return False
+
+        retval = self.req.play_list_remove(sid)
+        if 'Delete OK' == retval:
+            self.play_list_update()
+            self.play_list_play()
+            return True
 
         return False
+
+    def comment_fetch(self):
+        sid = self.play_list_first_row_id()
+        if None == sid:
+            return False
+
+        data = self.req.comment_fetch(sid)
+        st = self.comment_store
 
 
 if __name__ == '__main__':

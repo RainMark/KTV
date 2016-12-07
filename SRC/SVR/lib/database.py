@@ -67,6 +67,19 @@ class stv_mariadb(object):
         #     print(item)
         return data[0:10]
 
+    def comment_fetch(self, song_id):
+        sql = 'Select C_Content From Comment Where SongID = %s'
+        data = []
+        try:
+            self.cursor.execute(sql, [song_id])
+            raw = self.cursor.fetchall()
+            for v in raw[0:20]:
+                data.append(v[0])
+                # print(data)
+            return data
+        except:
+            return data
+
     def playing_list_fetch(self, client_id):
         sql = 'Select Song.SongID, Song.SongName From Song, C_Song Where Song.SongID = C_Song.SongID && ClientID = %s Order By S_Order'
         try:
@@ -267,7 +280,8 @@ if __name__ == '__main__':
     # print('')
     # run.search_song_by_fullname('爱')
     # run.user_get_all()
-    run.history_list_fetch('1')
-    run.history_list_insert('1', '22')
-    run.history_list_fetch('1')
+    # run.history_list_fetch('1')
+    # run.history_list_insert('1', '22')
+    # run.history_list_fetch('1')
+    run.comment_fetch('2')
     run.close()

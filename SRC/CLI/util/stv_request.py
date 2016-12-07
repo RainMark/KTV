@@ -1,6 +1,6 @@
 #!/usr/python3
 
-from urllib import request, error
+from urllib import request, error, parse
 import shutil, json, os
 
 def network_check(func):
@@ -70,6 +70,34 @@ class stv_request_class(object):
     @network_check
     def comment_fetch(self, song_id):
         url = self.uri + '/comment/fetch/%s' % (song_id)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
+    def search_singer_by_fullname(self, key):
+        key = parse.quote(key.encode('utf-8')) # Solved Unicode URL
+        url = self.uri + '/search/fullname/singer/%s' % (key)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
+    def search_singer_by_abridge(self, key):
+        key = parse.quote(key.encode('utf-8'))
+        url = self.uri + '/search/abbreviation/singer/%s' % (key)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
+    def search_song_by_fullname(self, key):
+        key = parse.quote(key.encode('utf-8'))
+        url = self.uri + '/search/fullname/song/%s' % (key)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
+    def search_song_by_abridge(self, key):
+        key = parse.quote(key.encode('utf-8'))
+        url = self.uri + '/search/abbreviation/song/%s' % (key)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 

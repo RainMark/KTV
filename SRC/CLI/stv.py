@@ -139,6 +139,21 @@ class stv_signal_handler(object):
         app.qr_img.set_from_file('/tmp/stv_qr.png')
         app.qr_menu.menu.popup()
 
+    def stv_search_next_match(self, *args):
+        print('next_match')
+
+    def stv_search_previous_match(self, *args):
+        print('previous_match')
+
+    def stv_search_changed(self, *args):
+        key = app.entry_search.get_text()
+        if 0 == len(key):
+            key = 'A'
+        app.popover_search(key)
+
+    def stv_search_stop(self, *args):
+        print('stop')
+
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
@@ -211,6 +226,7 @@ class stv_class(object):
         self.history_store     = self.builder.get_object('lt_history')
         self.comment_store     = self.builder.get_object('lt_comment')
         self.top_store         = self.builder.get_object('lt_result')
+        self.star_store         = self.builder.get_object('lt_star')
 
         self.play_view         = self.builder.get_object('tv_play')
         self.top_view          = self.builder.get_object('tv_top')
@@ -225,6 +241,8 @@ class stv_class(object):
         self.play_img          = self.builder.get_object('bt_play_img')
         self.pause_img         = self.builder.get_object('bt_pause_img')
         self.qr_img            = self.builder.get_object('qr_img')
+
+        self.entry_search      = self.builder.get_object('entry_search')
 
         self.player            = stv_video_player_class(self.handler, self.handler.stv_mv_next)
 
@@ -385,6 +403,24 @@ class stv_class(object):
         st.clear()
         for meta in data:
             st.append([meta])
+
+    def popover_search(self, key):
+        use_unicode = (ord(key[0]) > ord('z'))
+        if use_unicode:
+            data = self.req.search_singer_by_fullname(key)
+        else:
+            data = self.req.search_singer_by_abridge(key)
+
+        if None == data:
+            return False
+
+        print(data)
+
+        # for meta in raw[0:4]:
+        #     data.append(meta[1])
+
+        st = self.star_store
+        st.clear()
 
 if __name__ == '__main__':
     app = stv_class('http://localhost:5000', '2')

@@ -1,6 +1,7 @@
-/* * { */
-/*     all: unset; */
-/* } */
+* {
+    /* all: unset; */
+    font-family: Ubuntu Mono;
+}
 
 /* @import url("gtk.css"); */
 

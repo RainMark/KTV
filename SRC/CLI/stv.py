@@ -22,7 +22,7 @@ class stv_signal_handler(object):
         box = app.box_rank
         child = box.get_children()
         box.remove(child[0])
-        box.add(app.box_top)
+        box.add(app.box_top50)
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
@@ -34,7 +34,7 @@ class stv_signal_handler(object):
         box = app.box_recommend
         child = box.get_children()
         box.remove(child[0])
-        box.add(app.box_top)
+        box.add(app.box_top50)
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
@@ -154,6 +154,9 @@ class stv_signal_handler(object):
     def stv_search_stop(self, *args):
         print('stop')
 
+    def stv_search_show(self, *args):
+        print('do search show')
+
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
@@ -218,7 +221,7 @@ class stv_class(object):
         self.box_phrase        = self.builder.get_object('box_phrase')
         self.box_disp          = self.builder.get_object('box_disp')
         self.box_ctrl          = self.builder.get_object('box_ctrl')
-        self.box_top           = self.builder.get_object('box_top')
+        self.box_top50           = self.builder.get_object('box_top50')
         self.box_rank          = self.builder.get_object('box_rank')
         self.box_recommend     = self.builder.get_object('box_recommend')
 
@@ -226,7 +229,8 @@ class stv_class(object):
         self.history_store     = self.builder.get_object('lt_history')
         self.comment_store     = self.builder.get_object('lt_comment')
         self.top_store         = self.builder.get_object('lt_result')
-        self.star_store         = self.builder.get_object('lt_star')
+        self.tmp_star_store    = self.builder.get_object('lt_tmp_star')
+        self.tmp_song_store    = self.builder.get_object('lt_tmp_song')
 
         self.play_view         = self.builder.get_object('tv_play')
         self.top_view          = self.builder.get_object('tv_top')
@@ -414,13 +418,25 @@ class stv_class(object):
         if None == data:
             return False
 
-        print(data)
-
-        # for meta in raw[0:4]:
-        #     data.append(meta[1])
-
-        st = self.star_store
+        st = self.tmp_star_store
         st.clear()
+        for meta in data[:4]:
+            print(meta)
+            st.append([meta[1], meta[0]])
+
+        if use_unicode:
+            data = self.req.search_song_by_fullname(key)
+        else:
+            data = self.req.search_song_by_abridge(key)
+
+        if None == data:
+            return False
+
+        st = self.tmp_song_store
+        st.clear()
+        for meta in data[:4]:
+            # print(meta)
+            st.append([meta[1], meta[0]])
 
 if __name__ == '__main__':
     app = stv_class('http://localhost:5000', '2')

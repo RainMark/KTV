@@ -38,11 +38,20 @@ def search_handler(srh_method, srh_type, srh_key):
 
     return Response(response=result, status=200, mimetype="application/json")
 
-@stv.route('/download/<int:sid>', methods=['GET'])
-def media_download_handler(sid):
-    mvfile  = os.path.join(LIBS, str(sid))
+@stv.route('/download/mv/<int:sid>', methods=['GET'])
+def video_download_handler(sid):
+    video = os.path.join(os.path.join(LIBS, 'mv'), str(sid))
     try:
-        return send_file(mvfile)
+        return send_file(video)
+    except Exception as e:
+        print(e)
+        return str('NULL')
+
+@stv.route('/download/album/<int:sid>', methods=['GET'])
+def album_download_handler(sid):
+    pic  = os.path.join(os.path.join(LIBS, 'singer'), str(sid))
+    try:
+        return send_file(pic)
     except Exception as e:
         print(e)
         return str('NULL')

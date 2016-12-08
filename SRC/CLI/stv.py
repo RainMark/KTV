@@ -3,7 +3,7 @@
 import os, signal, time, sys, gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
-from gi.repository import Gtk, Gdk, GObject, Gst
+from gi.repository import Gtk, Gdk, GObject, Gst, GdkPixbuf
 
 sys.path.append(os.path.join(os.getcwd(), 'util'))
 from stv_request import stv_request_class
@@ -148,14 +148,21 @@ class stv_signal_handler(object):
     def stv_search_changed(self, *args):
         key = app.entry_search.get_text()
         if 0 == len(key):
-            key = 'A'
+            return None
         app.popover_search(key)
 
     def stv_search_stop(self, *args):
         print('stop')
 
     def stv_search_show(self, *args):
-        print('do search show')
+        key = app.entry_search.get_text()
+        if 0 == len(key):
+            return None
+        app.find_menu.menu.hide()
+        if app.in_mv:
+            self.stv_mv_hide(*args)
+        app.stack.set_visible_child_name('page2')
+        app.box_search(key)
 
 class stv_popover(object):
     def __init__(self, menu):
@@ -215,6 +222,7 @@ class stv_class(object):
 
         self.titlebar          = self.builder.get_object('headerbar')
         self.window            = self.builder.get_object('window')
+        self.stack             = self.builder.get_object('st_context')
 
         self.box_main          = self.builder.get_object('box_main')
         self.box_menu          = self.builder.get_object('box_menu')
@@ -228,9 +236,10 @@ class stv_class(object):
         self.play_store        = self.builder.get_object('lt_play')
         self.history_store     = self.builder.get_object('lt_history')
         self.comment_store     = self.builder.get_object('lt_comment')
-        self.top_store         = self.builder.get_object('lt_result')
+        self.top_store         = self.builder.get_object('lt_top')
         self.tmp_star_store    = self.builder.get_object('lt_tmp_star')
         self.tmp_song_store    = self.builder.get_object('lt_tmp_song')
+        self.star_store        = self.builder.get_object('lt_star')
 
         self.play_view         = self.builder.get_object('tv_play')
         self.top_view          = self.builder.get_object('tv_top')
@@ -437,6 +446,33 @@ class stv_class(object):
         for meta in data[:4]:
             # print(meta)
             st.append([meta[1], meta[0]])
+
+    def box_search(self, key):
+        use_unicode = (ord(key[0]) > ord('z'))
+        if use_unicode:
+            data = self.req.search_singer_by_fullname(key)
+        else:
+            data = self.req.search_singer_by_abridge(key)
+
+        if None == data:
+            return False
+
+        st = self.star_store
+        st.clear()
+        for meta in data:
+            print(meta)
+            image = self.req.album_fetch(meta[0])
+            if None == image:
+                continue
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image, 80, 80)
+            st.append([pixbuf, meta[1], meta[0]])
+
+        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/林俊杰.jpg', 80, 80)
+        # st.append([pixbuf, '林俊杰', '1'])
+        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/邓紫棋.jpg', 80, 80)
+        # st.append([pixbuf, '邓紫棋', '2'])
+        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/周杰伦.jpg', 80, 80)
+        # st.append([pixbuf, '周杰伦', '3'])
 
 if __name__ == '__main__':
     app = stv_class('http://localhost:5000', '2')

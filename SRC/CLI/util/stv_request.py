@@ -102,13 +102,32 @@ class stv_request_class(object):
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
-    def download(self, song_id, directory = '/tmp/stv'):
+    def download(self, song_id, directory = '/tmp/stv/mv'):
         retval = os.path.isdir(directory)
         if not retval:
             os.mkdir(directory)
 
-        url = self.uri + '/download/%s' % (song_id)
+        url = self.uri + '/download/mv/%s' % (song_id)
         path = os.path.join(directory, song_id)
+        with request.urlopen(url) as f:
+            header = dict(f.getheaders())
+            length = int(header['Content-Length'])
+            if 4 == length:
+                return None
+
+            with open(path, 'wb') as out_file:
+                shutil.copyfileobj(f, out_file)
+
+        return path
+
+    @network_check
+    def album_fetch(self, star_id, directory = '/tmp/stv/album'):
+        retval = os.path.isdir(directory)
+        if not retval:
+            os.mkdir(directory)
+
+        url = self.uri + '/download/album/%s' % (star_id)
+        path = os.path.join(directory, star_id)
         with request.urlopen(url) as f:
             header = dict(f.getheaders())
             length = int(header['Content-Length'])
@@ -122,3 +141,4 @@ class stv_request_class(object):
 
 if __name__ == '__main__':
     req = stv_request_class('http://localhost:5000', '2')
+    req.album_fetch('2')

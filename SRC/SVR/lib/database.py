@@ -210,7 +210,7 @@ class stv_mariadb(object):
 
     def search_song_by_fullname(self, key):
         'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
-        sql = 'Select SongID, SongName, SongType, SongLanguage, StarID From Song Where SongName Like %s'
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Star.StarID = Song.StarId And SongName Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
             # return self.cursor.fetchall()
@@ -226,7 +226,7 @@ class stv_mariadb(object):
 
     def search_song_by_abridge(self, key):
         'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
-        sql = 'Select SongID, SongName, SongType, SongLanguage, StarID From Song Where SongNameAbridge Like %s'
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Star.StarID = Song.StarID And SongNameAbridge Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
             # return self.cursor.fetchall()
@@ -276,12 +276,12 @@ if __name__ == '__main__':
     # print('')
     # run.search_singer_by_fullname('周')
     # print('')
-    # run.search_song_by_abridge('X')
-    # print('')
-    # run.search_song_by_fullname('爱')
+    run.search_song_by_abridge('X')
+    print('')
+    run.search_song_by_fullname('喜')
     # run.user_get_all()
     # run.history_list_fetch('1')
     # run.history_list_insert('1', '22')
     # run.history_list_fetch('1')
-    run.comment_fetch('2')
+    # run.comment_fetch('2')
     run.close()

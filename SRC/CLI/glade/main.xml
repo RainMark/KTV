@@ -55,11 +55,16 @@
       </packing>
     </child>
   </object>
+  <object class="GtkImage" id="bt_add_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-add</property>
+  </object>
   <object class="GtkImage" id="bt_back_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="margin_right">15</property>
-    <property name="stock">gtk-go-back</property>
+    <property name="icon_name">go-previous</property>
   </object>
   <object class="GtkButton" id="bt_mv_back">
     <property name="label" translatable="yes">返回</property>
@@ -77,12 +82,13 @@
   <object class="GtkImage" id="bt_delete_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-delete</property>
+    <property name="icon_name">list-remove</property>
   </object>
   <object class="GtkImage" id="bt_find_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">edit-find</property>
+    <property name="pixel_size">20</property>
+    <property name="icon_name">stv_search</property>
   </object>
   <object class="GtkImage" id="bt_guess_img">
     <property name="visible">True</property>
@@ -99,8 +105,7 @@
   <object class="GtkImage" id="bt_mv_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixel_size">20</property>
-    <property name="icon_name">video-display</property>
+    <property name="icon_name">view-fullscreen</property>
   </object>
   <object class="GtkImage" id="bt_next_img">
     <property name="visible">True</property>
@@ -194,7 +199,8 @@
   <object class="GtkImage" id="bt_qr_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-justify-fill</property>
+    <property name="pixel_size">20</property>
+    <property name="icon_name">stv_qr</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkHeaderBar" id="headerbar">
@@ -305,7 +311,7 @@
   <object class="GtkImage" id="bt_totop_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-goto-top</property>
+    <property name="icon_name">go-up</property>
   </object>
   <object class="GtkPopover" id="play_menu">
     <property name="can_focus">False</property>
@@ -384,6 +390,66 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="bt_update_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">view-refresh</property>
+  </object>
+  <object class="GtkPopover" id="top_menu">
+    <property name="can_focus">False</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="baseline_position">top</property>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">刷新列表</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="image">bt_update_img</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="stv_result_refresh" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">添加歌曲</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="image">bt_add_img</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="stv_result_add" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -532,6 +598,7 @@
               <object class="GtkGrid" id="grid_mv">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_bottom">5</property>
                 <child>
                   <object class="GtkBox" id="box_disp">
                     <property name="width_request">40</property>
@@ -1367,57 +1434,6 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkPopover" id="top_menu">
-    <property name="can_focus">False</property>
-    <property name="position">bottom</property>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="baseline_position">top</property>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">刷新列表</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="stv_result_refresh" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSeparator">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">添加歌曲</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="stv_result_add" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">2</property>
           </packing>
         </child>
       </object>

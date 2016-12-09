@@ -164,6 +164,10 @@ class stv_signal_handler(object):
         app.stack.set_visible_child_name('page2')
         app.box_search(key)
 
+    def stv_search_star(self, *args):
+        print('Row changed')
+        app.view_search()
+
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
@@ -229,7 +233,7 @@ class stv_class(object):
         self.box_phrase        = self.builder.get_object('box_phrase')
         self.box_disp          = self.builder.get_object('box_disp')
         self.box_ctrl          = self.builder.get_object('box_ctrl')
-        self.box_top50           = self.builder.get_object('box_top50')
+        self.box_top50         = self.builder.get_object('box_top50')
         self.box_rank          = self.builder.get_object('box_rank')
         self.box_recommend     = self.builder.get_object('box_recommend')
 
@@ -240,9 +244,11 @@ class stv_class(object):
         self.tmp_star_store    = self.builder.get_object('lt_tmp_star')
         self.tmp_song_store    = self.builder.get_object('lt_tmp_song')
         self.star_store        = self.builder.get_object('lt_star')
+        self.song_store        = self.builder.get_object('lt_song')
 
         self.play_view         = self.builder.get_object('tv_play')
         self.top_view          = self.builder.get_object('tv_top')
+        self.star_view         = self.builder.get_object('tv_star')
 
         self.grid_mv           = self.builder.get_object('grid_mv')
         self.sc_comment        = self.builder.get_object('sc_comment')
@@ -467,12 +473,34 @@ class stv_class(object):
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image, 80, 80)
             st.append([pixbuf, meta[1], meta[0]])
 
+        if use_unicode:
+            data = self.req.search_song_by_fullname(key)
+        else:
+            data = self.req.search_song_by_abridge(key)
+
+        if None == data:
+            return False
+
+        st = self.song_store
+        st.clear()
+        for idx, meta in enumerate(data):
+            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+
         # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/林俊杰.jpg', 80, 80)
         # st.append([pixbuf, '林俊杰', '1'])
         # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/邓紫棋.jpg', 80, 80)
         # st.append([pixbuf, '邓紫棋', '2'])
         # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/周杰伦.jpg', 80, 80)
         # st.append([pixbuf, '周杰伦', '3'])
+
+    def view_search(self):
+        path, column = self.star_view.get_cursor()
+        if None == path:
+            return None
+
+        st = self.star_store
+        it = st.get_iter(path)
+        print(st[it][2])
 
 if __name__ == '__main__':
     app = stv_class('http://localhost:5000', '2')

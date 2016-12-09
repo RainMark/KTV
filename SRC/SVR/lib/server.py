@@ -83,6 +83,9 @@ class stv_server(object):
         else:
             return json.dumps(self.db.search_song_by_fullname(key))
 
+    def singer_song_fetch(self, song_id):
+        return json.dumps(self.db.singer_song_fetch(song_id))
+
 
 if __name__ == '__main__':
     s = stv_server('root', 'root', 'stv_db')

@@ -133,6 +133,8 @@ class stv_signal_handler(object):
         app.play_list_next()
 
     def stv_find(self, *args):
+        app.tmp_star_store.clear()
+        app.tmp_song_store.clear()
         app.find_menu.menu.popup()
 
     def stv_qr_show(self, *args):
@@ -486,13 +488,6 @@ class stv_class(object):
         for idx, meta in enumerate(data):
             st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
-        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/林俊杰.jpg', 80, 80)
-        # st.append([pixbuf, '林俊杰', '1'])
-        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/邓紫棋.jpg', 80, 80)
-        # st.append([pixbuf, '邓紫棋', '2'])
-        # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('../../Documents/DB/SingerPic/周杰伦.jpg', 80, 80)
-        # st.append([pixbuf, '周杰伦', '3'])
-
     def view_search(self):
         path, column = self.star_view.get_cursor()
         if None == path:
@@ -500,8 +495,21 @@ class stv_class(object):
 
         st = self.star_store
         it = st.get_iter(path)
-        print(st[it][2])
+        data = self.req.singer_song_fetch(st[it][2])
+        if None == data:
+            return None
+
+        st = self.song_store
+        st.clear()
+        for idx, meta in enumerate(data):
+            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+
+
+def init_env(tmp_path = '/tmp/stv'):
+    if not os.path.isdir(tmp_path):
+        os.mkdir(tmp_path)
 
 if __name__ == '__main__':
+    init_env()
     app = stv_class('http://localhost:5000', '2')
     Gtk.main()

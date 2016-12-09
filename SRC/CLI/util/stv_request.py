@@ -102,6 +102,12 @@ class stv_request_class(object):
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
+    def singer_song_fetch(self, singer_id):
+        url = self.uri + '/singer/fetch/%s' % (singer_id)
+        with request.urlopen(url) as f:
+            return json.loads(f.read().decode('utf-8'))
+
+    @network_check
     def download(self, song_id, directory = '/tmp/stv/mv'):
         retval = os.path.isdir(directory)
         if not retval:

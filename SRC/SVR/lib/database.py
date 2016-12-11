@@ -36,40 +36,32 @@ class stv_mariadb(object):
         self.database = mariadb.connect(user=muser, password=mpassword, database=mdatabase)
         self.cursor = self.database.cursor()
         self.trigger = stv_trigger()
+        self.hot_map_sql = {
+            'hotall'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongYear DESC',
+            'hotzh'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'中文\' Order By SongYear DESC',
+            'hoten'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'英文\' Order By SongYear DESC',
+            'hotweek'   :' From Song, Star Where Song.StarID = Star.StarID Order By SongWeek DESC',
+            'hotmonth'  :' From Song, Star Where Song.StarID = Star.StarID Order By SongMonth DESC'
+        }
 
     def close(self):
         self.database.close()
 
-    def hot_all(self):
-        'Return the most hot MVs as click rate.'
-        query = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = Star.StarID Order By songmonth DESC'
-        self.cursor.execute(query)
+    def hot_fetch(self, hot_type):
+        if None == self.hot_map_sql.get(hot_type):
+            return []
+
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage' + self.hot_map_sql[hot_type]
+        print(sql)
+
+        self.cursor.execute(sql)
         data = self.cursor.fetchall()
         for item in data[0:50]:
             print(item)
         return data[0:50]
-
-    def hot_zh(self):
-        'Return the most hot Chinese MVs as click rate.'
-        query = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = Star.StarID And SongLanguage=\'中文\' Order By songmonth DESC'
-        self.cursor.execute(query)
-        data = self.cursor.fetchall()
-        for item in data[0:50]:
-            print(item)
-        return data[0:50]
-
-    def hot_not_zh(self):
-        'Return the most hot MVs as click rate.'
-        query = 'Select SongID, SongName, SongType, SongLanguage, StarID From Song Where songlanguage!=\'中文\' Order By songmonth DESC'
-        self.cursor.execute(query)
-        data = self.cursor.fetchall()
-        # for item in data[0:10]:
-        #     print(item)
-        return data[0:10]
 
     def comment_fetch(self, song_id):
         sql = 'Select C_Content From Comment Where SongID = %s'
-        data = []
         try:
             self.cursor.execute(sql, [song_id])
             raw = self.cursor.fetchall()
@@ -78,7 +70,7 @@ class stv_mariadb(object):
                 # print(data)
             return data
         except:
-            return data
+            return []
 
     def playing_list_fetch(self, client_id):
         sql = 'Select Song.SongID, Song.SongName From Song, C_Song Where Song.SongID = C_Song.SongID && ClientID = %s Order By S_Order'
@@ -89,7 +81,7 @@ class stv_mariadb(object):
                 print(item)
             return data
         except:
-            return [()]
+            return []
 
     def playing_list_add(self, client_id, song_id):
         sql = 'Select count(S_Order) From C_Song Where ClientID = %s'
@@ -164,7 +156,7 @@ class stv_mariadb(object):
                 print(item)
             return data
         except:
-            return [()]
+            return []
 
     def history_list_insert(self, client_id, song_id):
         sql = 'Insert into History(SongID, ClientID) Value(%s, %s)'
@@ -191,7 +183,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
     def search_singer_by_fullname(self, key):
         sql = 'Select StarID, StarName, StarRegion, StarStyle From Star Where StarName Like %s'
@@ -206,7 +198,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
     def search_song_by_fullname(self, key):
         'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
@@ -222,7 +214,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
     def search_song_by_abridge(self, key):
         'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
@@ -238,7 +230,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
     def singer_song_fetch(self, singer_id):
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = %s And Star.StarID = Song.StarID'
@@ -253,7 +245,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
     def user_get_all(self):
         sql = 'Select ClientID, SongID From History'
@@ -268,7 +260,7 @@ class stv_mariadb(object):
         except:
             self.database.rollback()
             print('Execute SQL Except: ', sql)
-            return (())
+            return []
 
 if __name__ == '__main__':
     run = stv_mariadb('root', 'root', 'stv_db')

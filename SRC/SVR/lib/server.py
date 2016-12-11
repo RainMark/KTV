@@ -23,12 +23,8 @@ class stv_server(object):
     def insert_seq(self, cid, seq):
         self.sequences[cid] = seq
 
-    def top_fetch(self, top_type='all'):
-        if top_type == 'zh':
-            top_list = self.db.hot_zh()
-        else:
-            top_list = self.db.hot_all()
-
+    def top_fetch(self, top_type='hotall'):
+        top_list = self.db.hot_fetch(top_type)
         return json.dumps(top_list)
 
     def comment_fetch(self, sid):

@@ -64,6 +64,7 @@ class stv_request_class(object):
     @network_check
     def top_fetch(self, top_type = 'all'):
         url = self.uri + '/top/%s' % (top_type)
+        print(url)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 

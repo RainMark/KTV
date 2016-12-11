@@ -79,6 +79,18 @@
     <property name="always_show_image">True</property>
     <signal name="clicked" handler="stv_mv_hide" swapped="no"/>
   </object>
+  <object class="GtkImage" id="bt_comment_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">applications-multimedia</property>
+  </object>
+  <object class="GtkImage" id="bt_dayrecommend_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">accessories-calculator</property>
+  </object>
   <object class="GtkImage" id="bt_delete_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -102,10 +114,40 @@
     <property name="pixel_size">100</property>
     <property name="icon_name">accessories-dictionary</property>
   </object>
+  <object class="GtkImage" id="bt_hoten_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">applications-science</property>
+  </object>
+  <object class="GtkImage" id="bt_hotmonth_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">applications-engineering</property>
+  </object>
+  <object class="GtkImage" id="bt_hotweek_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">audio-card</property>
+  </object>
+  <object class="GtkImage" id="bt_hotzh_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">applications-development</property>
+  </object>
   <object class="GtkImage" id="bt_mv_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">view-fullscreen</property>
+  </object>
+  <object class="GtkImage" id="bt_new_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">document-new</property>
   </object>
   <object class="GtkImage" id="bt_next_img">
     <property name="visible">True</property>
@@ -195,6 +237,12 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">media-playback-pause</property>
+  </object>
+  <object class="GtkImage" id="bt_popular_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">applications-internet</property>
   </object>
   <object class="GtkImage" id="bt_qr_img">
     <property name="visible">True</property>
@@ -307,6 +355,12 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">view-refresh</property>
+  </object>
+  <object class="GtkImage" id="bt_rock_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">100</property>
+    <property name="icon_name">address-book-new</property>
   </object>
   <object class="GtkImage" id="bt_totop_img">
     <property name="visible">True</property>
@@ -811,7 +865,6 @@
                             <property name="can_focus">False</property>
                             <property name="row_spacing">10</property>
                             <property name="column_spacing">10</property>
-                            <property name="row_homogeneous">True</property>
                             <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkButton">
@@ -831,7 +884,7 @@
                             </child>
                             <child>
                               <object class="GtkButton">
-                                <property name="label" translatable="yes">随便来几首</property>
+                                <property name="label" translatable="yes">随心而唱</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -846,12 +899,13 @@
                             </child>
                             <child>
                               <object class="GtkButton">
+                                <property name="label" translatable="yes">好评不断</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
+                                <property name="image">bt_comment_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -859,10 +913,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -873,66 +927,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -940,6 +938,149 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="label" translatable="yes">流行地带</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">bt_popular_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="label" translatable="yes">摇滚人生</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">bt_rock_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="label" translatable="yes">每日推荐</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">bt_dayrecommend_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
                               </packing>
                             </child>
                           </object>
@@ -968,7 +1109,6 @@
                             <property name="can_focus">False</property>
                             <property name="row_spacing">10</property>
                             <property name="column_spacing">10</property>
-                            <property name="row_homogeneous">True</property>
                             <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkButton">
@@ -988,9 +1128,13 @@
                             </child>
                             <child>
                               <object class="GtkButton">
+                                <property name="label" translatable="yes">中文最热</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="image">bt_hotzh_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -999,31 +1143,13 @@
                             </child>
                             <child>
                               <object class="GtkButton">
+                                <property name="label" translatable="yes">英文最热</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="image">bt_hoten_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -1032,9 +1158,71 @@
                             </child>
                             <child>
                               <object class="GtkButton">
+                                <property name="label" translatable="yes">新歌榜</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="image">bt_new_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="label" translatable="yes">月度热榜</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">bt_hotmonth_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="label" translatable="yes">每周热榜</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">bt_hotweek_img</property>
+                                <property name="image_position">top</property>
+                                <property name="always_show_image">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -1042,10 +1230,69 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -1053,24 +1300,30 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
                               </object>
                               <packing>
-                                <property name="left_attach">0</property>
+                                <property name="left_attach">1</property>
                                 <property name="top_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
                               </object>
                               <packing>
-                                <property name="left_attach">1</property>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">2</property>
                               </packing>
                             </child>
@@ -1183,10 +1436,18 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel">
+                                  <object class="GtkEventBox" id="star_man">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">男歌手</property>
+                                    <signal name="button-press-event" handler="stv_filter_star_type" swapped="no"/>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">男歌手</property>
+                                        <property name="use_markup">True</property>
+                                      </object>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1195,10 +1456,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel">
+                                  <object class="GtkEventBox" id="star_lady">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">女歌手</property>
+                                    <signal name="button-press-event" handler="stv_filter_star_type" swapped="no"/>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">女歌手</property>
+                                      </object>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1207,10 +1475,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel">
+                                  <object class="GtkEventBox" id="star_team">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">乐队组合</property>
+                                    <signal name="button-press-event" handler="stv_filter_star_type" swapped="no"/>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">乐队组合</property>
+                                      </object>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>

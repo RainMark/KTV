@@ -21,8 +21,8 @@ svr = stv_server(user='root', password='root', database='stv_db')
 @stv.route('/top/<top_type>', methods=['GET'])
 def top_handler(top_type):
     print('Get Top %s' % (top_type))
-    top_list_dumps = svr.top_fetch()
-    return Response(response=top_list_dumps, status=200, mimetype="application/json")
+    dumps = svr.top_fetch(top_type)
+    return Response(response=dumps, status=200, mimetype="application/json")
 
 @stv.route('/search/<srh_method>/<srh_type>/<srh_key>', methods=['GET'])
 def search_handler(srh_method, srh_type, srh_key):

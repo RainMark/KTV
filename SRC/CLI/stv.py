@@ -1,6 +1,6 @@
 #!/usr/python3
 
-import os, signal, time, sys, gi
+import os, signal, time, sys, gi, threading
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 from gi.repository import Gtk, Gdk, GObject, Gst, GdkPixbuf
@@ -26,7 +26,7 @@ class stv_signal_handler(object):
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
-        app.req_type = 'topall'
+        app.req_type = 'hotall'
         app.result_list_refresh()
 
     def stv_guess(self, widget):
@@ -170,6 +170,12 @@ class stv_signal_handler(object):
         print('Row changed')
         app.view_search()
 
+    def stv_filter_star_type(self, widget, event):
+        print('stv_filter_star_type ', dir(widget))
+        print(widget.__class__)
+        print(widget.get_name())
+        print(widget.get_children())
+
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
@@ -305,7 +311,7 @@ class stv_class(object):
     def play_list_update(self):
         data = self.req.play_list_fetch()
         store = self.play_store
-        if None != data:
+        if None != data and 0 != len(data):
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx, meta[1], meta[0]])
@@ -314,7 +320,7 @@ class stv_class(object):
     def his_list_update(self):
         data = self.req.his_list_fetch()
         store = self.history_store
-        if None != data:
+        if None != data and 0 != len(data):
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx, meta[1], meta[0]])
@@ -348,18 +354,16 @@ class stv_class(object):
             self.play_list_update()
 
     def result_list_refresh(self):
-        if 'topall' == self.req_type:
-            data = self.req.top_fetch('all')
-        elif 'topzh' == self.req_type:
-            data = self.req.top_fetch('zh')
-        else:
-            data = None
+        if None == self.req_type:
+            return None
 
+        data = self.req.top_fetch(self.req_type)
         st = self.top_store
         st.clear()
 
-        if None == data:
+        if None == data and 0 == len(data):
             return None
+
         for idx, meta in enumerate(data):
             st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
@@ -480,7 +484,7 @@ class stv_class(object):
         else:
             data = self.req.search_song_by_abridge(key)
 
-        if None == data:
+        if None == data and 0 == len(data):
             return False
 
         st = self.song_store
@@ -496,7 +500,7 @@ class stv_class(object):
         st = self.star_store
         it = st.get_iter(path)
         data = self.req.singer_song_fetch(st[it][2])
-        if None == data:
+        if None == data and 0 == len(data):
             return None
 
         st = self.song_store

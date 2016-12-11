@@ -41,7 +41,8 @@ class stv_mariadb(object):
             'hotzh'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'中文\' Order By SongYear DESC',
             'hoten'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'英文\' Order By SongYear DESC',
             'hotweek'   :' From Song, Star Where Song.StarID = Star.StarID Order By SongWeek DESC',
-            'hotmonth'  :' From Song, Star Where Song.StarID = Star.StarID Order By SongMonth DESC'
+            'hotmonth'  :' From Song, Star Where Song.StarID = Star.StarID Order By SongMonth DESC',
+            'hotnew'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongDate DESC'
         }
 
     def close(self):
@@ -63,11 +64,11 @@ class stv_mariadb(object):
     def comment_fetch(self, song_id):
         sql = 'Select C_Content From Comment Where SongID = %s'
         try:
+            data = []
             self.cursor.execute(sql, [song_id])
             raw = self.cursor.fetchall()
             for v in raw[0:20]:
                 data.append(v[0])
-                # print(data)
             return data
         except:
             return []

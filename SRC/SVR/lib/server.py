@@ -24,7 +24,11 @@ class stv_server(object):
         self.sequences[cid] = seq
 
     def top_fetch(self, top_type='hotall'):
-        top_list = self.db.hot_fetch(top_type)
+        is_hot = ('hot' == top_type[0:3])
+        if is_hot:
+            top_list = self.db.hot_fetch(top_type)
+        else:
+            top_list = []
         return json.dumps(top_list)
 
     def comment_fetch(self, sid):

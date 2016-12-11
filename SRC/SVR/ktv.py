@@ -63,9 +63,9 @@ def album_download_handler(sid):
 
 @stv.route('/comment/fetch/<int:sid>/', methods=['GET'])
 def comment_fetch_handler(sid):
-    print('Fetching Comments ...')
-    commenmts = svr.comment_fetch(sid)
-    return Response(response=commenmts, status=200, mimetype="application/json")
+    print('Fetching Comments ... ', sid)
+    comment = svr.comment_fetch(sid)
+    return Response(response=comment, status=200, mimetype="application/json")
 
 # Desktop handler
 @stv.route('/playing/fetch/<int:cid>', methods=['GET'])

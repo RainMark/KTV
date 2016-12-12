@@ -1,5 +1,6 @@
 #!/usr/python3
 
+import logging
 import json
 import sys
 import os
@@ -13,9 +14,9 @@ LIBS = '/var/lib/stv'
 sys.path.append(os.path.join(os.getcwd(), 'lib'))
 from server import stv_server
 
-
 stv = Flask(__name__)
 svr = stv_server(user='root', password='root', database='stv_db')
+# logging.basicConfig(filename='/tmp/stv_server.log', level=logging.INFO)
 
 # Common handler
 @stv.route('/top/<top_type>', methods=['GET'])
@@ -28,13 +29,10 @@ def search_handler(srh_method, srh_type, srh_key):
     use_abridge = ('abbreviation' == srh_method)
     if 'singer' == srh_type:
         result = svr.search_singer(srh_key, use_abridge)
-
     elif 'song' == srh_type:
         result = svr.search_song(srh_key, use_abridge)
-
     else:
         result = json.dumps((()))
-
     return Response(response=result, status=200, mimetype="application/json")
 
 @stv.route('//singer/fetch/<int:sid>', methods=['GET'])
@@ -48,7 +46,7 @@ def video_download_handler(sid):
     try:
         return send_file(video)
     except Exception as e:
-        print(e)
+        logging.error(e)
         return str('NULL')
 
 @stv.route('/download/album/<int:sid>', methods=['GET'])
@@ -57,7 +55,7 @@ def album_download_handler(sid):
     try:
         return send_file(pic)
     except Exception as e:
-        print(e)
+        logging.error(e)
         return str('NULL')
 
 @stv.route('/comment/fetch/<int:sid>/', methods=['GET'])

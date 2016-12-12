@@ -1,5 +1,6 @@
 #!/usr/python3
 
+import logging
 import random
 import mysql.connector as mariadb
 
@@ -9,7 +10,7 @@ class stv_trigger(object):
 
     def csong_update_after_delete(self, db, client_id, old_order):
         sql = 'Update C_Song Set S_Order = S_Order - 1 Where S_Order > %s'
-        print(old_order)
+        logging.info(old_order)
         cursor = db.cursor()
         try:
             cursor.execute(sql, [old_order])
@@ -17,17 +18,19 @@ class stv_trigger(object):
             return True
         except:
             db.rollback()
+            logging.error('SQL ERROR in %s', self.csong_update_after_delete.__name__)
             return False
 
     def csong_update_before_insert(self, db, client_id, limit_order):
         sql = 'Update C_Song Set S_Order = S_Order + 1 Where S_Order >= %s'
-        print(limit_order)
+        logging.info(limit_order)
         cursor = db.cursor()
         try:
             cursor.execute(sql, [limit_order])
             return True
         except:
             db.rollback()
+            logging.error('SQL ERROR in %s', self.csong_update_before_insert.__name__)
             return False
 
 
@@ -53,14 +56,13 @@ class stv_mariadb(object):
     def hot_fetch(self, hot_type):
         if None == self.hot_map_sql.get(hot_type):
             return []
-
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage' + self.hot_map_sql[hot_type]
-
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
             return data
         except:
+            logging.warning('hot_fetch failed!')
             return []
 
     def song_fetch_by_ids(self, ids):
@@ -77,6 +79,7 @@ class stv_mariadb(object):
             data = self.cursor.fetchall()
             return data
         except:
+            logging.warning('song_fetch_by_ids failed!')
             return []
 
     def song_fetch_by_random(self):
@@ -88,6 +91,7 @@ class stv_mariadb(object):
             r2 = random.randint(0, len(raw_data))
             return raw_data[min(r1,r2):max(r1,r2)]
         except:
+            logging.warning('song_fetch_by_random failed!')
             return []
 
     def song_fetch_by_most_comment(self):
@@ -97,6 +101,7 @@ class stv_mariadb(object):
             data = self.cursor.fetchall()
             return data
         except:
+            logging.warning('song_fetch_by_most_comment failed!')
             return []
 
     def comment_fetch(self, song_id):
@@ -109,6 +114,7 @@ class stv_mariadb(object):
                 data.append(v[0])
             return data
         except:
+            logging.warning('comment_fetch failed!')
             return []
 
     def playing_list_fetch(self, client_id):
@@ -118,6 +124,7 @@ class stv_mariadb(object):
             data = self.cursor.fetchall()
             return data
         except:
+            logging.warning('playing_list_fetch failed')
             return []
 
     def playing_list_add(self, client_id, song_id):
@@ -133,10 +140,9 @@ class stv_mariadb(object):
             self.cursor.execute(sql, [song_id, client_id, order + 1])
             self.database.commit()
             return True
-
         except:
             self.database.rollback()
-            print('Execute SQL Except: ', sql)
+            logging.error('Execute SQL Except: %s', sql)
             return False
 
     def playing_list_delete(self, client_id, song_id):
@@ -145,13 +151,12 @@ class stv_mariadb(object):
             self.cursor.execute(sql, [client_id, song_id])
             order = int(self.cursor.fetchall()[0][0])
         except:
-            print('Execute SQL Except: ', sql)
+            logging.error('Execute SQL Except: %s', sql)
             return False
 
         sql = 'Delete From C_Song Where ClientID = %s && SongID = %s'
         try:
             self.cursor.execute(sql, [client_id, song_id])
-            # self.database.commit()
             ret = self.trigger.csong_update_after_delete(self.database, client_id, order)
             if ret:
                 self.history_list_insert(client_id, song_id)
@@ -161,7 +166,7 @@ class stv_mariadb(object):
 
         except:
             self.database.rollback()
-            print('Execute SQL Except: ', sql)
+            logging.error('Execute SQL Except: %s', sql)
             return False
 
     def playing_list_resort(self, client_id, song_id, order):
@@ -180,7 +185,7 @@ class stv_mariadb(object):
 
         except:
             self.database.rollback()
-            print('Execute SQL Except: ', sql)
+            logging.error('Execute SQL Except: %s', sql)
             return False
 
     def history_list_fetch(self, client_id):
@@ -190,6 +195,7 @@ class stv_mariadb(object):
             data = self.cursor.fetchall()
             return data
         except:
+            logging.warning('history_list_fetch failed')
             return []
 
     def history_list_insert(self, client_id, song_id):
@@ -201,7 +207,7 @@ class stv_mariadb(object):
 
         except:
             self.database.rollback()
-            print('Execute SQL Except: ', sql)
+            logging.error('Execute SQL Except: %s', sql)
             return False
 
     def search_singer_by_abridge(self, key):
@@ -212,7 +218,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
     def search_singer_by_fullname(self, key):
@@ -223,7 +229,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
     def search_song_by_fullname(self, key):
@@ -234,7 +240,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
     def search_song_by_abridge(self, key):
@@ -245,7 +251,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
     def singer_song_fetch(self, singer_id):
@@ -256,7 +262,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
     def user_get_all(self):
@@ -267,7 +273,7 @@ class stv_mariadb(object):
             return data
 
         except:
-            print('Execute SQL Except: ', sql)
+            logging.warning('Execute SQL Except: %s', sql)
             return []
 
 if __name__ == '__main__':

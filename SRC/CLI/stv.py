@@ -17,27 +17,84 @@ class stv_signal_handler(object):
         app.player.stop()
         Gtk.main_quit(*args)
 
-    def stv_hotall(self, widget):
-        self.stv_back()
-        box = app.box_rank
-        child = box.get_children()
-        box.remove(child[0])
-        box.add(app.box_top50)
-        app.stack_box = box
-        app.stack_box_child = child[0]
-        app.restored = False
+    def stv_rank_decorator(func):
+        def wrapper(*args, **kw):
+            app.handler.stv_back()
+            box = app.box_rank
+            child = box.get_children()
+            box.remove(child[0])
+            box.add(app.box_top50)
+            app.stack_box = box
+            app.stack_box_child = child[0]
+            app.restored = False
+            return func(*args, **kw)
+        return wrapper
+
+    @stv_rank_decorator
+    def stv_rank_all(self, *args):
         app.req_type = 'all'
         app.result_list_refresh()
 
-    def stv_guess(self, widget):
-        self.stv_back()
-        box = app.box_recommend
-        child = box.get_children()
-        box.remove(child[0])
-        box.add(app.box_top50)
-        app.stack_box = box
-        app.stack_box_child = child[0]
-        app.restored = False
+    @stv_rank_decorator
+    def stv_rank_zh(self, *args):
+        app.req_type = 'zh'
+        app.result_list_refresh()
+
+    @stv_rank_decorator
+    def stv_rank_en(self, *args):
+        app.req_type = 'en'
+        app.result_list_refresh()
+
+    @stv_rank_decorator
+    def stv_rank_new(self, *args):
+        app.req_type = 'new'
+        app.result_list_refresh()
+
+    @stv_rank_decorator
+    def stv_rank_week(self, *args):
+        app.req_type = 'week'
+        app.result_list_refresh()
+
+    @stv_rank_decorator
+    def stv_rank_month(self, *args):
+        app.req_type = 'month'
+        app.result_list_refresh()
+
+    def stv_recommend_decorator(func):
+        def wrapper(*args, **kw):
+            app.handler.stv_back()
+            box = app.box_recommend
+            child = box.get_children()
+            box.remove(child[0])
+            box.add(app.box_top50)
+            app.stack_box = box
+            app.stack_box_child = child[0]
+            app.restored = False
+            return func(*args, **kw)
+        return wrapper
+
+    @stv_recommend_decorator
+    def stv_recommend_rock(self, *args):
+        app.req_type = 'rock'
+        app.result_list_refresh()
+
+    @stv_recommend_decorator
+    def stv_recommend_popular(self, *args):
+        app.req_type = 'popular'
+        app.result_list_refresh()
+
+    @stv_recommend_decorator
+    def stv_recommend_random(self, *args):
+        app.req_type = 'random'
+        app.result_list_refresh()
+
+    @stv_recommend_decorator
+    def stv_recommend_comment(self, *args):
+        app.req_type = 'comment'
+        app.result_list_refresh()
+
+    @stv_recommend_decorator
+    def stv_recommend_guess(self, *args):
         app.req_type = 'guess'
         app.result_list_refresh()
 
@@ -497,6 +554,7 @@ class stv_class(object):
         if None == path:
             return None
 
+        self.song_store.clear()
         st = self.star_store
         it = st.get_iter(path)
         data = self.req.singer_song_fetch(st[it][2])
@@ -504,7 +562,6 @@ class stv_class(object):
             return None
 
         st = self.song_store
-        st.clear()
         for idx, meta in enumerate(data):
             st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 

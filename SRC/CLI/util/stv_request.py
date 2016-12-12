@@ -62,8 +62,11 @@ class stv_request_class(object):
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
-    def top_fetch(self, top_type = 'all'):
-        url = self.uri + '/top/%s' % (top_type)
+    def top_fetch(self, top_type):
+        if 'guess' == top_type:
+            url = self.uri + '/desktop/recommendation/%s' % (self.machine)
+        else:
+            url = self.uri + '/top/%s' % (top_type)
         print(url)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))

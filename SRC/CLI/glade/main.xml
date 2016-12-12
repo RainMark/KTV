@@ -85,12 +85,6 @@
     <property name="pixel_size">100</property>
     <property name="icon_name">applications-multimedia</property>
   </object>
-  <object class="GtkImage" id="bt_dayrecommend_img">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixel_size">100</property>
-    <property name="icon_name">accessories-calculator</property>
-  </object>
   <object class="GtkImage" id="bt_delete_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -875,7 +869,7 @@
                                 <property name="image">bt_guess_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="stv_guess" swapped="no"/>
+                                <signal name="clicked" handler="stv_recommend_guess" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -891,6 +885,7 @@
                                 <property name="image">bt_random_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_recommend_random" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -906,6 +901,7 @@
                                 <property name="image">bt_comment_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_recommend_comment" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -977,6 +973,7 @@
                                 <property name="image">bt_popular_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_recommend_popular" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -1062,6 +1059,7 @@
                                 <property name="image">bt_rock_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_recommend_rock" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">4</property>
@@ -1069,14 +1067,13 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
-                                <property name="label" translatable="yes">每日推荐</property>
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="image">bt_dayrecommend_img</property>
-                                <property name="image_position">top</property>
-                                <property name="always_show_image">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1112,14 +1109,14 @@
                             <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkButton">
-                                <property name="label" translatable="yes">热歌榜</property>
+                                <property name="label" translatable="yes">全网最热</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="image">bt_hotall_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="stv_hotall" swapped="no"/>
+                                <signal name="clicked" handler="stv_rank_all" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1135,6 +1132,7 @@
                                 <property name="image">bt_hotzh_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_rank_zh" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1150,6 +1148,7 @@
                                 <property name="image">bt_hoten_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_rank_en" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -1165,6 +1164,7 @@
                                 <property name="image">bt_new_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_rank_new" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -1180,6 +1180,7 @@
                                 <property name="image">bt_hotmonth_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_rank_month" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">4</property>
@@ -1195,6 +1196,7 @@
                                 <property name="image">bt_hotweek_img</property>
                                 <property name="image_position">top</property>
                                 <property name="always_show_image">True</property>
+                                <signal name="clicked" handler="stv_rank_week" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>

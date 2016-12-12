@@ -35,7 +35,7 @@ def search_handler(srh_method, srh_type, srh_key):
         result = json.dumps((()))
     return Response(response=result, status=200, mimetype="application/json")
 
-@stv.route('//singer/fetch/<int:sid>', methods=['GET'])
+@stv.route('/singer/fetch/<int:sid>', methods=['GET'])
 def singer_song_fetch(sid):
     dumps = svr.singer_song_fetch(sid)
     return Response(response=dumps, status=200, mimetype="application/json")

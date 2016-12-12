@@ -33,31 +33,31 @@ class stv_request_class(object):
 
     @network_check
     def play_list_fetch(self):
-        url = self.uri + '/playing/fetch/' + self.machine
+        url = self.uri + '/desktop/playing/fetch/' + self.machine
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
     def his_list_fetch(self):
-        url = self.uri + '/history/fetch/' + self.machine
+        url = self.uri + '/desktop/history/fetch/' + self.machine
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
     def play_list_move(self, song_id):
-        url = self.uri + '/playing/resort/%s/%s/2' % (self.machine, song_id)
+        url = self.uri + '/desktop/playing/resort/%s/%s/2' % (self.machine, song_id)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
     def play_list_add(self, song_id):
-        url = self.uri + '/playing/add/%s/%s' % (self.machine, song_id)
+        url = self.uri + '/desktop/playing/add/%s/%s' % (self.machine, song_id)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 
     @network_check
     def play_list_remove(self, song_id):
-        url = self.uri + '/playing/delete/%s/%s' % (self.machine, song_id)
+        url = self.uri + '/desktop/playing/delete/%s/%s' % (self.machine, song_id)
         with request.urlopen(url) as f:
             return json.loads(f.read().decode('utf-8'))
 

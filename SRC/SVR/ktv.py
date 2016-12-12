@@ -20,7 +20,6 @@ svr = stv_server(user='root', password='root', database='stv_db')
 # Common handler
 @stv.route('/top/<top_type>', methods=['GET'])
 def top_handler(top_type):
-    print('Get Top %s' % (top_type))
     dumps = svr.top_fetch(top_type)
     return Response(response=dumps, status=200, mimetype="application/json")
 
@@ -38,7 +37,7 @@ def search_handler(srh_method, srh_type, srh_key):
 
     return Response(response=result, status=200, mimetype="application/json")
 
-@stv.route('/singer/fetch/<int:sid>', methods=['GET'])
+@stv.route('//singer/fetch/<int:sid>', methods=['GET'])
 def singer_song_fetch(sid):
     dumps = svr.singer_song_fetch(sid)
     return Response(response=dumps, status=200, mimetype="application/json")
@@ -63,24 +62,21 @@ def album_download_handler(sid):
 
 @stv.route('/comment/fetch/<int:sid>/', methods=['GET'])
 def comment_fetch_handler(sid):
-    print('Fetching Comments ... ', sid)
     comment = svr.comment_fetch(sid)
     return Response(response=comment, status=200, mimetype="application/json")
 
 # Desktop handler
-@stv.route('/playing/fetch/<int:cid>', methods=['GET'])
+@stv.route('/desktop/playing/fetch/<int:cid>', methods=['GET'])
 def desktop_playing_list_fetch_handler(cid):
-    print('Fetching Playing list..')
     playing_list_dumps = svr.playing_list_fetch(cid)
     return Response(response=playing_list_dumps, status=200, mimetype="application/json")
 
-@stv.route('/history/fetch/<int:cid>', methods=['GET'])
+@stv.route('/desktop/history/fetch/<int:cid>', methods=['GET'])
 def desktop_history_list_fetch_handler(cid):
-    print('Fetching History list..')
     history_list_dumps = svr.history_list_fetch(cid)
     return Response(response=history_list_dumps, status=200, mimetype="application/json")
 
-@stv.route('/playing/<ope>/<int:cid>/<int:sid>', methods=['GET'])
+@stv.route('/desktop/playing/<ope>/<int:cid>/<int:sid>', methods=['GET'])
 def desktop_playing_list_operations_handler(ope, cid, sid):
     if 'add' == ope:
         result = svr.playing_list_add(cid, sid)
@@ -91,9 +87,8 @@ def desktop_playing_list_operations_handler(ope, cid, sid):
 
     return Response(response=result, status=200, mimetype="application/json")
 
-@stv.route('/playing/resort/<int:cid>/<int:sid>/<int:order>', methods=['GET'])
+@stv.route('/desktop/playing/resort/<int:cid>/<int:sid>/<int:order>', methods=['GET'])
 def desktop_playing_list_resort_handler(cid, sid, order):
-    print('Resorting Playing list..')
     result = svr.playing_list_resort(cid, sid, order)
     return Response(response=result, status=200, mimetype="application/json")
 

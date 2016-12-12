@@ -27,38 +27,33 @@ class stv_signal_handler(object):
             app.stack_box = box
             app.stack_box_child = child[0]
             app.restored = False
-            return func(*args, **kw)
+            func(*args, **kw)
+            app.result_list_refresh()
         return wrapper
 
     @stv_rank_decorator
     def stv_rank_all(self, *args):
         app.req_type = 'all'
-        app.result_list_refresh()
 
     @stv_rank_decorator
     def stv_rank_zh(self, *args):
         app.req_type = 'zh'
-        app.result_list_refresh()
 
     @stv_rank_decorator
     def stv_rank_en(self, *args):
         app.req_type = 'en'
-        app.result_list_refresh()
 
     @stv_rank_decorator
     def stv_rank_new(self, *args):
         app.req_type = 'new'
-        app.result_list_refresh()
 
     @stv_rank_decorator
     def stv_rank_week(self, *args):
         app.req_type = 'week'
-        app.result_list_refresh()
 
     @stv_rank_decorator
     def stv_rank_month(self, *args):
         app.req_type = 'month'
-        app.result_list_refresh()
 
     def stv_recommend_decorator(func):
         def wrapper(*args, **kw):
@@ -70,33 +65,29 @@ class stv_signal_handler(object):
             app.stack_box = box
             app.stack_box_child = child[0]
             app.restored = False
-            return func(*args, **kw)
+            func(*args, **kw)
+            app.result_list_refresh()
         return wrapper
 
     @stv_recommend_decorator
     def stv_recommend_rock(self, *args):
         app.req_type = 'rock'
-        app.result_list_refresh()
 
     @stv_recommend_decorator
     def stv_recommend_popular(self, *args):
         app.req_type = 'popular'
-        app.result_list_refresh()
 
     @stv_recommend_decorator
     def stv_recommend_random(self, *args):
         app.req_type = 'random'
-        app.result_list_refresh()
 
     @stv_recommend_decorator
     def stv_recommend_comment(self, *args):
         app.req_type = 'comment'
-        app.result_list_refresh()
 
     @stv_recommend_decorator
     def stv_recommend_guess(self, *args):
         app.req_type = 'guess'
-        app.result_list_refresh()
 
     def stv_back(self, *args):
         if app.restored:
@@ -148,7 +139,6 @@ class stv_signal_handler(object):
         gd.attach(app.box_ctrl,   0, 3, 1, 1)
         gd.attach(app.sc_comment, 1, 0, 1, 3)
 
-        # app.window.set_size_request(1022, 500)
         app.in_mv = True
 
     def stv_mv_hide(self, *args):
@@ -169,7 +159,6 @@ class stv_signal_handler(object):
         gd.attach(app.box_ctrl, 1, 0, 1, 1)
 
         app.box_main.add(app.box_menu)
-        # app.window.set_size_request(1022, 500)
         app.in_mv = False
 
     def stv_mv_play(self, *args):
@@ -198,20 +187,11 @@ class stv_signal_handler(object):
         app.qr_img.set_from_file('/tmp/stv_qr.png')
         app.qr_menu.menu.popup()
 
-    def stv_search_next_match(self, *args):
-        print('next_match')
-
-    def stv_search_previous_match(self, *args):
-        print('previous_match')
-
     def stv_search_changed(self, *args):
         key = app.entry_search.get_text()
         if 0 == len(key):
             return None
         app.popover_search(key)
-
-    def stv_search_stop(self, *args):
-        print('stop')
 
     def stv_search_show(self, *args):
         key = app.entry_search.get_text()

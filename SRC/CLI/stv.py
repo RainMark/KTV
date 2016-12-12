@@ -26,7 +26,7 @@ class stv_signal_handler(object):
         app.stack_box = box
         app.stack_box_child = child[0]
         app.restored = False
-        app.req_type = 'hotall'
+        app.req_type = 'all'
         app.result_list_refresh()
 
     def stv_guess(self, widget):
@@ -361,7 +361,7 @@ class stv_class(object):
         st = self.top_store
         st.clear()
 
-        if None == data and 0 == len(data):
+        if None == data or 0 == len(data):
             return None
 
         for idx, meta in enumerate(data):
@@ -484,7 +484,7 @@ class stv_class(object):
         else:
             data = self.req.search_song_by_abridge(key)
 
-        if None == data and 0 == len(data):
+        if None == data or 0 == len(data):
             return False
 
         st = self.song_store
@@ -500,7 +500,7 @@ class stv_class(object):
         st = self.star_store
         it = st.get_iter(path)
         data = self.req.singer_song_fetch(st[it][2])
-        if None == data and 0 == len(data):
+        if None == data or 0 == len(data):
             return None
 
         st = self.song_store
@@ -515,5 +515,5 @@ def init_env(tmp_path = '/tmp/stv'):
 
 if __name__ == '__main__':
     init_env()
-    app = stv_class('http://localhost:5000', '2')
+    app = stv_class('http://localhost:5000', '1')
     Gtk.main()

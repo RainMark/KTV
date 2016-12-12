@@ -1,5 +1,6 @@
 #!/usr/python3
 
+import random
 import mysql.connector as mariadb
 
 class stv_trigger(object):
@@ -24,7 +25,6 @@ class stv_trigger(object):
         cursor = db.cursor()
         try:
             cursor.execute(sql, [limit_order])
-            # db.commit()
             return True
         except:
             db.rollback()
@@ -37,12 +37,14 @@ class stv_mariadb(object):
         self.cursor = self.database.cursor()
         self.trigger = stv_trigger()
         self.hot_map_sql = {
-            'hotall'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongYear DESC',
-            'hotzh'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'中文\' Order By SongYear DESC',
-            'hoten'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'英文\' Order By SongYear DESC',
-            'hotweek'   :' From Song, Star Where Song.StarID = Star.StarID Order By SongWeek DESC',
-            'hotmonth'  :' From Song, Star Where Song.StarID = Star.StarID Order By SongMonth DESC',
-            'hotnew'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongDate DESC'
+            'all'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongYear DESC',
+            'zh'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'中文\' Order By SongYear DESC',
+            'en'     :' From Song, Star Where Song.StarID = Star.StarID And SongLanguage = \'英文\' Order By SongYear DESC',
+            'week'   :' From Song, Star Where Song.StarID = Star.StarID Order By SongWeek DESC',
+            'month'  :' From Song, Star Where Song.StarID = Star.StarID Order By SongMonth DESC',
+            'new'    :' From Song, Star Where Song.StarID = Star.StarID Order By SongDate DESC',
+            'rock'   :' From Song, Star Where Song.StarID = Star.StarID And SongType = \'摇滚\' Order By SongWeek DESC',
+            'popular':' From Song, Star Where Song.StarID = Star.StarID And SongType = \'流行\' Order By SongWeek DESC',
         }
 
     def close(self):
@@ -53,13 +55,49 @@ class stv_mariadb(object):
             return []
 
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage' + self.hot_map_sql[hot_type]
-        print(sql)
 
-        self.cursor.execute(sql)
-        data = self.cursor.fetchall()
-        for item in data[0:50]:
-            print(item)
-        return data[0:50]
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            return data
+        except:
+            return []
+
+    def song_fetch_by_ids(self, ids):
+        if None == ids or 0 == len(ids):
+            return []
+        id_list = ids[0]
+        for v in ids[1:]:
+            id_list += ','
+            id_list += v
+
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where SongID In(%s) And Song.StarID = Star.StarID' % (id_list)
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            return data
+        except:
+            return []
+
+    def song_fetch_by_random(self):
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = Star.StarID'
+        try:
+            self.cursor.execute(sql)
+            raw_data = self.cursor.fetchall()
+            r1 = random.randint(0, len(raw_data))
+            r2 = random.randint(0, len(raw_data))
+            return raw_data[min(r1,r2):max(r1,r2)]
+        except:
+            return []
+
+    def song_fetch_by_most_comment(self):
+        sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where SongID in (Select SongID From Comment Group By SongID Order By Count(SongID)) And Song.StarID = Star.StarID'
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            return data
+        except:
+            return []
 
     def comment_fetch(self, song_id):
         sql = 'Select C_Content From Comment Where SongID = %s'
@@ -67,7 +105,7 @@ class stv_mariadb(object):
             data = []
             self.cursor.execute(sql, [song_id])
             raw = self.cursor.fetchall()
-            for v in raw[0:20]:
+            for v in raw:
                 data.append(v[0])
             return data
         except:
@@ -78,8 +116,6 @@ class stv_mariadb(object):
         try:
             self.cursor.execute(sql, [client_id])
             data = self.cursor.fetchall()
-            for item in data:
-                print(item)
             return data
         except:
             return []
@@ -92,7 +128,6 @@ class stv_mariadb(object):
         except:
             return False
 
-        # print(order)
         sql = 'Insert into C_Song(SongID, ClientID, S_Order) Value(%s, %s, %s)'
         try:
             self.cursor.execute(sql, [song_id, client_id, order + 1])
@@ -153,8 +188,6 @@ class stv_mariadb(object):
         try:
             self.cursor.execute(sql, [client_id])
             data = self.cursor.fetchall()
-            for item in data:
-                print(item)
             return data
         except:
             return []
@@ -175,14 +208,10 @@ class stv_mariadb(object):
         sql = 'Select StarID, StarName, StarRegion, StarStyle From Star Where StarNameAbridge Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            for v in data:
-                print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
@@ -190,46 +219,32 @@ class stv_mariadb(object):
         sql = 'Select StarID, StarName, StarRegion, StarStyle From Star Where StarName Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            for v in data:
-                print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
     def search_song_by_fullname(self, key):
-        'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Star.StarID = Song.StarId And SongName Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            for v in data:
-                print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
     def search_song_by_abridge(self, key):
-        'SongID | SongName | SongType | SongLanguage | SongNameAbridge | StarID'
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Star.StarID = Song.StarID And SongNameAbridge Like %s'
         try:
             self.cursor.execute(sql, [key + r'%'])
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            for v in data:
-                print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
@@ -237,14 +252,10 @@ class stv_mariadb(object):
         sql = 'Select SongID, SongName, StarName, SongType, SongLanguage From Song, Star Where Song.StarID = %s And Star.StarID = Song.StarID'
         try:
             self.cursor.execute(sql, [singer_id])
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            for v in data:
-                print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
@@ -252,14 +263,10 @@ class stv_mariadb(object):
         sql = 'Select ClientID, SongID From History'
         try:
             self.cursor.execute(sql)
-            # return self.cursor.fetchall()
             data = self.cursor.fetchall()
-            # for v in data:
-            #     print(v)
             return data
 
         except:
-            self.database.rollback()
             print('Execute SQL Except: ', sql)
             return []
 
@@ -292,5 +299,7 @@ if __name__ == '__main__':
     # run.history_list_insert('1', '22')
     # run.history_list_fetch('1')
     # run.comment_fetch('2')
-    run.singer_song_fetch('115')
+    # run.singer_song_fetch('115')
+    # run.song_fetch_by_random()
+    run.song_fetch_by_most_comment()
     run.close()

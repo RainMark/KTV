@@ -9,6 +9,8 @@ class stv_server(object):
     def __init__(self, user, password, database):
         self.db = stv_mariadb(user, password, database)
         self.rd = stv_rd(self.db)
+        self.rd.train_set()
+        self.rd.item_similarity()
         self.sequences = dict()
 
     def check_seq(self, cid, seq):
@@ -24,15 +26,26 @@ class stv_server(object):
         self.sequences[cid] = seq
 
     def top_fetch(self, top_type='hotall'):
-        is_hot = ('hot' == top_type[0:3])
-        if is_hot:
-            top_list = self.db.hot_fetch(top_type)
+        if 'random' == top_type:
+            top_list = self.db.song_fetch_by_random()
+            for v in top_list:
+                print(v)
+        elif 'comment' == top_type:
+            top_list = self.db.song_fetch_by_most_comment()
+            for v in top_list:
+                print(v)
         else:
-            top_list = []
-        return json.dumps(top_list)
+            top_list = self.db.hot_fetch(top_type)
+        return json.dumps(top_list[0:50])
+
+    def recommendation_fetch(self, client_id):
+        rd_list = self.rd.do_recommend(client_id, 50)
+        for v in rd_list:
+            print(v)
+        return json.dumps(rd_list)
 
     def comment_fetch(self, sid):
-        return json.dumps(self.db.comment_fetch(sid))
+        return json.dumps(self.db.comment_fetch(sid)[0:20])
 
     def playing_list_fetch(self, client_id):
         playing_list = self.db.playing_list_fetch(client_id)
@@ -89,6 +102,6 @@ class stv_server(object):
 
 if __name__ == '__main__':
     s = stv_server('root', 'root', 'stv_db')
-    s.rd.train_set()
-    s.rd.item_similarity()
-    s.rd.do_recommend(1, 10)
+    s.recommendation_fetch('1')
+    # s.top_fetch('random')
+    # s.top_fetch('comment')

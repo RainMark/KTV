@@ -102,6 +102,11 @@ def desktop_sequence_init_handler(cid, seq):
     svr.insert_seq(cid, seq)
     return Response(response=json.dumps('OK'), status=200, mimetype="application/json")
 
+@stv.route('/desktop/recommendation/<int:cid>', methods=['GET'])
+def desktop_recommendation_fetch_handler(cid):
+    dumps = svr.recommendation_fetch(str(cid))
+    return Response(response=dumps, status=200, mimetype="application/json")
+
 # App handler
 @stv.route('/app/check/<int:cid>/<int:seq>', methods=['GET'])
 def app_network_check_handler(cid, seq):

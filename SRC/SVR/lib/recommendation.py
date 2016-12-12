@@ -16,8 +16,8 @@ class recommend(object):
                 self.train[user] = list()
             self.train[user].append(item)
 
-        for user, items in self.train.items():
-            print(user, ':', items)
+        # for user, items in self.train.items():
+        #     print(user, ':', items)
 
     def item_similarity(self):
         C = dict()
@@ -50,25 +50,24 @@ class recommend(object):
         self.sim = W
 
     def do_recommend(self, user_id, K):
-        # print(self.sim)
-        rank = dict()
-        playing = self.db.playing_list_fetch(user_id)
-        CI = [item[0] for item in playing]
+        rk = dict()
+        play_list= self.db.playing_list_fetch(user_id)
+        CI = [item[0] for item in play_list]
         for i in CI:
             if None == self.sim.get(i):
                 continue
 
             for j, Wij in sorted(self.sim[i].items(), key = operator.itemgetter(1), reverse = True)[:K]:
-                # print(j)
                 if j in CI:
                     continue
-                print(i, j, Wij)
+                if None == rk.get(j):
+                    rk[j] = Wij
+                else:
+                    rk[j] += Wij
 
-            print('')
-            # print(self.sim[i].items())
-
-            # print(sorted(self.sim[i].items(), key = operator.itemgetter(1), reverse = True)[:K])
-
+        # ids = [it[0] for it in sorted(rk.items(), key = operator.itemgetter(1), reverse = True)] # No need to sort from here.
+        ids = list(rk.keys())
+        return self.db.song_fetch_by_ids(ids)
 
 if __name__ == '__main__':
     print('Run By Server.')

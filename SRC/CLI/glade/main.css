@@ -3,25 +3,18 @@
     font-family: Ubuntu Mono;
 }
 
-/* @import url("gtk.css"); */
-
-/* window { */
-/*     window-dragging: true; */
-/* } */
-
-.background {
-    background-color: #F5F5F5;
-    background-image: linear-gradient(to left, transparent, rgba(255,255,255,.07) 50%, transparent 50%),
-    linear-gradient(to left, transparent, rgba(255,255,255,.13) 50%, transparent 50%),
-    linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.17) 50%),
-    linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.19) 50%);
-    background-size: 29px, 59px, 73px, 109px;
-}
-
 /* .background { */
-/*     background-image: radial-gradient(ellipse at center, black 0%, gray 100%); */
-/*     background-image: radial-gradient(circle farthest-side at center, white, black 50px, gray); */
+/*     background-color: #F5F5F5; */
+/*     background-image: linear-gradient(to left, transparent, rgba(255,255,255,.07) 50%, transparent 50%), */
+/*     linear-gradient(to left, transparent, rgba(255,255,255,.13) 50%, transparent 50%), */
+/*     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.17) 50%), */
+/*     linear-gradient(to left, transparent, transparent 50%, rgba(255,255,255,.19) 50%); */
+/*     background-size: 29px, 59px, 73px, 109px; */
 /* } */
+
+window {
+    background-image: url("google.jpg");
+}
 
 headerbar {
     padding: 0 6px;
@@ -33,10 +26,21 @@ headerbar {
     background-clip: border-box;
 }
 
+
+treeview.view {
+    background-color: alpha(#D5D5D5, 0.6);
+    border-radius:10px;
+}
+
+entry {
+    border-radius:20px;
+}
+
+stackswitcher > button {
+    border-radius:20px;
+}
+
 button {
-    color: gray;
-    /* padding: 10px; */
-    /* border-radius: 20px; */
     transition: all 250ms ease-in;
     border: 1px transparent solid;
 }
@@ -49,10 +53,7 @@ button:hover {
 }
 
 button:active {
-    /* padding: 11px 9px 9px 11px; */
     text-shadow: 1px 1px 2.5px alpha(black, 0.6);
     -gtk-icon-shadow: 1px 1px 2.5px alpha(black, 0.6);
 }
-label:focus {
-  background-color: #b4940f;
-}
+

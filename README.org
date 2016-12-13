@@ -6,9 +6,12 @@ Show Time KTV （STV）是一个多终端、多用户的 KTV 点歌系统。本�
 
 [[./Documents/PIC/main.png]]
 
-[[./Documents/PIC/toprank.png]]
+[[./Documents/PIC/search.png]]
+
+[[./Documents/PIC/add.png]]
 
 [[./Documents/PIC/player.png]]
+
 * 加入开发需要具备什么条件？
 至少了解知道如下几个需要的东西。
 ** 后台开发
@@ -38,8 +41,8 @@ $ python3 ktv.py
 - 如果运行正常，恭喜你！尽情的修改代码吧！
 * 开始桌面客户端的开发吧！
 ** 依赖组件
-- PyGObject Gtk+-3.0
-- GStreamer Gst+-1.0
+- PyGObject Gtk+ 3.0
+- GStreamer Gst  1.0
 ** 快速体验
 - 首先保证 SVR/ktv.py 后台服务已经运行起来。
 #+BEGIN_SRC sh

@@ -30,7 +30,9 @@ Show Time KTV （STV）是一个多终端、多用户的 KTV 点歌系统。本�
 
 ![img](./Documents/PIC/main.png)
 
-![img](./Documents/PIC/toprank.png)
+![img](./Documents/PIC/search.png)
+
+![img](./Documents/PIC/add.png)
 
 ![img](./Documents/PIC/player.png)
 
@@ -72,8 +74,8 @@ Show Time KTV （STV）是一个多终端、多用户的 KTV 点歌系统。本�
 
 ## 依赖组件<a id="orgheadline6"></a>
 
--   PyGObject Gtk+-3.0
--   GStreamer Gst+-1.0
+-   PyGObject Gtk+ 3.0
+-   GStreamer Gst  1.0
 
 ## 快速体验<a id="orgheadline7"></a>
 

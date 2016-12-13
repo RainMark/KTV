@@ -1,6 +1,6 @@
 #!/usr/python3
 
-import os, signal, time, sys, gi, threading
+import os, signal, time, sys, gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 from gi.repository import Gtk, Gdk, GObject, Gst, GdkPixbuf

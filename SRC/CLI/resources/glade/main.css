@@ -1,0 +1,57 @@
+* {
+    /* all: unset; */
+    font-family: Ubuntu Mono;
+}
+
+window {
+    background-image: url("background/kde.png");
+    background-position: 10% 60%;
+    /* background-image: url("google.jpg"); */
+    /* background-position: 56% 46%; */
+}
+
+popover {
+    background-color: alpha(black, 0.1);
+}
+
+headerbar {
+    background-color: alpha(#455A64, 1.0);
+}
+
+treeview.view {
+    background-color: alpha(black, 0.0);
+}
+
+treeview.view:selected {
+    color:black;
+}
+
+entry {
+    border-radius:20px;
+}
+
+stackswitcher > button {
+    color: black;
+    border-radius:20px;
+    background-color: alpha(black, 0.1);
+    transition: all 250ms ease-in;
+    border: 1px transparent solid alpha(black, 0.7);
+}
+
+button {
+    background-color: alpha(black, 0.0);
+    transition: all 250ms ease-in;
+    border: 1px transparent solid;
+}
+
+button:hover {
+    text-shadow: 3px 3px 5px alpha(black, 0.75);
+    -gtk-icon-shadow: 3px 3px 5px alpha(black, 0.75);
+    box-shadow: 3px 3px 5px alpha(black, 0.5) inset;
+    border: solid 1px alpha(black, 0.75);
+}
+
+button:active {
+    text-shadow: 1px 1px 2.5px alpha(black, 0.6);
+    -gtk-icon-shadow: 1px 1px 2.5px alpha(black, 0.6);
+}

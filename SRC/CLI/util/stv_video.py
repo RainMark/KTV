@@ -15,24 +15,21 @@ class stv_video_player_class(object):
         self.obj = obj
         self.obj_hook = obj_hook
         self.state = Gst.State.NULL
+        self.pipeline = Gst.Pipeline()
 
     def pause(self):
-        srt, st, stp = self.pipeline.get_state(Gst.CLOCK_TIME_NONE)
-        if Gst.State.PLAYING == st:
             self.pipeline.set_state(Gst.State.PAUSED)
             self.state = Gst.State.PAUSED
-        else:
-            return None
 
     def play(self):
-        srt, st, stp = self.pipeline.get_state(Gst.CLOCK_TIME_NONE)
-        if Gst.State.PLAYING == st:
+        if Gst.State.PLAYING == self.state:
             return None
         else:
             self.pipeline.set_state(Gst.State.PLAYING)
             self.state = Gst.State.PLAYING
 
     def ready(self, filepath):
+        self.pipeline.set_state(Gst.State.NULL)
         self.pipeline = Gst.Pipeline()
         self.bus = self.pipeline.get_bus()
         self.bus.add_signal_watch()
@@ -58,9 +55,14 @@ class stv_video_player_class(object):
         self.xid = area.get_window().get_xid()
 
     def stop(self):
-        if Gst.State.NULL != self.state:
+        self.pipeline.set_state(Gst.State.NULL)
+        self.ready(path.abspath('resources/blank.mp4'))
+        self.play()
+        self.pause()
+        self.state = Gst.State.NULL
+
+    def exit(self):
             self.pipeline.set_state(Gst.State.NULL)
-            self.state = Gst.State.NULL
 
     def on_sync_message(self, bus, msg):
         if msg.get_structure().get_name() == 'prepare-window-handle':

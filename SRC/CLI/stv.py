@@ -14,7 +14,7 @@ global app
 
 class stv_signal_handler(object):
     def stv_exit(self, *args):
-        app.player.stop()
+        app.player.exit()
         Gtk.main_quit(*args)
 
     def stv_rank_decorator(func):
@@ -245,7 +245,6 @@ class stv_class(object):
         self.check_network(server, machine)
         if self.req.online:
             self.play_list_update()
-
         self.restored = True
         self.req_type = 'topall'
         self.last_operation = None
@@ -262,7 +261,7 @@ class stv_class(object):
 
     def UI_build(self):
         self.builder           = Gtk.Builder()
-        self.builder.add_from_file("glade/main.xml")
+        self.builder.add_from_file("resources/glade/main.xml")
 
         self.play_menu         = stv_popover(self.builder.get_object('play_menu'))
         self.top_menu          = stv_popover(self.builder.get_object('top_menu'))
@@ -326,10 +325,12 @@ class stv_class(object):
         self.window.show_all()
         # In self.player, get_xid() can be called after window.show_all()
         self.player.set_xid(self.disp_area)
+        self.player.ready(os.path.abspath('resources/blank.mp4'))
+        self.player.stop()
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()
-        self.style_provider.load_from_path('glade/main.css')
+        self.style_provider.load_from_path('resources/glade/main.css')
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  self.style_provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

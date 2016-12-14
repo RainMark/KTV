@@ -115,7 +115,7 @@ class stv_signal_handler(object):
 
     def stv_result_add(self, *args):
         app.top_menu.hide()
-        app.result_list_add()
+        app.play_list_add(app.top_menu.view)
 
     def stv_mv_show(self, *args):
         if app.in_mv:
@@ -218,6 +218,7 @@ class stv_popover(object):
         self.menu = menu
 
     def show_all(self, widget, event):
+        print(widget)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.menu.set_relative_to(widget)
             pos = Gdk.Rectangle()
@@ -229,6 +230,7 @@ class stv_popover(object):
             self.y = event.y
             self.menu.set_pointing_to(pos)
             self.menu.popup()
+            self.view = widget
 
     def hide(self):
         self.menu.hide()
@@ -291,8 +293,10 @@ class stv_class(object):
         self.song_store        = self.builder.get_object('lt_song')
 
         self.play_view         = self.builder.get_object('tv_play')
+        self.history_view      = self.builder.get_object('tv_history')
         self.top_view          = self.builder.get_object('tv_top')
         self.star_view         = self.builder.get_object('tv_star')
+        self.song_view         = self.builder.get_object('tv_song')
 
         self.grid_mv           = self.builder.get_object('grid_mv')
         self.sc_comment        = self.builder.get_object('sc_comment')
@@ -318,6 +322,8 @@ class stv_class(object):
         # Setup right click popover menu
         self.play_menu.connect_signal(self.play_view, "button-press-event")
         self.top_menu.connect_signal(self.top_view, "button-press-event")
+        self.top_menu.connect_signal(self.history_view, "button-press-event")
+        self.top_menu.connect_signal(self.song_view, "button-press-event")
         self.builder.connect_signals(self.handler)
 
         self.UI_apply_css()
@@ -405,14 +411,19 @@ class stv_class(object):
         for idx, meta in enumerate(data):
             st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
-    def result_list_add(self):
-        path, column = self.top_view.get_cursor()
+    def play_list_add(self, view):
+        path, column = view.get_cursor()
         if None == path:
             return None
 
-        store = self.top_store
+        store = view.get_model()
+        print(store)
         it = store.get_iter(path)
-        retval = self.req.play_list_add(store[it][5])
+        if view == self.history_view:
+            i = 2
+        else:
+            i = 5
+        retval = self.req.play_list_add(store[it][i])
         print(retval)
         if 'Insert OK' == retval:
             self.play_list_update()

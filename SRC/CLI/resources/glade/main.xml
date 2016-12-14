@@ -782,7 +782,7 @@
                               <object class="GtkTreeViewColumn">
                                 <property name="sizing">autosize</property>
                                 <property name="min_width">40</property>
-                                <property name="title" translatable="yes">Order</property>
+                                <property name="title" translatable="yes">序号</property>
                                 <property name="alignment">0.5</property>
                                 <child>
                                   <object class="GtkCellRendererText"/>
@@ -796,7 +796,7 @@
                               <object class="GtkTreeViewColumn">
                                 <property name="sizing">autosize</property>
                                 <property name="min_width">60</property>
-                                <property name="title" translatable="yes">Name</property>
+                                <property name="title" translatable="yes">单曲</property>
                                 <property name="alignment">0.5</property>
                                 <child>
                                   <object class="GtkCellRendererText"/>
@@ -1747,7 +1747,7 @@
                                     <property name="vexpand">True</property>
                                     <property name="shadow_type">etched-in</property>
                                     <child>
-                                      <object class="GtkTreeView">
+                                      <object class="GtkTreeView" id="tv_song">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="model">lt_song</property>

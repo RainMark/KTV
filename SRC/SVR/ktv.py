@@ -101,7 +101,7 @@ def desktop_recommendation_fetch_handler(cid):
     return Response(response=dumps, status=200, mimetype="application/json")
 
 # App handler
-@stv.route('/app/check/<int:cid>/<int:seq>', methods=['GET'])
+@stv.route('/app/check/<int:seq>/<int:cid>', methods=['GET'])
 def app_network_check_handler(cid, seq):
     retval = svr.check_seq(cid, seq)
     if retval:
@@ -115,7 +115,7 @@ def app_network_check_handler(cid, seq):
 def app_playing_list_operations_handler(ope, seq, cid, sid):
     retval = svr.check_seq(cid, seq)
     if not retval:
-        result = json.dumps((('Offline')))
+        result = json.dumps([])
     elif 'add' == ope:
         result = svr.playing_list_add(cid, sid)
     elif 'delete' == ope:
@@ -129,11 +129,20 @@ def app_playing_list_operations_handler(ope, seq, cid, sid):
 def app_playing_list_fetch_handler(seq, cid):
     retval = svr.check_seq(cid, seq)
     if not retval:
-        result = json.dumps((('Offline')))
+        result = json.dumps([])
     else:
         result = svr.playing_list_fetch(cid)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+@stv.route('/app/recommendation/<int:seq>/<int:cid>', methods=['GET'])
+def app_recommendation_fetch_handler(cid, seq):
+    retval = svr.check_seq(cid, seq)
+    if not retval:
+        dumps = json.dumps([])
+    else:
+        dumps = svr.recommendation_fetch(str(cid))
+    return Response(response=dumps, status=200, mimetype="application/json")
 
 if __name__ == '__main__':
     stv.run(host = '0.0.0.0')

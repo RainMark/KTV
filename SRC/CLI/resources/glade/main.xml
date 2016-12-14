@@ -83,7 +83,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">applications-multimedia</property>
+    <property name="icon_name">stv_comment</property>
   </object>
   <object class="GtkImage" id="bt_delete_img">
     <property name="visible">True</property>
@@ -100,37 +100,37 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">accessories-text-editor</property>
+    <property name="icon_name">stv_recommend</property>
   </object>
   <object class="GtkImage" id="bt_hotall_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">accessories-dictionary</property>
+    <property name="icon_name">stv_all</property>
   </object>
   <object class="GtkImage" id="bt_hoten_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">applications-science</property>
+    <property name="icon_name">stv_en</property>
   </object>
   <object class="GtkImage" id="bt_hotmonth_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">applications-engineering</property>
+    <property name="icon_name">stv_month</property>
   </object>
   <object class="GtkImage" id="bt_hotweek_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">audio-card</property>
+    <property name="icon_name">stv_week</property>
   </object>
   <object class="GtkImage" id="bt_hotzh_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">applications-development</property>
+    <property name="icon_name">stv_zh</property>
   </object>
   <object class="GtkImage" id="bt_mv_img">
     <property name="visible">True</property>
@@ -141,7 +141,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">document-new</property>
+    <property name="icon_name">stv_new</property>
   </object>
   <object class="GtkImage" id="bt_next_img">
     <property name="visible">True</property>
@@ -236,7 +236,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">applications-internet</property>
+    <property name="icon_name">stv_popular</property>
   </object>
   <object class="GtkImage" id="bt_qr_img">
     <property name="visible">True</property>
@@ -342,7 +342,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">preferences-desktop-theme</property>
+    <property name="icon_name">stv_random</property>
   </object>
   <object class="GtkImage" id="bt_refresh_img">
     <property name="visible">True</property>
@@ -353,7 +353,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">100</property>
-    <property name="icon_name">address-book-new</property>
+    <property name="icon_name">stv_rock</property>
   </object>
   <object class="GtkImage" id="bt_totop_img">
     <property name="visible">True</property>
@@ -1024,7 +1024,7 @@
                             <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkButton">
-                                <property name="label" translatable="yes">全网最热</property>
+                                <property name="label" translatable="yes">热歌榜</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1040,7 +1040,7 @@
                             </child>
                             <child>
                               <object class="GtkButton">
-                                <property name="label" translatable="yes">中文最热</property>
+                                <property name="label" translatable="yes">内地最热</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1056,7 +1056,7 @@
                             </child>
                             <child>
                               <object class="GtkButton">
-                                <property name="label" translatable="yes">英文最热</property>
+                                <property name="label" translatable="yes">欧美最热</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>

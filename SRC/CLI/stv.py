@@ -349,7 +349,7 @@ class stv_class(object):
     def play_list_update(self):
         data = self.req.play_list_fetch()
         store = self.play_store
-        if None != data and 0 != len(data):
+        if None != data:
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx, meta[1], meta[0]])
@@ -358,7 +358,7 @@ class stv_class(object):
     def his_list_update(self):
         data = self.req.his_list_fetch()
         store = self.history_store
-        if None != data and 0 != len(data):
+        if None != data:
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx, meta[1], meta[0]])
@@ -399,7 +399,7 @@ class stv_class(object):
         st = self.top_store
         st.clear()
 
-        if None == data or 0 == len(data):
+        if None == data:
             return None
 
         for idx, meta in enumerate(data):
@@ -522,7 +522,7 @@ class stv_class(object):
         else:
             data = self.req.search_song_by_abridge(key)
 
-        if None == data or 0 == len(data):
+        if None == data:
             return False
 
         st = self.song_store
@@ -539,7 +539,7 @@ class stv_class(object):
         st = self.star_store
         it = st.get_iter(path)
         data = self.req.singer_song_fetch(st[it][2])
-        if None == data or 0 == len(data):
+        if None == data:
             return None
 
         st = self.song_store

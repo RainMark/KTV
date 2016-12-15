@@ -6,6 +6,8 @@ Show Time KTV （STV）是一个多终端、多用户的 KTV 点歌系统。本�
 
 [[./Documents/PIC/main.png]]
 
+[[./Documents/PIC/board.png]]
+
 [[./Documents/PIC/search.png]]
 
 [[./Documents/PIC/add.png]]

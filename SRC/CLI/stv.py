@@ -5,7 +5,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 from gi.repository import Gtk, Gdk, GObject, Gst, GdkPixbuf
 
-sys.path.append(os.path.join(os.getcwd(), 'util'))
+sys.path.append(os.path.join(os.getcwd(), 'utils'))
 from stv_request import stv_request_class
 from stv_video import stv_video_player_class
 from stv_qr import stv_qr_class
@@ -352,22 +352,20 @@ class stv_class(object):
 
         return store[it][2]
 
-    def play_list_update(self):
-        data = self.req.play_list_fetch()
-        store = self.play_store
+    def __3list_insert_row__(self, store, data):
         if None != data:
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx, meta[1], meta[0]])
+
+    def play_list_update(self):
+        data = self.req.play_list_fetch()
+        self.__3list_insert_row__(self.play_store, data)
         self.his_list_update()
 
     def his_list_update(self):
         data = self.req.his_list_fetch()
-        store = self.history_store
-        if None != data:
-            store.clear()
-            for idx, meta in enumerate(data):
-                store.append([idx, meta[1], meta[0]])
+        self.__3list_insert_row__(self.history_store, data)
 
     def play_list_move(self):
         path, column = self.play_view.get_cursor()

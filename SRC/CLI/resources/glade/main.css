@@ -4,10 +4,10 @@
 }
 
 window {
-    /* background-image: url("background/kde.png"); */
-    /* background-position: 10% 60%; */
-    background-image: url("background/google.jpg");
-    background-position: 56% 46%;
+    background-image: url("background/kde.png");
+    background-position: 10% 60%;
+    /* background-image: url("background/google.jpg"); */
+    /* background-position: 56% 46%; */
 }
 
 popover {

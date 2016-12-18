@@ -10,6 +10,9 @@ from stv_request import stv_request_class
 from stv_video import stv_video_player_class
 from stv_qr import stv_qr_class
 
+import logging
+logging.basicConfig(level=logging.WARNING)
+
 global app
 
 class stv_signal_handler(object):
@@ -204,21 +207,20 @@ class stv_signal_handler(object):
         app.box_search(key)
 
     def stv_search_star(self, *args):
-        print('Row changed')
+        logging.debug('Row changed')
         app.view_search()
 
     def stv_filter_star_type(self, widget, event):
-        print('stv_filter_star_type ', dir(widget))
-        print(widget.__class__)
-        print(widget.get_name())
-        print(widget.get_children())
+        logging.debug(widget.__class__)
+        logging.debug(widget.get_name())
+        logging.debug(widget.get_children())
 
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
 
     def show_all(self, widget, event):
-        print(widget)
+        logging.debug(widget)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.menu.set_relative_to(widget)
             pos = Gdk.Rectangle()
@@ -250,6 +252,9 @@ class stv_class(object):
         self.in_mv = False
         self.last_operation = None
         self.req_type = 'topall'
+
+        if self.req.online:
+            self.play_list_update()
 
     def check_network(self, svr, mach):
         self.SVR_init(svr, mach)
@@ -353,7 +358,7 @@ class stv_class(object):
         if None != data:
             store.clear()
             for idx, meta in enumerate(data):
-                store.append([idx, meta[1], meta[0]])
+                store.append([idx + 1, meta[1], meta[0]])
 
     def play_list_update(self):
         data = self.req.play_list_fetch()
@@ -371,10 +376,10 @@ class stv_class(object):
 
         store = self.play_store
         it = store.get_iter(path)
-        print("Selected row: ", store[it][0:])
+        logging.debug("Selected row: " % (store[it][0:]))
         sid = store[it][2]
         retval = self.req.play_list_move(sid)
-        print(retval)
+        logging.debug(retval)
         if 'Success' == retval:
             self.play_list_update()
 
@@ -385,10 +390,10 @@ class stv_class(object):
 
         store = self.play_store
         it = store.get_iter(path)
-        print("Selected row: ", store[it][0:])
+        logging.debug("Selected row: " % (store[it][0:]))
         sid = store[it][2]
         retval = self.req.play_list_remove(sid)
-        print(retval)
+        logging.debug(retval)
         if 'Success' == retval:
             self.play_list_update()
 
@@ -404,7 +409,7 @@ class stv_class(object):
             return None
 
         for idx, meta in enumerate(data):
-            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+            st.append([idx + 1, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
     def play_list_add(self, view):
         path, column = view.get_cursor()
@@ -412,14 +417,14 @@ class stv_class(object):
             return None
 
         store = view.get_model()
-        print(store)
+        logging.debug(store)
         it = store.get_iter(path)
         if view == self.history_view:
             i = 2
         else:
             i = 5
         retval = self.req.play_list_add(store[it][i])
-        print(retval)
+        logging.debug(retval)
         if 'Success' == retval:
             self.play_list_update()
 
@@ -429,7 +434,7 @@ class stv_class(object):
             return False
 
         path = self.req.download(sid)
-        print(path)
+        logging.debug(path)
         if None != path:
             self.player.ready(path)
             self.player.play()
@@ -467,7 +472,7 @@ class stv_class(object):
         if None == data:
             return False
 
-        print(data)
+        logging.debug(data)
         st = self.comment_store
         st.clear()
         for meta in data:
@@ -486,7 +491,7 @@ class stv_class(object):
         st = self.tmp_star_store
         st.clear()
         for meta in data[:4]:
-            print(meta)
+            logging.debug(meta)
             st.append([meta[1], meta[0]])
 
         if use_unicode:
@@ -500,7 +505,7 @@ class stv_class(object):
         st = self.tmp_song_store
         st.clear()
         for meta in data[:4]:
-            # print(meta)
+            logging.debug(meta)
             st.append([meta[1], meta[0]])
 
     def box_search(self, key):
@@ -516,7 +521,7 @@ class stv_class(object):
         st = self.star_store
         st.clear()
         for meta in data:
-            print(meta)
+            logging.debug(meta)
             image = self.req.album_fetch(meta[0])
             if None == image:
                 continue
@@ -534,7 +539,7 @@ class stv_class(object):
         st = self.song_store
         st.clear()
         for idx, meta in enumerate(data):
-            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+            st.append([idx + 1, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
     def view_search(self):
         path, column = self.star_view.get_cursor()
@@ -550,7 +555,7 @@ class stv_class(object):
 
         st = self.song_store
         for idx, meta in enumerate(data):
-            st.append([idx, meta[1], meta[2], meta[3], meta[4], meta[0]])
+            st.append([idx + 1, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
 
 def init_env(tmp_path = '/tmp/stv'):

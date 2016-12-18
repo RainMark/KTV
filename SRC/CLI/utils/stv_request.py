@@ -1,7 +1,7 @@
 #!/usr/python3
 
 from urllib import request, error, parse
-import shutil, json, os
+import shutil, json, os, logging
 
 class stv_request_class(object):
     def __init__(self, uri, machine):
@@ -19,10 +19,10 @@ class stv_request_class(object):
                 req.online = True
                 return retval
             except error.HTTPError as e1:
-                print(e1)
+                logging.warning(e1)
                 req.online = False
             except error.URLError as e2:
-                print(e2)
+                logging.warning(e2)
                 req.online = False
         return wrapper
 
@@ -34,7 +34,6 @@ class stv_request_class(object):
     def sequence_init(self, seq):
         self.seq = seq
         url = self.uri + '/sequence/init/%s/%s' % (self.machine, seq)
-        print(url)
         return self.open_url(url)
 
     def play_list_fetch(self):
@@ -62,7 +61,6 @@ class stv_request_class(object):
             url = self.uri + '/recommendation/%s/%s' % (self.seq, self.machine)
         else:
             url = self.uri + '/top/%s' % (top_type)
-        print(url)
         return self.open_url(url)
 
     def comment_fetch(self, song_id):

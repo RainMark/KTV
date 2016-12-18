@@ -16,7 +16,7 @@ from server import stv_server
 
 stv = Flask(__name__)
 svr = stv_server(user='root', password='root', database='stv_db')
-# logging.basicConfig(filename='/tmp/stv_server.log', level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 # Common handler
 @stv.route('/top/<top_type>', methods=['GET'])

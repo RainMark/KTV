@@ -4,7 +4,6 @@ import json
 from database import stv_mariadb
 from recommendation import recommend as stv_rd
 
-
 class stv_server(object):
     def __init__(self, user, password, database):
         self.db = stv_mariadb(user, password, database)
@@ -59,29 +58,26 @@ class stv_server(object):
 
     def playing_list_add(self, client_id, song_id):
         # print(client_id, " ", song_id)
-        if True == self.db.playing_list_add(client_id, song_id):
-            retval = (('Insert OK'))
+        if self.db.playing_list_add(client_id, song_id):
+            retval = 'Success'
         else:
-            retval = (('Insert Failed'))
-
+            retval = 'Failed'
         return json.dumps(retval)
 
     def playing_list_delete(self, client_id, song_id):
         # print(client_id, " ", song_id)
-        if True == self.db.playing_list_delete(client_id, song_id):
-            retval = (('Delete OK'))
+        if self.db.playing_list_delete(client_id, song_id):
+            retval = 'Success'
         else:
-            retval = (('Delete Failed'))
-
+            retval = 'Failed'
         return json.dumps(retval)
 
     def playing_list_resort(self, client_id, song_id, order):
         # print(client_id, " ", song_id)
-        if True == self.db.playing_list_resort(client_id, song_id, order):
-            retval = (('Resort OK'))
+        if self.db.playing_list_resort(client_id, song_id, order):
+            retval = 'Success'
         else:
-            retval = (('Resort Failed'))
-
+            retval = 'Failed'
         return json.dumps(retval)
 
     def search_singer(self, key, use_abridge):
@@ -98,7 +94,6 @@ class stv_server(object):
 
     def singer_song_fetch(self, song_id):
         return json.dumps(self.db.singer_song_fetch(song_id))
-
 
 if __name__ == '__main__':
     s = stv_server('root', 'root', 'stv_db')

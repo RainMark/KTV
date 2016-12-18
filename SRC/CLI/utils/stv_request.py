@@ -8,6 +8,8 @@ class stv_request_class(object):
         self.uri = uri
         self.machine = machine
         self.online = False
+        self.seq = '0000000000'
+        # Must be changed by self.sequence_init() before the others requests.
 
     def network_check(func):
         def wrapper(*args, **kw):
@@ -30,33 +32,34 @@ class stv_request_class(object):
             return json.loads(f.read().decode('utf-8'))
 
     def sequence_init(self, seq):
-        url = self.uri + '/desktop/insert/%s/%s' % (self.machine, seq)
+        self.seq = seq
+        url = self.uri + '/sequence/init/%s/%s' % (self.machine, seq)
         print(url)
         return self.open_url(url)
 
     def play_list_fetch(self):
-        url = self.uri + '/desktop/playing/fetch/' + self.machine
+        url = self.uri + '/playlist/fetch/%s/%s' % (self.seq, self.machine)
         return self.open_url(url)
 
     def his_list_fetch(self):
-        url = self.uri + '/desktop/history/fetch/' + self.machine
+        url = self.uri + '/history/fetch/%s/%s' % (self.seq, self.machine)
         return self.open_url(url)
 
     def play_list_move(self, song_id):
-        url = self.uri + '/desktop/playing/resort/%s/%s/2' % (self.machine, song_id)
+        url = self.uri + '/playlist/resort/%s/%s/%s/2' % (self.seq, self.machine, song_id)
         return self.open_url(url)
 
     def play_list_add(self, song_id):
-        url = self.uri + '/desktop/playing/add/%s/%s' % (self.machine, song_id)
+        url = self.uri + '/playlist/add/%s/%s/%s' % (self.seq, self.machine, song_id)
         return self.open_url(url)
 
     def play_list_remove(self, song_id):
-        url = self.uri + '/desktop/playing/delete/%s/%s' % (self.machine, song_id)
+        url = self.uri + '/playlist/delete/%s/%s/%s' % (self.seq, self.machine, song_id)
         return self.open_url(url)
 
     def top_fetch(self, top_type):
         if 'guess' == top_type:
-            url = self.uri + '/desktop/recommendation/%s' % (self.machine)
+            url = self.uri + '/recommendation/%s/%s' % (self.seq, self.machine)
         else:
             url = self.uri + '/top/%s' % (top_type)
         print(url)

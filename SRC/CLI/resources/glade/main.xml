@@ -10,7 +10,7 @@
     <property name="hexpand">True</property>
     <child>
       <object class="GtkLabel">
-        <property name="width_request">200</property>
+        <property name="width_request">150</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">当前人气值</property>
@@ -25,7 +25,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLevelBar">
+      <object class="GtkLevelBar" id="lb_praise">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="value">57</property>
@@ -38,8 +38,8 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel">
-        <property name="width_request">50</property>
+      <object class="GtkLabel" id="label_praise">
+        <property name="width_request">100</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">57</property>
@@ -610,18 +610,6 @@
             <property name="margin_left">10</property>
             <property name="margin_right">10</property>
             <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkSeparator">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkGrid" id="grid_mv">
                 <property name="visible">True</property>

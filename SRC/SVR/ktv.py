@@ -16,7 +16,7 @@ from server import stv_server
 
 stv = Flask(__name__)
 svr = stv_server(user='root', password='root', database='stv_db')
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 
 # Common handler
 @stv.route('/top/<top_type>', methods=['GET'])
@@ -63,13 +63,28 @@ def comment_fetch_handler(id):
     return Response(response=dump, status=200, mimetype="application/json")
 
 # include machine ID.
+@stv.route('/praise/fetch/<int:seq>/<int:cid>/<int:sid>', methods=['GET'])
+def praise_fetch_handler(seq, cid, sid):
+    dump = json.dumps('Failed')
+    logging.debug('%s %s %s' % (seq, cid, sid))
+    if svr.check_seq(cid, seq):
+        dump = svr.praise_fetch(cid, sid)
+    return Response(response=dump, status=200, mimetype="application/json")
+
+@stv.route('/praise/increase/<int:seq>/<int:cid>/<int:sid>', methods=['GET'])
+def praise_increase_handler(seq, cid, sid):
+    dump = json.dumps('Failed')
+    if svr.check_seq(cid, seq):
+        dump = svr.praise_increase(cid, sid)
+    return Response(response=dump, status=200, mimetype="application/json")
+
 @stv.route('/network/check/<int:seq>/<int:id>', methods=['GET'])
 def network_check_handler(seq, id):
     if svr.check_seq(id, seq):
         resp = json.dumps('Online')
     else:
         resp = json.dumps('Offline')
-    return Response(response=result, status=200, mimetype="application/json")
+    return Response(response=resp, status=200, mimetype="application/json")
 
 @stv.route('/sequence/init/<int:machine>/<int:seq>', methods=['GET'])
 def sequence_init_handler(machine, seq):

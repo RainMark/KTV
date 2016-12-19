@@ -36,6 +36,10 @@ class stv_request_class(object):
         url = self.uri + '/sequence/init/%s/%s' % (self.machine, seq)
         return self.open_url(url)
 
+    def praise_fetch(self, song_id):
+        url = self.uri + '/praise/fetch/%s/%s/%s' % (self.seq, self.machine, song_id)
+        return self.open_url(url)
+
     def play_list_fetch(self):
         url = self.uri + '/playlist/fetch/%s/%s' % (self.seq, self.machine)
         return self.open_url(url)

@@ -1,6 +1,6 @@
 #!/usr/python3
 
-import json
+import json, logging
 from database import stv_mariadb
 from recommendation import recommend as stv_rd
 
@@ -11,6 +11,7 @@ class stv_server(object):
         self.rd.train_set()
         self.rd.item_similarity()
         self.sequences = dict()
+        self.praise = dict()
 
     def check_seq(self, cid, seq):
         if None == self.sequences.get(cid):
@@ -45,6 +46,25 @@ class stv_server(object):
 
     def comment_fetch(self, sid):
         return json.dumps(self.db.comment_fetch(sid)[0:20])
+
+    def praise_fetch(self, cid, sid):
+        dump = json.dumps({sid: 0})
+        logging.debug(dump)
+        if self.praise.get(cid):
+            if self.praise[cid].get(sid):
+                dump = json.dumps(self.praise[cid])
+        logging.debug(dump)
+        return dump
+
+    def praise_increase(self, cid, sid):
+        if None == self.praise.get(cid):
+            self.praise[cid] = dict()
+            self.praise[cid][sid] = 1
+        elif None == self.praise[cid].get(sid):
+            self.praise[cid][sid] = 1
+        else:
+            self.praise[cid][sid] += 1
+        return json.dumps('Success')
 
     def playing_list_fetch(self, client_id):
         playing_list = self.db.playing_list_fetch(client_id)

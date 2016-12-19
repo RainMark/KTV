@@ -1,6 +1,6 @@
 #!/usr/python3
 
-import os, signal, time, sys, gi
+import os, signal, time, sys, gi, threading
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 from gi.repository import Gtk, Gdk, GObject, Gst, GdkPixbuf
@@ -11,7 +11,7 @@ from stv_video import stv_video_player_class
 from stv_qr import stv_qr_class
 
 import logging
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 
 global app
 
@@ -253,6 +253,9 @@ class stv_class(object):
         self.last_operation = None
         self.req_type = 'topall'
 
+        t = threading.Timer(4, self.praise_update)
+        t.start()
+
         if self.req.online:
             self.play_list_update()
 
@@ -310,6 +313,9 @@ class stv_class(object):
         self.play_img          = self.builder.get_object('bt_play_img')
         self.pause_img         = self.builder.get_object('bt_pause_img')
         self.qr_img            = self.builder.get_object('qr_img')
+
+        self.label_praise      = self.builder.get_object('label_praise')
+        self.lb_praise         = self.builder.get_object('lb_praise')
 
         self.entry_search      = self.builder.get_object('entry_search')
 
@@ -556,6 +562,19 @@ class stv_class(object):
         st = self.song_store
         for idx, meta in enumerate(data):
             st.append([idx + 1, meta[1], meta[2], meta[3], meta[4], meta[0]])
+
+    def praise_update(self):
+        id = self.play_list_first_row_id()
+        if None == id:
+            return None
+        data = self.req.praise_fetch(id)
+        logging.debug(data)
+        nums = data[id]
+        if nums > 100:
+            nums = 100
+        self.label_praise.set_label(str(nums))
+        self.lb_praise.set_value(nums)
+        # logging.debug(dir(self.lb_praise))
 
 
 def init_env(tmp_path = '/tmp/stv'):

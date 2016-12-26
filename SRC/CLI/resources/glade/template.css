@@ -1,7 +1,7 @@
 * {
     /* all: unset; */
-    font-family: "Ubuntu Mono";
-    font-size: 15px;
+    font-family: "FONT_FAMILY";
+    font-size: FONT_SIZE;
 }
 
 window {

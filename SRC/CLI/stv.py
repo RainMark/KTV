@@ -215,6 +215,18 @@ class stv_signal_handler(object):
         logging.debug(widget.get_name())
         logging.debug(widget.get_children())
 
+    def stv_font_select(self, *args):
+        font_choooser = Gtk.FontChooserDialog('Select Font')
+        response = font_choooser.run()
+        font = font_choooser.get_font().split(' ')
+        font_choooser.destroy()
+        if Gtk.ResponseType.CANCEL != response:
+            logging.debug(font)
+            app.font = font[0]
+            app.font_size = font[-1] + 'px'
+            logging.debug("%s %s" % (app.font, app.font_size))
+            app.font_update()
+
 class stv_popover(object):
     def __init__(self, menu):
         self.menu = menu
@@ -280,7 +292,7 @@ class stv_class(object):
 
     def UI_build(self):
         self.builder           = Gtk.Builder()
-        self.builder.add_from_file("resources/glade/main.xml")
+        self.builder.add_from_file("resources/glade/template.ui")
 
         self.play_menu         = stv_popover(self.builder.get_object('play_menu'))
         self.top_menu          = stv_popover(self.builder.get_object('top_menu'))
@@ -356,13 +368,20 @@ class stv_class(object):
 
     def UI_apply_css(self):
         self.style_provider = Gtk.CssProvider()
-        self.style_provider.load_from_path('resources/glade/main.css')
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                                 self.style_provider,
-                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self.font = 'SourceCodePro'
+        self.font_size = '16px'
+        self.font_update()
 
     def SVR_init(self, svr, mach):
         self.req = stv_request_class(svr, mach)
+
+    def font_update(self):
+        shell = 'm4 -DFONT_FAMILY=%s -DFONT_SIZE=%s resources/glade/template.css > resources/glade/.style.css' % (self.font, self.font_size)
+        os.system(shell)
+        self.style_provider.load_from_path('resources/glade/.style.css')
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 self.style_provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def play_list_first_row_id(self):
         store = self.play_store

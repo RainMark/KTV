@@ -16,7 +16,7 @@ from server import stv_server
 
 stv = Flask(__name__)
 svr = stv_server(user='root', password='root', database='stv_db')
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 # Common handler
 @stv.route('/top/<top_type>', methods=['GET'])
@@ -62,6 +62,15 @@ def comment_fetch_handler(id):
     dump = svr.comment_fetch(id)
     return Response(response=dump, status=200, mimetype="application/json")
 
+@stv.route('/comment/<int:id>', methods=['POST'])
+def comment_handler(id):
+    logging.error(request.form)
+    if None == request.form.get('content'):
+        dump = json.dumps('Failed')
+    else:
+        dump = svr.comment_insert(id, request.form['content'])
+    return Response(response=dump, status=200, mimetype="application/json")
+
 # include machine ID.
 @stv.route('/praise/fetch/<int:seq>/<int:cid>/<int:sid>', methods=['GET'])
 def praise_fetch_handler(seq, cid, sid):
@@ -90,6 +99,21 @@ def network_check_handler(seq, id):
 def sequence_init_handler(machine, seq):
     svr.insert_seq(machine, seq)
     return Response(response=json.dumps('OK'), status=200, mimetype="application/json")
+
+@stv.route('/playcontrol/insert/<instruction>/<int:seq>/<int:id>', methods=['GET'])
+def playcontrol_insert_handler(instruction, seq, id):
+    dump = json.dumps('Failed')
+    if svr.check_seq(id, seq):
+        if instruction in ['play', 'pause', 'next']:
+            dump = svr.instruction_push(id, instruction)
+    return Response(response=dump, status=200, mimetype="application/json")
+
+@stv.route('/playcontrol/fetch/<int:seq>/<int:id>', methods=['GET'])
+def playcontrol_fetch_handler(seq, id):
+    dump = json.dumps([])
+    if svr.check_seq(id, seq):
+        dump = svr.instruction_popall(id)
+    return Response(response=dump, status=200, mimetype="application/json")
 
 @stv.route('/playlist/fetch/<int:seq>/<int:id>', methods=['GET'])
 def playlist_fetch_handler(seq, id):

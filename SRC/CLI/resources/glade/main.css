@@ -1,17 +1,19 @@
 * {
     /* all: unset; */
-    font-family: Ubuntu Mono;
+    font-family: "Ubuntu Mono";
+    font-size: 15px;
 }
 
 window {
-    background-image: url("background/kde.png");
-    background-position: 10% 60%;
-    /* background-image: url("background/google.jpg"); */
-    /* background-position: 56% 46%; */
+    /* background-image: url("background/kde.png"); */
+    /* background-position: 10% 60%; */
+    background-image: url("background/google.jpg");
+    /* background-color:#00bfa5; */
+    background-position: 56% 46%;
 }
 
 popover {
-    background-color: alpha(black, 0.1);
+    background-color: alpha(#77CCE0, 1.0);
 }
 
 headerbar {
@@ -22,8 +24,12 @@ treeview.view {
     background-color: alpha(black, 0.0);
 }
 
-treeview.view:selected {
+treeview.view {
     color:black;
+}
+
+treeview.view:selected {
+    color:#424242;
 }
 
 entry {

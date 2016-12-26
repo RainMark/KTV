@@ -12,6 +12,7 @@ class stv_server(object):
         self.rd.item_similarity()
         self.sequences = dict()
         self.praise = dict()
+        self.instruction = dict()
 
     def check_seq(self, cid, seq):
         if None == self.sequences.get(cid):
@@ -38,14 +39,17 @@ class stv_server(object):
             top_list = self.db.hot_fetch(top_type)
         return json.dumps(top_list[0:50])
 
-    def recommendation_fetch(self, client_id):
-        rd_list = self.rd.do_recommend(client_id, 50)
+    def recommendation_fetch(self, cid):
+        rd_list = self.rd.do_recommend(cid, 50)
         for v in rd_list:
             print(v)
         return json.dumps(rd_list)
 
     def comment_fetch(self, sid):
         return json.dumps(self.db.comment_fetch(sid)[0:20])
+
+    def comment_insert(self, sid, content):
+        return json.dumps(self.db.comment_insert(sid, content))
 
     def praise_fetch(self, cid, sid):
         dump = json.dumps({sid: 0})
@@ -65,6 +69,22 @@ class stv_server(object):
         else:
             self.praise[cid][sid] += 1
         return json.dumps('Success')
+
+    def instruction_push(self, client_id, instr):
+        if None == self.instruction.get(client_id):
+            self.instruction[client_id] = set()
+        self.instruction[client_id].add(instr)
+        logging.debug(self.instruction)
+        return json.dumps('Success')
+
+    def instruction_popall(self, client_id):
+        if None == self.instruction.get(client_id):
+            res = []
+        else:
+            res = list(self.instruction[client_id])
+            self.instruction[client_id].clear()
+            logging.debug(res)
+        return json.dumps(res)
 
     def playing_list_fetch(self, client_id):
         playing_list = self.db.playing_list_fetch(client_id)

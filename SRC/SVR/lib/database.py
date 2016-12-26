@@ -117,6 +117,26 @@ class stv_mariadb(object):
             logging.warning('comment_fetch failed!')
             return []
 
+    def comment_insert(self, song_id, content):
+        sql = 'Select Count(C_ID) From Comment'
+        try:
+            self.cursor.execute(sql)
+            last_id = self.cursor.fetchone()[0]
+            logging.debug(last_id)
+        except:
+            logging.warning('fetch comment last id failed!')
+            return 'Failed'
+
+        sql = 'Insert Into Comment(C_ID, C_Content, SongID, C_TimeStamp) Value(%s, %s, %s, Now())'
+        try:
+            self.cursor.execute(sql, [int(last_id) + 1, content, song_id])
+            self.database.commit()
+            return 'Success'
+        except:
+            self.database.rollback()
+            logging.warning('Insert error!')
+            return 'Failed'
+
     def playing_list_fetch(self, client_id):
         sql = 'Select Song.SongID, Song.SongName From Song, C_Song Where Song.SongID = C_Song.SongID && ClientID = %s Order By S_Order'
         try:
@@ -307,5 +327,6 @@ if __name__ == '__main__':
     # run.comment_fetch('2')
     # run.singer_song_fetch('115')
     # run.song_fetch_by_random()
-    run.song_fetch_by_most_comment()
+    # run.song_fetch_by_most_comment()
+    run.comment_insert('2', '牛皮哦！')
     run.close()

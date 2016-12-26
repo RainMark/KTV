@@ -11,7 +11,7 @@ from stv_video import stv_video_player_class
 from stv_qr import stv_qr_class
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 global app
 
@@ -222,6 +222,7 @@ class stv_popover(object):
     def show_all(self, widget, event):
         logging.debug(widget)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
+            app.in_popover = True
             self.menu.set_relative_to(widget)
             pos = Gdk.Rectangle()
             pos.x = event.x + 25
@@ -235,6 +236,7 @@ class stv_popover(object):
             self.view = widget
 
     def hide(self):
+        app.in_popover = False
         self.menu.hide()
 
     def connect_signal(self, obj, signal):
@@ -250,11 +252,21 @@ class stv_class(object):
 
         self.restored = True
         self.in_mv = False
+        self.in_popover = False
         self.last_operation = None
         self.req_type = 'topall'
 
-        t = threading.Timer(4, self.praise_update)
-        t.start()
+        self.ctrl = {
+            'play':self.handler.stv_mv_play,
+            'pause':self.handler.stv_mv_play,
+            'next':self.handler.stv_mv_next,
+        }
+
+        # t = threading.Timer(4, self.praise_update)
+        # t.start()
+        GObject.timeout_add(2000, self.praise_update)
+        GObject.timeout_add(1500, self.control_by_phone)
+        GObject.timeout_add(1500, self.play_list_update_repeat)
 
         if self.req.online:
             self.play_list_update()
@@ -354,17 +366,21 @@ class stv_class(object):
 
     def play_list_first_row_id(self):
         store = self.play_store
+        Gdk.threads_enter()
         it = store.get_iter_first()
+        Gdk.threads_leave()
         if None == it:
             return None
 
         return store[it][2]
 
     def __3list_insert_row__(self, store, data):
+        Gdk.threads_enter()
         if None != data:
             store.clear()
             for idx, meta in enumerate(data):
                 store.append([idx + 1, meta[1], meta[0]])
+        Gdk.threads_leave()
 
     def play_list_update(self):
         data = self.req.play_list_fetch()
@@ -376,28 +392,40 @@ class stv_class(object):
         self.__3list_insert_row__(self.history_store, data)
 
     def play_list_move(self):
+        Gdk.threads_enter()
         path, column = self.play_view.get_cursor()
+        Gdk.threads_leave()
         if None == path:
             return None
 
         store = self.play_store
+        Gdk.threads_enter()
         it = store.get_iter(path)
+        Gdk.threads_leave()
         logging.debug("Selected row: " % (store[it][0:]))
+        Gdk.threads_enter()
         sid = store[it][2]
+        Gdk.threads_leave()
         retval = self.req.play_list_move(sid)
         logging.debug(retval)
         if 'Success' == retval:
             self.play_list_update()
 
     def play_list_remove(self):
+        Gdk.threads_enter()
         path, column = self.play_view.get_cursor()
+        Gdk.threads_leave()
         if None == path:
             return None
 
         store = self.play_store
+        Gdk.threads_enter()
         it = store.get_iter(path)
+        Gdk.threads_leave()
         logging.debug("Selected row: " % (store[it][0:]))
+        Gdk.threads_enter()
         sid = store[it][2]
+        Gdk.threads_leave()
         retval = self.req.play_list_remove(sid)
         logging.debug(retval)
         if 'Success' == retval:
@@ -564,6 +592,10 @@ class stv_class(object):
             st.append([idx + 1, meta[1], meta[2], meta[3], meta[4], meta[0]])
 
     def praise_update(self):
+        GObject.timeout_add(2000, self.praise_update)
+        if not self.in_mv:
+            return None
+
         id = self.play_list_first_row_id()
         if None == id:
             return None
@@ -574,7 +606,32 @@ class stv_class(object):
             nums = 100
         self.label_praise.set_label(str(nums))
         self.lb_praise.set_value(nums)
+        self.comment_fetch()
         # logging.debug(dir(self.lb_praise))
+
+    def control_by_phone(self):
+        GObject.timeout_add(1500, self.control_by_phone)
+
+        instr = self.req.instruction_fetch()
+        if None == instr:
+            return None
+
+        logging.debug(type(instr))
+        for i in instr:
+            logging.debug(i)
+            f = self.ctrl[i]
+            logging.debug(f)
+            f()
+
+    def play_list_update_repeat(self):
+        GObject.timeout_add(1500, self.play_list_update_repeat)
+        if self.in_mv:
+            return None
+
+        if self.in_popover:
+            return None
+
+        self.play_list_update()
 
 
 def init_env(tmp_path = '/tmp/stv'):

@@ -29,20 +29,20 @@ class stv_server(object):
     def top_fetch(self, top_type='hotall'):
         if 'random' == top_type:
             top_list = self.db.song_fetch_by_random()
-            for v in top_list:
-                print(v)
+            # for v in top_list:
+                # print(v)
         elif 'comment' == top_type:
             top_list = self.db.song_fetch_by_most_comment()
-            for v in top_list:
-                print(v)
+            # for v in top_list:
+                # print(v)
         else:
             top_list = self.db.hot_fetch(top_type)
         return json.dumps(top_list[0:50])
 
     def recommendation_fetch(self, cid):
         rd_list = self.rd.do_recommend(cid, 50)
-        for v in rd_list:
-            print(v)
+        # for v in rd_list:
+            # print(v)
         return json.dumps(rd_list)
 
     def comment_fetch(self, sid):

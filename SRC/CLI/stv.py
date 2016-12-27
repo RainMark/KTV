@@ -486,15 +486,12 @@ class stv_class(object):
         if None == sid:
             return False
 
-        path = self.req.download(sid)
-        logging.debug(path)
-        if None != path:
-            self.player.ready(path)
-            self.player.play()
-            self.bt_play.set_image(self.play_img)
-            self.comment_fetch()
-            return True
-        return False
+        url = self.req.api.analyze_music_video_id(sid)
+        self.player.ready(url)
+        self.player.play()
+        self.bt_play.set_image(self.play_img)
+        self.comment_fetch()
+        return True
 
     def play_list_stop(self):
         if Gst.State.NULL != self.player.state:
@@ -575,10 +572,11 @@ class stv_class(object):
         st.clear()
         for meta in data:
             logging.debug(meta)
-            image = self.req.album_fetch(meta[0])
-            if None == image:
-                continue
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image, 80, 80)
+            # image = self.req.album_fetch(meta[0])
+            # if None == image:
+            #     continue
+            # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image, 80, 80)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('resources/no_album.png', 80, 80)
             st.append([pixbuf, meta[1], meta[0]])
 
         if use_unicode:

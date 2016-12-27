@@ -2,6 +2,7 @@
 
 from urllib import request, error, parse
 import shutil, json, os, logging
+from yinyuetai import yyt_api_class as yyt_api
 
 class stv_request_class(object):
     def __init__(self, uri, machine):
@@ -9,6 +10,7 @@ class stv_request_class(object):
         self.machine = machine
         self.online = False
         self.seq = '0000000000'
+        self.api = yyt_api()
         # Must be changed by self.sequence_init() before the others requests.
 
     def network_check(func):

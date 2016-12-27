@@ -39,7 +39,7 @@ class stv_video_player_class(object):
         self.bus.connect('sync-message::element', self.on_sync_message)
         self.playbin = Gst.ElementFactory.make('playbin', None)
         self.pipeline.add(self.playbin)
-        self.uri = 'file://' + filepath
+        self.uri = filepath
         self.playbin.set_property('uri', self.uri)
         self.pipeline.set_state(Gst.State.NULL)
         self.state = Gst.State.PAUSED
@@ -56,7 +56,7 @@ class stv_video_player_class(object):
 
     def stop(self):
         self.pipeline.set_state(Gst.State.NULL)
-        self.ready(path.abspath('resources/blank.mp4'))
+        self.ready('file://' + path.abspath('resources/blank.mp4'))
         self.play()
         self.pause()
         self.state = Gst.State.NULL

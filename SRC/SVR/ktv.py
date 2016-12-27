@@ -8,6 +8,7 @@ from flask import Flask
 from flask import request
 from flask import Response
 from flask import send_file
+from flask_cors import CORS
 
 LIBS = '/var/lib/stv'
 
@@ -15,6 +16,8 @@ sys.path.append(os.path.join(os.getcwd(), 'lib'))
 from server import stv_server
 
 stv = Flask(__name__)
+CORS(stv)
+
 svr = stv_server(user='root', password='root', database='stv_db')
 logging.basicConfig(level=logging.WARNING)
 

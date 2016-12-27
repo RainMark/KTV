@@ -155,6 +155,7 @@ class stv_mariadb(object):
         except:
             return False
 
+        logging.debug("%s %s %s" % (song_id, client_id, order + 1))
         sql = 'Insert into C_Song(SongID, ClientID, S_Order) Value(%s, %s, %s)'
         try:
             self.cursor.execute(sql, [song_id, client_id, order + 1])

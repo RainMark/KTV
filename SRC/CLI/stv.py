@@ -529,12 +529,7 @@ class stv_class(object):
             st.append([meta])
 
     def popover_search(self, key):
-        use_unicode = (ord(key[0]) > ord('z'))
-        if use_unicode:
-            data = self.req.search_singer_by_fullname(key)
-        else:
-            data = self.req.search_singer_by_abridge(key)
-
+        data = self.req.search_singer_by_fullname(key)
         if None == data:
             return False
 
@@ -544,11 +539,7 @@ class stv_class(object):
             logging.debug(meta)
             st.append([meta[1], meta[0]])
 
-        if use_unicode:
-            data = self.req.search_song_by_fullname(key)
-        else:
-            data = self.req.search_song_by_abridge(key)
-
+        data = self.req.search_song_by_fullname(key)
         if None == data:
             return False
 
@@ -559,12 +550,7 @@ class stv_class(object):
             st.append([meta[1], meta[0]])
 
     def box_search(self, key):
-        use_unicode = (ord(key[0]) > ord('z'))
-        if use_unicode:
-            data = self.req.search_singer_by_fullname(key)
-        else:
-            data = self.req.search_singer_by_abridge(key)
-
+        data = self.req.search_singer_by_fullname(key)
         if None == data:
             return False
 
@@ -572,18 +558,10 @@ class stv_class(object):
         st.clear()
         for meta in data:
             logging.debug(meta)
-            # image = self.req.album_fetch(meta[0])
-            # if None == image:
-            #     continue
-            # pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image, 80, 80)
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('resources/no_album.png', 80, 80)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size('resources/no_album.png', 60, 60)
             st.append([pixbuf, meta[1], meta[0]])
 
-        if use_unicode:
-            data = self.req.search_song_by_fullname(key)
-        else:
-            data = self.req.search_song_by_abridge(key)
-
+        data = self.req.search_song_by_fullname(key)
         if None == data:
             return False
 

@@ -19,7 +19,6 @@ class yyt_api_class(object):
         if None == obj or None == obj.get('videoInfo'):
             return 'resources/blank.mp4'
 
-        print(obj)
         videoUrlModels = obj['videoInfo']['coreVideoInfo']['videoUrlModels']
         if 0 == videoUrlModels.__len__():
             return 'resources/blank.mp4'

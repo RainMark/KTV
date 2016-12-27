@@ -1,3 +1,9 @@
 *.pyc
 __pycache__
 .style.css
+stv_app_first.mp4
+*.pptx
+*.docx
+*.doc
+*.pdf
+*.xlsx

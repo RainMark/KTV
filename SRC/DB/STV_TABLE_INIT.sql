@@ -60,7 +60,3 @@ create table History(
        foreign key(SongID) references Song(SongID),
        foreign key(ClientID) references Client(ClientID)
 );
-
-insert into Client values('1','北京','a','联想');
-insert into Client values('2','上海','b','戴尔');
-insert into Client values('3','上海','c','惠普');
